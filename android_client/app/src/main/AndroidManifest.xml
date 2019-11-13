@@ -4,7 +4,7 @@
     package="com.github.peppe998e.unitoreps">
 
     <application
-        android:name=".CoreModelImp"
+        android:name=".CoreModelImpl"
         android:allowBackup="true"
         android:fullBackupContent="false"
         android:icon="@mipmap/ic_launcher"

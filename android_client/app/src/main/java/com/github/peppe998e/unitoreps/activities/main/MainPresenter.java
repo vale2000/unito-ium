@@ -8,7 +8,6 @@ import com.github.peppe998e.unitoreps.activities.base.BasePresenter;
  *
  */
 class MainPresenter extends BasePresenter<MainContract.View, CoreModel> implements MainContract.Presenter {
-
     MainPresenter(MainContract.View view, CoreModel model) {
         super(view, model);
     }

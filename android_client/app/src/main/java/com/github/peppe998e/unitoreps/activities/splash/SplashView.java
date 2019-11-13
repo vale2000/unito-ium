@@ -1,5 +1,6 @@
 package com.github.peppe998e.unitoreps.activities.splash;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Window;
 import android.widget.Toast;
@@ -9,6 +10,8 @@ import androidx.annotation.Nullable;
 import com.github.peppe998e.unitoreps.CoreModel;
 import com.github.peppe998e.unitoreps.R;
 import com.github.peppe998e.unitoreps.activities.base.BaseView;
+import com.github.peppe998e.unitoreps.activities.login.LoginView;
+import com.github.peppe998e.unitoreps.activities.main.MainView;
 
 public class SplashView extends BaseView<SplashContract.Presenter> implements SplashContract.View {
 
@@ -18,6 +21,9 @@ public class SplashView extends BaseView<SplashContract.Presenter> implements Sp
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_splash);
         setPresenter(new SplashPresenter(this, (CoreModel)getApplicationContext()));
+
+        // Checks for cached auth data
+        getPresenter().checkAndStart();
     }
 
     @Override
@@ -29,5 +35,17 @@ public class SplashView extends BaseView<SplashContract.Presenter> implements Sp
     @Override
     public void showToast(String text) {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void openLoginView() {
+        Intent i = new Intent(this, LoginView.class);
+        startActivity(i);
+    }
+
+    @Override
+    public void openMainView() {
+        Intent i = new Intent(this, MainView.class);
+        startActivity(i);
     }
 }

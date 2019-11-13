@@ -3,7 +3,7 @@ package com.github.peppe998e.unitoreps.activities.main;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import com.github.peppe998e.unitoreps.CoreModelImp;
+import com.github.peppe998e.unitoreps.CoreModel;
 import com.github.peppe998e.unitoreps.R;
 import com.github.peppe998e.unitoreps.activities.base.BaseView;
 
@@ -17,7 +17,7 @@ public class MainView extends BaseView<MainContract.Presenter> implements MainCo
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setPresenter(new MainPresenter(this, (CoreModelImp)getApplicationContext()));
+        setPresenter(new MainPresenter(this, (CoreModel)getApplicationContext()));
     }
 
     @Override

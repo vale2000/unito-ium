@@ -8,5 +8,8 @@ class SplashPresenter extends BasePresenter<SplashContract.View, CoreModel> impl
         super(view, model);
     }
 
+    @Override
+    public void checkAndStart() {
 
+    }
 }
