@@ -3,7 +3,7 @@ package com.github.peppe998e.unitoreps.modules.authcache;
 import android.content.SharedPreferences;
 
 public class AuthCacheImpl implements AuthCache {
-    private SharedPreferences sp;
+    private final SharedPreferences sp;
 
     public AuthCacheImpl(SharedPreferences sp) {
         this.sp = sp;
@@ -24,7 +24,7 @@ public class AuthCacheImpl implements AuthCache {
     @Override
     public Boolean clearToken() {
         SharedPreferences.Editor editor = this.sp.edit();
-        editor.putString("token", null);
+        editor.remove("token");
         return editor.commit();
     }
 }
