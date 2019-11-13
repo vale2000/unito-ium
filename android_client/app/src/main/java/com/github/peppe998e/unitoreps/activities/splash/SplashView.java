@@ -38,14 +38,16 @@ public class SplashView extends BaseView<SplashContract.Presenter> implements Sp
     }
 
     @Override
-    public void openLoginView() {
+    public void openLoginView(Bundle bundle) {
         Intent i = new Intent(this, LoginView.class);
+        i.putExtras(bundle);
         startActivity(i);
     }
 
     @Override
-    public void openMainView() {
+    public void openMainView(Bundle bundle) {
         Intent i = new Intent(this, MainView.class);
+        i.putExtras(bundle);
         startActivity(i);
     }
 }

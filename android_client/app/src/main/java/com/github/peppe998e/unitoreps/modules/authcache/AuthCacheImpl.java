@@ -1,4 +1,4 @@
-package com.github.peppe998e.unitoreps.modules.AuthCache;
+package com.github.peppe998e.unitoreps.modules.authcache;
 
 import android.content.SharedPreferences;
 
