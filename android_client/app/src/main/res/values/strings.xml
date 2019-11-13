@@ -1,0 +1,20 @@
+<resources>
+    <!-- App Globals -->
+    <string name="app_name">UniTo Reps</string>
+
+    <!-- Splash Activity -->
+
+
+    <!-- Login Activity  -->
+    <string name="et_uname_email">UserName/E-Mail</string>
+    <string name="et_password">Password</string>
+    <string name="bt_login">Log In</string>
+    <string name="tv_register">Not a user? Register now!</string>
+
+    <!--  Main Activity  -->
+    <string name="navb_available">Available Lessons</string>
+    <string name="navb_booked">Booked Lessons</string>
+    <string name="navb_user">Profile</string>
+
+    <!-- -->
+</resources>
