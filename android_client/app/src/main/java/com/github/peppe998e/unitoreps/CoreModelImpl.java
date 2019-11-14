@@ -7,6 +7,7 @@ import com.github.peppe998e.unitoreps.modules.authcache.AuthCache;
 import com.github.peppe998e.unitoreps.modules.authcache.AuthCacheImpl;
 import com.github.peppe998e.unitoreps.modules.apiservice.ApiService;
 import com.github.peppe998e.unitoreps.modules.apiservice.ApiServiceImpl;
+import com.github.peppe998e.unitoreps.utils.Config;
 
 /**
  * This class is the main MODEL of the application,
@@ -23,11 +24,11 @@ public class CoreModelImpl extends Application implements CoreModel {
         super.onCreate();
 
         // Initialize AuthCache Module
-        SharedPreferences sp = getSharedPreferences("AuthCache", MODE_PRIVATE);
+        SharedPreferences sp = getSharedPreferences(Config.SHARED_PREF_NAME, MODE_PRIVATE);
         this.ac = new AuthCacheImpl(sp);
 
         // Initialize Network Module
-        this.net = new ApiServiceImpl("https://127.0.0.1/");
+        this.net = new ApiServiceImpl(Config.API_BASE_URL);
     }
 
     @Override
