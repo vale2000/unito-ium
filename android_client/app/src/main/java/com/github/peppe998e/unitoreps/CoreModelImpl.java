@@ -24,7 +24,7 @@ public class CoreModelImpl extends Application implements CoreModel {
         super.onCreate();
 
         // Initialize AuthCache Module
-        SharedPreferences sp = getSharedPreferences(Config.SHARED_PREF_NAME, MODE_PRIVATE);
+        SharedPreferences sp = getSharedPreferences(Config.SHARED_PREF_NAME, 0);
         this.ac = new AuthCacheImpl(sp);
 
         // Initialize Network Module

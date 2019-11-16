@@ -18,7 +18,6 @@ public class SplashView extends BaseView<SplashContract.Presenter> implements Sp
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_splash);
         setPresenter(new SplashPresenter(this, (CoreModel)getApplicationContext()));
 
