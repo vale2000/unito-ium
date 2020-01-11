@@ -5,7 +5,6 @@ import android.os.Bundle;
 import it.unito.ium.myreps.R;
 
 public class MainView extends BaseView {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
