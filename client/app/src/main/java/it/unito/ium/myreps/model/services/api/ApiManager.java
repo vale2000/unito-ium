@@ -1,9 +1,9 @@
 package it.unito.ium.myreps.model.services.api;
 
-import it.unito.ium.myreps.utils.CallBack;
+import org.json.JSONObject;
 
 public interface ApiManager {
-    String doLogin(String email, String password);
+    JSONObject doLogin(String email, String password);
 
-    String doRegistration(String email, String password);
+    JSONObject doRegistration(String email, String password);
 }

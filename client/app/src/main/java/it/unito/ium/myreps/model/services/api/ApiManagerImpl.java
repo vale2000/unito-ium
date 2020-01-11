@@ -1,5 +1,8 @@
 package it.unito.ium.myreps.model.services.api;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 
 import okhttp3.MediaType;
@@ -20,23 +23,25 @@ final class ApiManagerImpl implements ApiManager {
     }
 
     @Override
-    public String doLogin(String email, String password) {
+    public JSONObject doLogin(String email, String password) {
         String postBody = "{\"email\":\"" + email + "\",\"password\":\"" + password + "\"}";
         try {
-            return newPostRequest("user/login", postBody);
-        } catch (NullPointerException | IOException e) {
+            String result = newPostRequest("user/login", postBody);
+            return new JSONObject(result);
+        } catch (JSONException | IOException e) {
             e.printStackTrace();
             return null;
         }
     }
 
     @Override
-    public String doRegistration(String email, String password) {
+    public JSONObject doRegistration(String email, String password) {
         String postBody = "{\"email\":\"" + email + "\",\"password\":\"" + password + "\"}";
 
         try {
-            return newPostRequest("user/registration", postBody);
-        } catch (NullPointerException | IOException e) {
+            String result = newPostRequest("user/registration", postBody);
+            return new JSONObject(result);
+        } catch (JSONException | IOException e) {
             e.printStackTrace();
             return null;
         }
@@ -45,7 +50,7 @@ final class ApiManagerImpl implements ApiManager {
     // ---------------------------------------------------------------------------------------------
     // Private Methods
 
-    private synchronized String newPostRequest(String path, String jsonData) throws NullPointerException, IOException {
+    private synchronized String newPostRequest(String path, String jsonData) throws IOException {
         RequestBody body = RequestBody.create(jsonData, JSON);
         Request request = new Request.Builder()
                 .url(SERVER_HOST + path)
@@ -56,7 +61,7 @@ final class ApiManagerImpl implements ApiManager {
         }
     }
 
-    private synchronized String newGetRequest(String path) throws NullPointerException, IOException {
+    private synchronized String newGetRequest(String path) throws IOException {
         Request request = new Request.Builder()
                 .url(SERVER_HOST + path)
                 .build();
