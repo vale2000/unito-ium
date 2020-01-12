@@ -15,6 +15,11 @@ public final class AppController extends Application implements Controller {
     }
 
     @Override
+    public void loadRepsList() {
+
+    }
+
+    @Override
     public void onTerminate() {
         super.onTerminate();
         // ...
