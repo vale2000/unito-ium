@@ -14,13 +14,13 @@ import it.unito.ium.myreps.R;
 import it.unito.ium.myreps.views.components.RecyclerViewAdapter;
 
 public class MainView extends BaseView {
-    private RecyclerView repsListView;
+    private RecyclerView repsRecyclerView;
     private RecyclerViewAdapter recyclerViewAdapter;
 
     private FloatingActionButton floatingActionButton;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity); // Set Content View
         findViewWidgets(); // Find and attach all Widgets
@@ -28,18 +28,18 @@ public class MainView extends BaseView {
     }
 
     private void findViewWidgets() {
-        repsListView = findViewById(R.id.repsListView);
+        repsRecyclerView = findViewById(R.id.main_reps_recyclerview);
         floatingActionButton = findViewById(R.id.floating_action_button);
     }
 
     private void initViewWidgets() {
-        initRepsListView(); // repsListView
+        initRepsRecyclerView();
         initFloatingActionButton();
     }
 
-    private void initRepsListView() {
-        repsListView.setHasFixedSize(true);
-        repsListView.setLayoutManager(new LinearLayoutManager(this));
+    private void initRepsRecyclerView() {
+        repsRecyclerView.setHasFixedSize(true);
+        repsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         ArrayList<String> animalNames = new ArrayList<>();
         animalNames.add("Horse");
@@ -49,7 +49,7 @@ public class MainView extends BaseView {
         animalNames.add("Goat");
 
         recyclerViewAdapter = new RecyclerViewAdapter(animalNames);
-        repsListView.setAdapter(recyclerViewAdapter);
+        repsRecyclerView.setAdapter(recyclerViewAdapter);
 
         recyclerViewAdapter.setItemClickListener((view, item) ->
                 Toast.makeText(view.getContext(), "You clicked: " + item, Toast.LENGTH_SHORT).show());

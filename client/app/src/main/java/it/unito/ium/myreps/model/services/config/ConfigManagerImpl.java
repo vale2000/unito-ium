@@ -12,41 +12,41 @@ final class ConfigManagerImpl implements ConfigManager {
 
     @Override
     public boolean contains(String key) {
-        return this.sharedPreferences.contains(key);
+        return sharedPreferences.contains(key);
     }
 
     @Override
     public String getString(String key) {
-        return this.sharedPreferences.getString(key, null);
+        return sharedPreferences.getString(key, null);
     }
 
     @Override
     public void setString(String key, String value) {
-        this.sharedPreferences.edit()
+        sharedPreferences.edit()
                 .putString(key, value)
                 .apply();
     }
 
     @Override
     public boolean getBoolean(String key) {
-        return this.sharedPreferences.getBoolean(key, false);
+        return sharedPreferences.getBoolean(key, false);
     }
 
     @Override
     public void setBoolean(String key, boolean value) {
-        this.sharedPreferences.edit()
+        sharedPreferences.edit()
                 .putBoolean(key, value)
                 .apply();
     }
 
     @Override
     public int getInteger(String key) {
-        return this.sharedPreferences.getInt(key, -1);
+        return sharedPreferences.getInt(key, -1);
     }
 
     @Override
     public void setInteger(String key, int value) {
-        this.sharedPreferences.edit()
+        sharedPreferences.edit()
                 .putInt(key, value)
                 .apply();
     }
