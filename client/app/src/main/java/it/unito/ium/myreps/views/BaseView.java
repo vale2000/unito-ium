@@ -12,7 +12,7 @@ abstract class BaseView extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        setTheme(R.style.AppTheme);
+        setTheme(R.style.AppTheme); // Restore AppTheme
         super.onCreate(savedInstanceState);
     }
 

@@ -1,5 +1,5 @@
 <resources>
-    <!-- Base application theme. -->
+    <!-- Base Application Theme -->
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -8,6 +8,20 @@
 
     <!-- Launcher Splash Screen -->
     <style name="AppTheme.Launcher" parent="AppTheme">
-        <item name="android:windowBackground">@drawable/launch_screen</item>
+        <item name="android:windowBackground">@drawable/launcher_screen</item>
     </style>
+
+    <!-- Floating Action Button -->
+    <style name="AppTheme.Fab" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="tint">#FFFFFF</item>
+    </style>
+
+    <style name="AppTheme.Fab.Action" parent="AppTheme.Fab">
+        <item name="backgroundTint">@color/colorAccent</item>
+    </style>
+
+    <style name="AppTheme.Fab.Refresh" parent="AppTheme.Fab">
+        <item name="backgroundTint">@android:color/holo_blue_bright</item>
+    </style>
+
 </resources>

@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">MyReps</string>
+
+    <!-- Floating Action Button -->
+    <string name="fab1_text">FAB 1</string>
+    <string name="fab2_text">FAB 3</string>
+    <string name="fab_refresh_text">REFRESH</string>
 </resources>
