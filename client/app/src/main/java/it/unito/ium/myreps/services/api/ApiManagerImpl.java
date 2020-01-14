@@ -5,6 +5,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
+import it.unito.ium.myreps.Model;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -18,7 +19,7 @@ final class ApiManagerImpl implements ApiManager {
 
     private final OkHttpClient client;
 
-    ApiManagerImpl() {
+    ApiManagerImpl(Model model) {
         this.client = new OkHttpClient();
     }
 
