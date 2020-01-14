@@ -1,4 +1,4 @@
-package it.unito.ium.myreps.views.components;
+package it.unito.ium.myreps.controllers.components;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,10 +13,10 @@ import java.util.List;
 import it.unito.ium.myreps.R;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
-    private List<String> mDataSet;
+    private List<String[]> mDataSet;
     private ItemClickListener itemClickListener;
 
-    public RecyclerViewAdapter(List<String> mDataSet) {
+    public RecyclerViewAdapter(List<String[]> mDataSet) {
         itemClickListener = null;
         this.mDataSet = mDataSet;
     }
@@ -25,14 +25,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public RecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.main_repslist_row, parent, false);
+                .inflate(R.layout.recycler_view_row, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewAdapter.ViewHolder holder, int position) {
-        String textName = mDataSet.get(position);
-        holder.myTextView.setText(textName);
+        String[] values = mDataSet.get(position);
+        holder.headerText.setText(values[0]);
+        holder.hoursText.setText(values[1]);
+        holder.profText.setText(values[2]);
     }
 
     @Override
@@ -40,7 +42,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return mDataSet.size();
     }
 
-    public void setDataSet(@NonNull List<String> mDataSet) {
+    public void setDataSet(@NonNull List<String[]> mDataSet) {
         this.mDataSet = mDataSet;
         notifyDataSetChanged();
     }
@@ -49,16 +51,22 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         this.itemClickListener = itemClickListener;
     }
 
-    private String getItem(int id) {
+    private String[] getItem(int id) {
         return mDataSet.get(id);
     }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private final TextView myTextView;
+        private final TextView headerText;
+        private final TextView hoursText;
+        private final TextView profText;
 
         ViewHolder(View v) {
             super(v);
-            myTextView = v.findViewById(R.id.textName);
+
+            headerText = v.findViewById(R.id.rv_row_header);
+            hoursText = v.findViewById(R.id.rv_row_hours);
+            profText = v.findViewById(R.id.rv_row_prof);
+
             itemView.setOnClickListener(this);
         }
 
@@ -69,7 +77,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         }
     }
 
+    @FunctionalInterface
     public interface ItemClickListener {
-        void onClick(View view, String item);
+        void onClick(View view, String[] item);
     }
 }

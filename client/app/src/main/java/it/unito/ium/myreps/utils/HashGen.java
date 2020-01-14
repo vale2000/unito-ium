@@ -5,7 +5,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public final class HashGen {
-
     public static String MD5(String input) {
         return HashGen.digest("MD5", input);
     }

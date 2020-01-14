@@ -1,4 +1,4 @@
-package it.unito.ium.myreps.model.services.api;
+package it.unito.ium.myreps.services.api;
 
 public final class ApiManagerFactory {
     public static ApiManager instantiate() {

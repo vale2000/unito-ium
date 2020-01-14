@@ -1,4 +1,4 @@
-package it.unito.ium.myreps.model.services.config;
+package it.unito.ium.myreps.services.config;
 
 import android.app.Application;
 import android.content.SharedPreferences;

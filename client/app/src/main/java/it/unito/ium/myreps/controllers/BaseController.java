@@ -1,14 +1,14 @@
-package it.unito.ium.myreps.views;
+package it.unito.ium.myreps.controllers;
 
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import it.unito.ium.myreps.Controller;
+import it.unito.ium.myreps.Model;
 import it.unito.ium.myreps.R;
 
-abstract class BaseView extends AppCompatActivity {
+abstract class BaseController extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -16,8 +16,8 @@ abstract class BaseView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
     }
 
-    protected Controller getAppController() {
-        return (Controller) getApplication();
+    protected Model getAppModel() {
+        return (Model) getApplication();
     }
 
 }
