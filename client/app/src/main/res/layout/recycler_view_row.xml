@@ -17,9 +17,9 @@
             android:id="@+id/rv_row_header"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="9"
+            android:layout_weight="8"
             android:textStyle="bold"
-            android:textSize="24sp" />
+            android:textSize="22sp" />
 
         <TextView
             android:id="@+id/rv_row_hours"

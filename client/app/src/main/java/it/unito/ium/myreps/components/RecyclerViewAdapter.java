@@ -1,4 +1,4 @@
-package it.unito.ium.myreps.controllers.components;
+package it.unito.ium.myreps.components;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,12 +13,17 @@ import java.util.List;
 import it.unito.ium.myreps.R;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
-    private List<String[]> mDataSet;
+    private List<RecyclerViewRow> mDataSet;
     private ItemClickListener itemClickListener;
 
-    public RecyclerViewAdapter(List<String[]> mDataSet) {
+    public RecyclerViewAdapter(List<RecyclerViewRow> mDataSet) {
         itemClickListener = null;
+        setDataSet(mDataSet);
+    }
+
+    public void setDataSet(@NonNull List<RecyclerViewRow> mDataSet) {
         this.mDataSet = mDataSet;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -31,10 +36,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewAdapter.ViewHolder holder, int position) {
-        String[] values = mDataSet.get(position);
-        holder.headerText.setText(values[0]);
-        holder.hoursText.setText(values[1]);
-        holder.profText.setText(values[2]);
+        RecyclerViewRow item = mDataSet.get(position);
+        holder.headerText.setText(item.getSubject());
+        holder.hoursText.setText(RecyclerViewRow.minutesToString(item.getMinutes()));
+        holder.profText.setText(item.getProfessor());
     }
 
     @Override
@@ -42,16 +47,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return mDataSet.size();
     }
 
-    public void setDataSet(@NonNull List<String[]> mDataSet) {
-        this.mDataSet = mDataSet;
-        notifyDataSetChanged();
-    }
-
     public void setItemClickListener(@NonNull ItemClickListener itemClickListener) {
         this.itemClickListener = itemClickListener;
     }
 
-    private String[] getItem(int id) {
+    private RecyclerViewRow getItem(int id) {
         return mDataSet.get(id);
     }
 
@@ -79,6 +79,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @FunctionalInterface
     public interface ItemClickListener {
-        void onClick(View view, String[] item);
+        void onClick(View view, RecyclerViewRow item);
     }
 }

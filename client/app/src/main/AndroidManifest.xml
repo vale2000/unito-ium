@@ -9,16 +9,30 @@
         android:name=".AppModel"
         android:label="@string/app_name"
         android:icon="@mipmap/ic_launcher"
-        android:theme="@style/AppTheme.Launcher"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:allowBackup="false"
+        android:theme="@style/AppTheme.Launcher"
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".controllers.MainController">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".controllers.UserController"
+            android:parentActivityName=".controllers.MainController">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".controllers.MainController" />
+        </activity>
+        <activity
+            android:name=".controllers.LessonController"
+            android:parentActivityName=".controllers.MainController">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".controllers.MainController" />
         </activity>
     </application>
 

@@ -1,8 +1,12 @@
 <resources>
+    <!-- Manifest -->
     <string name="app_name">MyReps</string>
 
     <!-- Floating Action Button -->
-    <string name="fab1_text">FAB 1</string>
-    <string name="fab2_text">FAB 3</string>
+    <string name="fab_my_reps_text">MY REPS</string>
+    <string name="fab_all_reps_text">ALL RESP</string>
     <string name="fab_refresh_text">REFRESH</string>
+
+    <!-- Menu -->
+    <string name="menu_item_profile_string">Profile</string>
 </resources>

@@ -11,7 +11,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-
+// TODO Async Calls
 final class ApiManagerImpl implements ApiManager {
     private static final String SERVER_HOST = "http://127.0.0.1/";
     private static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
