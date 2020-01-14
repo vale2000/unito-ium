@@ -60,7 +60,7 @@ public final class RecyclerViewRow {
         String result = "";
         if (days > 0) result += days + "d ";
         result += hours;
-        if (minutes > 0) result += "." + minutes;
+        if (minutes > 0) result += "'" + minutes;
         return result + "h";
     }
 }
