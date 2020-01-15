@@ -21,6 +21,13 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".controllers.LoginController"
+            android:parentActivityName=".controllers.MainController">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".controllers.MainController" />
+        </activity>
+        <activity
             android:name=".controllers.UserController"
             android:parentActivityName=".controllers.MainController">
             <meta-data

@@ -129,7 +129,7 @@ public final class MainController extends BaseController {
         repsList.add(new RecyclerViewRow(0, "Programmazione 3", "Giuseppe Eletto", 180));
         repsList.add(new RecyclerViewRow(0, "Base di dati", "Edoardo Chiavazza", 150));
         repsList.add(new RecyclerViewRow(0, "Sistemi Operativi", "Matteo Brunello", 90));
-        repsList.add(new RecyclerViewRow(0, "Programmazione 3", "Giuseppe Eletto", 180));
+        repsList.add(new RecyclerViewRow(0, "Programmazione 3", "Giuseppe Eletto", 170));
         repsList.add(new RecyclerViewRow(0, "Base di dati", "Edoardo Chiavazza", 150));
         repsList.add(new RecyclerViewRow(0, "Sistemi Operativi", "Matteo Brunello", 90));
         repsList.add(new RecyclerViewRow(0, "Programmazione 3", "Giuseppe Eletto", 180));

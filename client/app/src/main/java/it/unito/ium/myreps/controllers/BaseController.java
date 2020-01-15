@@ -16,11 +16,6 @@ abstract class BaseController extends AppCompatActivity {
         super.onCreate(savedInstanceState);
     }
 
-    @Override
-    public void setContentView(int layoutResID) {
-        super.setContentView(layoutResID);
-    }
-
     protected Model getAppModel() {
         return (Model) getApplication();
     }

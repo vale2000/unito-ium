@@ -53,14 +53,12 @@ public final class RecyclerViewRow {
     }
 
     public static String minutesToString(int i) {
-        int days = i / 1440;
         int hours = i / 60;
         int minutes = i % 60;
 
-        String result = "";
-        if (days > 0) result += days + "g ";
-        result += hours + 'h';
-        if (minutes > 0) result += " " + minutes + "'";
-        return result;
+        StringBuilder result = new StringBuilder();
+        result.append(hours).append('h');
+        if (minutes > 0) result.append(' ').append(minutes).append('\'');
+        return result.toString();
     }
 }
