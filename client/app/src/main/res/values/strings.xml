@@ -8,5 +8,7 @@
     <string name="fab_refresh_text">REFRESH</string>
 
     <!-- Menu -->
+    <string name="menu_item_search_string">Search</string>
     <string name="menu_item_profile_string">Profile</string>
+    <string name="menu_search_hint">Type Lesson or Professor name…</string>
 </resources>

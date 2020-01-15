@@ -1,5 +1,7 @@
 package it.unito.ium.myreps.controllers;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -9,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -28,24 +31,23 @@ import it.unito.ium.myreps.components.RecyclerViewAdapter;
 import it.unito.ium.myreps.components.RecyclerViewRow;
 
 public final class MainController extends BaseController {
+    private SearchView searchView;
+    private RecyclerViewAdapter repsRecViewAdapter;
+
     @BindView(R.id.swipe_refresh_reps)
     SwipeRefreshLayout swipeRefreshReps;
     @BindView(R.id.recycler_view_reps)
-    RecyclerView recViewReps;
+    RecyclerView repsRecView;
 
     @BindView(R.id.fab_my_reps_layout)
     LinearLayout fabMyRepsLayout;
     @BindView(R.id.fab_my_reps_text_view)
     TextView fabMyRepsTextView;
-    @BindView(R.id.fab_my_reps_button)
-    FloatingActionButton fabMyRepsButton;
 
     @BindView(R.id.fab_all_reps_layout)
     LinearLayout fabAllRepsLayout;
     @BindView(R.id.fab_all_reps_text_view)
     TextView fabAllRepsTextView;
-    @BindView(R.id.fab_all_reps_button)
-    FloatingActionButton fabAllRepsButton;
 
     @BindView(R.id.fab_action_button)
     FloatingActionButton fabActionButton;
@@ -63,6 +65,26 @@ public final class MainController extends BaseController {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.app_menu, menu);
+
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        searchView = (SearchView) menu.findItem(R.id.menu_item_search).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setMaxWidth(Integer.MAX_VALUE);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                repsRecViewAdapter.getFilter().filter(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                repsRecViewAdapter.getFilter().filter(query);
+                return true;
+            }
+        });
+
         return true;
     }
 
@@ -72,9 +94,17 @@ public final class MainController extends BaseController {
             case R.id.menu_item_profile:
                 startActivity(new Intent(this, UserController.class));
                 return true;
+            case R.id.menu_item_search:
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!searchView.isIconified()) searchView.setIconified(true);
+        else super.onBackPressed();
     }
 
     @OnClick(R.id.fab_my_reps_button)
@@ -101,7 +131,9 @@ public final class MainController extends BaseController {
             fabAllRepsLayout.setVisibility(View.VISIBLE);
             fabAllRepsLayout.animate().translationY(-180).withStartAction(() ->
                     fabAllRepsTextView.setVisibility(View.VISIBLE));
-        } else hideFabMenu();
+        } else {
+            hideFabMenu();
+        }
     }
 
     private void hideFabMenu() {
@@ -117,8 +149,13 @@ public final class MainController extends BaseController {
     }
 
     private void initRecyclerViewReps() {
-        recViewReps.setHasFixedSize(true);
-        recViewReps.setLayoutManager(new LinearLayoutManager(this));
+        repsRecView.setHasFixedSize(true);
+        repsRecView.setLayoutManager(new LinearLayoutManager(this));
+
+        repsRecViewAdapter = new RecyclerViewAdapter();
+        repsRecView.setAdapter(repsRecViewAdapter);
+        repsRecViewAdapter.setItemClickListener((view, item) -> Toast.makeText(this, item.getSubject(), Toast.LENGTH_SHORT).show());
+
         swipeRefreshReps.setOnRefreshListener(this::loadRecyclerViewReps);
     }
 
@@ -171,12 +208,7 @@ public final class MainController extends BaseController {
         repsList.add(new RecyclerViewRow(0, "Programmazione 3", "Giuseppe Eletto", 180));
         repsList.add(new RecyclerViewRow(0, "Base di dati", "Edoardo Chiavazza", 150));
         repsList.add(new RecyclerViewRow(0, "Sistemi Operativi", "Matteo Brunello", 90));
-
-        RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(repsList);
-        recViewReps.setAdapter(recyclerViewAdapter);
-
-        recyclerViewAdapter.setItemClickListener((view, item) ->
-                Toast.makeText(view.getContext(), item.getSubject(), Toast.LENGTH_SHORT).show());
+        repsRecViewAdapter.setDataSet(repsList);
 
         swipeRefreshReps.setRefreshing(false);
     }
