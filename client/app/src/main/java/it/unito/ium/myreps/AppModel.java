@@ -15,7 +15,7 @@ public final class AppModel extends Application implements Model {
     @Override
     public void onCreate() {
         super.onCreate();
-        this.configManager = ConfigManagerFactory.instantiate( this);
+        this.configManager = ConfigManagerFactory.instantiate(this);
         this.apiManager = ApiManagerFactory.instantiate(this);
     }
 
