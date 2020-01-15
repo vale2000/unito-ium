@@ -58,9 +58,9 @@ public final class RecyclerViewRow {
         int minutes = i % 60;
 
         String result = "";
-        if (days > 0) result += days + "d ";
-        result += hours;
-        if (minutes > 0) result += "'" + minutes;
-        return result + 'h';
+        if (days > 0) result += days + "g ";
+        result += hours + 'h';
+        if (minutes > 0) result += " " + minutes + "'";
+        return result;
     }
 }

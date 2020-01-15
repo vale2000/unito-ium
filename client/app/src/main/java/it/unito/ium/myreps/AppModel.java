@@ -1,6 +1,7 @@
 package it.unito.ium.myreps;
 
 import android.app.Application;
+import android.content.Context;
 
 import it.unito.ium.myreps.services.api.ApiManager;
 import it.unito.ium.myreps.services.api.ApiManagerFactory;
@@ -16,6 +17,11 @@ public final class AppModel extends Application implements Model {
         super.onCreate();
         this.configManager = ConfigManagerFactory.instantiate( this);
         this.apiManager = ApiManagerFactory.instantiate(this);
+    }
+
+    @Override
+    public Context getAppContext() {
+        return getApplicationContext();
     }
 
     @Override
