@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -102,7 +103,7 @@ public final class MainController extends BaseController {
 
     @Override
     public void onBackPressed() {
-        if (!searchView.isIconified()) searchView.setIconified(true);
+        if (!searchView.isIconified()) closeSearchView();
         else super.onBackPressed();
     }
 
@@ -153,9 +154,30 @@ public final class MainController extends BaseController {
 
         repsRecViewAdapter = new RecyclerViewAdapter();
         repsRecView.setAdapter(repsRecViewAdapter);
-        repsRecViewAdapter.setItemClickListener((view, item) -> Toast.makeText(this, item.getSubject(), Toast.LENGTH_SHORT).show());
+        repsRecViewAdapter.setItemClickListener((view, item) -> {
+            Intent i = new Intent(this, LessonController.class);
+            i.putExtra("lesson", item);
+            startActivity(i);
+        });
 
-        swipeRefreshReps.setOnRefreshListener(this::loadRecyclerViewReps);
+        swipeRefreshReps.setOnRefreshListener(() -> {
+            closeSearchView();
+            loadRecyclerViewReps();
+        });
+    }
+
+    private void closeSearchView() {
+        if (!searchView.hasFocus()) return;
+
+        searchView.clearFocus();
+        searchView.setIconified(true);
+
+        try {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void loadRecyclerViewReps() {

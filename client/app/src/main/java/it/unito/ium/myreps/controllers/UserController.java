@@ -11,5 +11,6 @@ public final class UserController extends BaseController {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_view);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 }

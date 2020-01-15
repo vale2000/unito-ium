@@ -7,19 +7,28 @@
     android:fitsSystemWindows="true"
     tools:context=".controllers.MainController">
 
-    <!-- Main -->
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_refresh_reps"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_reps"
+        <!-- ToolBar -->
+        <include layout="@layout/app_toolbar" />
+
+        <!-- Main -->
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh_reps"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            android:layout_height="match_parent">
 
-    <!-- Fab Menu -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_reps"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </LinearLayout>
+
+    <!-- Floating Action Buttons Menu -->
     <LinearLayout
         android:id="@+id/fab_my_reps_layout"
         android:layout_width="wrap_content"

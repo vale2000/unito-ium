@@ -1,8 +1,9 @@
 package it.unito.ium.myreps.components;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public final class RecyclerViewRow {
+public final class RecyclerViewRow implements Serializable {
     private final int id;
     private final String subject;
     private final String professor;

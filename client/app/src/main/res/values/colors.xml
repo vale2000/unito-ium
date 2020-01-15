@@ -4,6 +4,10 @@
     <color name="colorPrimary">#546E7A</color>
     <color name="colorAccent">#FBC02D</color>
 
+    <!-- ToolBar -->
+    <color name="toolbarBackground">@color/colorPrimary</color>
+    <color name="toolbarTextColor">@android:color/white</color>
+
     <!-- Floating Action Buttons -->
     <color name="colorFabAction">@color/colorAccent</color>
     <color name="colorFabMini">#607D8B</color>

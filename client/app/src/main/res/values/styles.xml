@@ -1,9 +1,18 @@
 <resources>
-    <!-- Base Application Theme -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
+    <!-- Base Application -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <!-- ToolBar -->
+    <style name="AppTheme.ToolBar" parent="AppTheme">
+        <item name="android:background">@color/toolbarBackground</item>
+        <item name="android:textColor">@color/toolbarTextColor</item>
+        <item name="android:textColorPrimary">@color/toolbarTextColor</item>
+        <item name="android:textColorSecondary">@color/toolbarTextColor</item>
+        <item name="android:textColorHint">@color/toolbarTextColor</item>
     </style>
 
     <!-- Launcher Splash Screen -->

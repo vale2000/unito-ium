@@ -9,5 +9,7 @@ public final class LoginController extends BaseController {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_view);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
+
 }

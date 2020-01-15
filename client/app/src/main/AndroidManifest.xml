@@ -28,27 +28,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".controllers.LoginController"
-            android:parentActivityName=".controllers.MainController">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".controllers.MainController" />
-        </activity>
-        <activity
-            android:name=".controllers.UserController"
-            android:parentActivityName=".controllers.MainController">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".controllers.MainController" />
-        </activity>
-        <activity
-            android:name=".controllers.LessonController"
-            android:parentActivityName=".controllers.MainController">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".controllers.MainController" />
-        </activity>
+        <activity android:name=".controllers.LoginController" />
+        <activity android:name=".controllers.UserController" />
+        <activity android:name=".controllers.LessonController" />
     </application>
 
 </manifest>
