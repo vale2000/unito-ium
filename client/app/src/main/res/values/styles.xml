@@ -6,18 +6,18 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <!-- Launcher Splash Screen -->
+    <style name="AppTheme.Launcher" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/launcher_screen</item>
+    </style>
+
     <!-- ToolBar -->
-    <style name="AppTheme.ToolBar" parent="AppTheme">
+    <style name="AppTheme.ToolBar">
         <item name="android:background">@color/toolbarBackground</item>
         <item name="android:textColor">@color/toolbarTextColor</item>
         <item name="android:textColorPrimary">@color/toolbarTextColor</item>
         <item name="android:textColorSecondary">@color/toolbarTextColor</item>
         <item name="android:textColorHint">@color/toolbarTextColor</item>
-    </style>
-
-    <!-- Launcher Splash Screen -->
-    <style name="AppTheme.Launcher" parent="AppTheme">
-        <item name="android:windowBackground">@drawable/launcher_screen</item>
     </style>
 
     <!-- Floating Action Buttons -->

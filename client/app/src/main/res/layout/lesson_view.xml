@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context=".controllers.LessonController">
+    android:fitsSystemWindows="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
 
         <!-- ToolBar -->
         <include layout="@layout/app_toolbar" />
@@ -21,16 +18,43 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="8dp"
+            android:paddingBottom="4dp"
             android:theme="@style/AppTheme.ToolBar">
 
             <TextView
+                android:id="@+id/lesson_header_subject"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:text="IDK IDK IDK"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:layout_marginStart="16dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/lesson_header_prof"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/lesson_header_subject" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- ProgressBar -->
+        <RelativeLayout
+            android:id="@+id/lesson_loading_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.ToolBar">
+
+            <ProgressBar
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="-6dp"
+                android:gravity="bottom"
+                android:indeterminate="true" />
+        </RelativeLayout>
 
         <!-- Main -->
         <androidx.constraintlayout.widget.ConstraintLayout
