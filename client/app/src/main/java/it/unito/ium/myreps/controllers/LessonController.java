@@ -25,11 +25,12 @@ public final class LessonController extends BaseController {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.lesson_view);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ButterKnife.bind(this);
 
-        lesson = (RecyclerViewRow) getIntent().getSerializableExtra("lesson");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(null);
 
+        lesson = (RecyclerViewRow) getIntent().getSerializableExtra("lesson");
         headerSubject.setText(lesson.getSubject());
         headerProfessor.setText(lesson.getProfessor());
     }

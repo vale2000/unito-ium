@@ -39,5 +39,4 @@ abstract class BaseController extends AppCompatActivity {
     protected Model getAppModel() {
         return (Model) getApplication();
     }
-
 }

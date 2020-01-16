@@ -9,6 +9,7 @@
     <!-- Launcher Splash Screen -->
     <style name="AppTheme.Launcher" parent="AppTheme">
         <item name="android:windowBackground">@drawable/launcher_screen</item>
+        <item name="colorPrimaryDark">@color/colorAccent</item>
     </style>
 
     <!-- ToolBar -->

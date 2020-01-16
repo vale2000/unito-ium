@@ -60,7 +60,7 @@ public final class MainController extends BaseController {
         ButterKnife.bind(this);
 
         initRecyclerViewReps();
-        loadRecyclerViewReps();
+        loadRepsList();
     }
 
     @Override
@@ -88,6 +88,20 @@ public final class MainController extends BaseController {
         return true;
     }
 
+    private void closeSearchView() {
+        if (!searchView.hasFocus()) return;
+
+        searchView.clearFocus();
+        searchView.setIconified(true);
+
+        try {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public boolean onOptionsItemSelected(@NotNull MenuItem item) {
         switch (item.getItemId()) {
@@ -105,18 +119,6 @@ public final class MainController extends BaseController {
     public void onBackPressed() {
         if (!searchView.isIconified()) closeSearchView();
         else super.onBackPressed();
-    }
-
-    @OnClick(R.id.fab_my_reps_button)
-    public void fabMyRepsOnClick() {
-        Toast.makeText(this, "MY REPS", Toast.LENGTH_SHORT).show();
-        hideFabMenu();
-    }
-
-    @OnClick(R.id.fab_all_reps_button)
-    public void fabAllRepsOnClick() {
-        Toast.makeText(this, "ALL REPS", Toast.LENGTH_SHORT).show();
-        hideFabMenu();
     }
 
     @OnClick(R.id.fab_action_button)
@@ -162,25 +164,29 @@ public final class MainController extends BaseController {
 
         swipeRefreshReps.setOnRefreshListener(() -> {
             closeSearchView();
-            loadRecyclerViewReps();
+            loadRepsList();
         });
     }
 
-    private void closeSearchView() {
-        if (!searchView.hasFocus()) return;
+    @OnClick(R.id.fab_my_reps_button)
+    public void loadMyRepsList() {
+        getSupportActionBar().setTitle("My booked lessons");
 
-        searchView.clearFocus();
-        searchView.setIconified(true);
+        Toast.makeText(this, "MY REPS", Toast.LENGTH_SHORT).show();
 
-        try {
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        hideFabMenu();
     }
 
-    private void loadRecyclerViewReps() {
+    @OnClick(R.id.fab_all_reps_button)
+    public void loadAllRepsList() {
+        getSupportActionBar().setTitle("All available lessons");
+
+        Toast.makeText(this, "ALL REPS", Toast.LENGTH_SHORT).show();
+
+        hideFabMenu();
+    }
+
+    private void loadRepsList() {
         swipeRefreshReps.setRefreshing(true);
 
         ArrayList<RecyclerViewRow> repsList = new ArrayList<>();
