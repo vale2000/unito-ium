@@ -16,7 +16,7 @@ public final class RecyclerViewRow implements Serializable {
         this.minutes = minutes;
     }
 
-    public int getID() {
+    private int getID() {
         return id;
     }
 
@@ -28,7 +28,7 @@ public final class RecyclerViewRow implements Serializable {
         return professor;
     }
 
-    public int getMinutes() {
+    int getMinutes() {
         return minutes;
     }
 
@@ -53,7 +53,7 @@ public final class RecyclerViewRow implements Serializable {
         return result;
     }
 
-    public static String minutesToString(int i) {
+    static String minutesToString(int i) {
         int hours = i / 60;
         int minutes = i % 60;
 

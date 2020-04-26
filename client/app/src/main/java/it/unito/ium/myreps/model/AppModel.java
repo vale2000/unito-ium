@@ -1,12 +1,12 @@
-package it.unito.ium.myreps;
+package it.unito.ium.myreps.model;
 
 import android.app.Application;
 import android.content.Context;
 
-import it.unito.ium.myreps.services.api.ApiManager;
-import it.unito.ium.myreps.services.api.ApiManagerFactory;
-import it.unito.ium.myreps.services.config.ConfigManager;
-import it.unito.ium.myreps.services.config.ConfigManagerFactory;
+import it.unito.ium.myreps.model.services.api.ApiManager;
+import it.unito.ium.myreps.model.services.api.ApiManagerFactory;
+import it.unito.ium.myreps.model.services.config.ConfigManager;
+import it.unito.ium.myreps.model.services.config.ConfigManagerFactory;
 
 public final class AppModel extends Application implements Model {
     private ConfigManager configManager;
@@ -15,8 +15,8 @@ public final class AppModel extends Application implements Model {
     @Override
     public void onCreate() {
         super.onCreate();
-        this.configManager = ConfigManagerFactory.instantiate(this);
-        this.apiManager = ApiManagerFactory.instantiate(this);
+        configManager = ConfigManagerFactory.instantiate(this);
+        apiManager = ApiManagerFactory.instantiate(this);
     }
 
     @Override
@@ -26,11 +26,11 @@ public final class AppModel extends Application implements Model {
 
     @Override
     public ConfigManager getConfigManager() {
-        return this.configManager;
+        return configManager;
     }
 
     @Override
     public ApiManager getApiManager() {
-        return this.apiManager;
+        return apiManager;
     }
 }

@@ -1,10 +1,10 @@
-package it.unito.ium.myreps.services.api;
+package it.unito.ium.myreps.model.services.api;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 
-import it.unito.ium.myreps.Model;
+import it.unito.ium.myreps.model.Model;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -18,14 +18,14 @@ final class ApiManagerImpl implements ApiManager {
     private static final String SERVER_HOST = "http://127.0.0.1/";
     private static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
 
-    private final Model appModel;
+    private final Model model;
     private final OkHttpClient client;
 
     private String email;
     private String password;
 
-    ApiManagerImpl(Model appModel) {
-        this.appModel = appModel;
+    ApiManagerImpl(Model model) {
+        this.model = model;
         this.client = new OkHttpClient();
     }
 

@@ -8,11 +8,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import it.unito.ium.myreps.Model;
 import it.unito.ium.myreps.R;
+import it.unito.ium.myreps.model.Model;
 
 abstract class BaseController extends AppCompatActivity {
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         setTheme(R.style.AppTheme); // Restore AppTheme
@@ -36,7 +35,7 @@ abstract class BaseController extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    protected Model getAppModel() {
+    protected Model getModel() {
         return (Model) getApplication();
     }
 }

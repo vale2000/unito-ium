@@ -1,15 +1,16 @@
-package it.unito.ium.myreps.services.config;
+package it.unito.ium.myreps.model.services.config;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.SharedPreferences;
 
-import it.unito.ium.myreps.Model;
+import it.unito.ium.myreps.model.Model;
 
 final class ConfigManagerImpl implements ConfigManager {
     private final SharedPreferences sharedPreferences;
 
     ConfigManagerImpl(Model model) {
-        this.sharedPreferences = ((Application) model).getSharedPreferences("app_config_data", 0x0000);
+        this.sharedPreferences = ((Application) model).getSharedPreferences("app_config_data", Context.MODE_PRIVATE);
     }
 
     @Override

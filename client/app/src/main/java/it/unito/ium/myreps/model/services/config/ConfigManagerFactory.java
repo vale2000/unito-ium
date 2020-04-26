@@ -1,6 +1,6 @@
-package it.unito.ium.myreps.services.config;
+package it.unito.ium.myreps.model.services.config;
 
-import it.unito.ium.myreps.Model;
+import it.unito.ium.myreps.model.Model;
 
 public final class ConfigManagerFactory {
     public static ConfigManager instantiate(Model model) {
