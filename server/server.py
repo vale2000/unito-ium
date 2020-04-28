@@ -24,8 +24,8 @@ class ApiServer:
 if __name__ == '__main__':
     config = Config('config.ini')
 
-    dbInstance = Database(config.get('database', 'filepath'))
-    dbInstance.add_user('pino@gmail.com', 'SHA256PWD')
+    dbInstance = Database(config.get('database', 'db_path'),
+                          config.get('database', 'dump_path'))
     print(dbInstance.is_teacher(1))
 
     apiServer = ApiServer(dbInstance)

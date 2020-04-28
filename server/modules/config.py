@@ -12,11 +12,11 @@ class Config:
     def get(self, section, variable):
         try:
             return self.conf.get(section, variable)
-        except (ValueError, configparser.Error) as err:
+        except (ValueError, configparser.Error):
             return ''
 
     def getint(self, section, variable):
         try:
             return self.conf.getint(section, variable)
-        except (ValueError, configparser.Error) as err:
+        except (ValueError, configparser.Error):
             return -1
