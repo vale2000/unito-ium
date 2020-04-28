@@ -30,6 +30,7 @@ if __name__ == '__main__':
 
 # SIGINT Handler
 def signal_handler(sig, frame):
+    print()
     apiServer.close()
     dbInstance.close()
     sys.exit(0)
