@@ -23,13 +23,17 @@ class ApiServer:
 # ------------------------
 if __name__ == '__main__':
     config = Config('config.ini')
+
     dbInstance = Database(config.get('database', 'filepath'))
+    dbInstance.add_user('pino@gmail.com', 'SHA256PWD')
+    dbInstance.add_user('pino@gmail.com', 'SHA256PWD', 'Giuseppe', 'Eletto')
+
     apiServer = ApiServer(dbInstance)
     apiServer.start()
 
 
 # SIGINT Handler
-def signal_handler(sig, frame):
+def signal_handler():
     print()
     apiServer.close()
     dbInstance.close()
@@ -37,4 +41,3 @@ def signal_handler(sig, frame):
 
 
 signal.signal(signal.SIGINT, signal_handler)
-signal.pause() # TODO Remove

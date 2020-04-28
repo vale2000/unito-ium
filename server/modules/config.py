@@ -5,7 +5,7 @@ import io
 
 class Config:
     def __init__(self, conf_file):
-        with open(conf_file) as conf:
+        with open(conf_file, 'r') as conf:
             self.conf = configparser.RawConfigParser(allow_no_value=True)
             self.conf.read_file(conf)
 
