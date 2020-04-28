@@ -7,13 +7,12 @@ import os
 # ------------------------
 # SQLite3 Database
 # ------------------------
-
-
 class Database:
     def __init__(self, db_path: str):
         try:
+            new_db = not os.path.exists(db_path)
             self.conn = sqlite3.connect(db_path)
-            if not os.path.exists(db_path):
+            if new_db:
                 self.init_db()
         except sqlite3.Error as err:
             exit(err)
@@ -26,30 +25,27 @@ class Database:
         try:
             with closing(self.conn.cursor()) as c:
                 c.execute('INSERT INTO Users (email, password, name, surname) VALUES (?, ?, ?, ?)',
-                          (email, password, name, surname))
-                return c.fetchone()
-        except sqlite3.OperationalError as err:
-            print(err)
-            return -1  # To change
+                          [email, password, name, surname])
+                return True
+        except sqlite3.Error:
+            return False
 
     def get_user(self, user_id: int):
         try:
             with closing(self.conn.cursor()) as c:
-                c.execute('SELECT * FROM Users WHERE id = ?', user_id)
+                c.execute('SELECT * FROM Users WHERE id = ?', [user_id])
                 return c.fetchone()
-        except sqlite3.Error as err:
-            print(err)
-            return -1  # To change
+        except sqlite3.Error:
+            return ()
 
     def is_teacher(self, user_id: int):
         try:
             with closing(self.conn.cursor()) as c:
                 c.execute('SELECT * FROM Users INNER JOIN Teachers ON Users.id = Teachers.id WHERE Users.id = ?',
-                          user_id)
+                          [user_id])
                 return c.rowcount() > 0
-        except sqlite3.Error as err:
-            print(err)
-            return -1  # To change
+        except sqlite3.Error:
+            return False
 
     def init_db(self):
         try:

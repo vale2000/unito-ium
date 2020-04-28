@@ -26,7 +26,7 @@ if __name__ == '__main__':
 
     dbInstance = Database(config.get('database', 'filepath'))
     dbInstance.add_user('pino@gmail.com', 'SHA256PWD')
-    dbInstance.add_user('pino@gmail.com', 'SHA256PWD', 'Giuseppe', 'Eletto')
+    print(dbInstance.is_teacher(1))
 
     apiServer = ApiServer(dbInstance)
     apiServer.start()
