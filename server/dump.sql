@@ -50,16 +50,16 @@ CREATE TABLE IF NOT EXISTS Lessons (
 
 /* Bookings */
 CREATE TABLE IF NOT EXISTS Bookings (
-    lesson_id INTEGER,
     user_id   INTEGER,
+    lesson_id INTEGER,
     status    TEXT NOT NULL DEFAULT 'RESERVED',
-    PRIMARY KEY (lesson_id, user_id),
-    FOREIGN KEY (lesson_id)
-        REFERENCES Lessons (id)
-            ON DELETE CASCADE
-            ON UPDATE CASCADE,
+    PRIMARY KEY (user_id, lesson_id),
     FOREIGN KEY (user_id)
         REFERENCES Users (id)
+            ON DELETE CASCADE
+            ON UPDATE CASCADE,
+    FOREIGN KEY (lesson_id)
+        REFERENCES Lessons (id)
             ON DELETE CASCADE
             ON UPDATE CASCADE
 );

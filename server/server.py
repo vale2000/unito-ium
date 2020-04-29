@@ -23,19 +23,13 @@ class ApiServer:
 # ------------------------
 if __name__ == '__main__':
     config = Config('config.ini')
-
-    dbInstance = Database(config.get('database', 'db_path'),
-                          config.get('database', 'dump_path'))
-    print(dbInstance.is_teacher(1))
-
-    apiServer = ApiServer(dbInstance)
-    apiServer.start()
+    dbInstance = Database(config.get('database', 'db_path'), config.get('database', 'dump_path'))
+    server_address = (config.get('server', 'address'), config.getint('server', 'port'))
 
 
 # SIGINT Handler
 def signal_handler():
     print()
-    apiServer.close()
     dbInstance.close()
     sys.exit(0)
 
