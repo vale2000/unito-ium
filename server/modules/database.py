@@ -8,7 +8,18 @@ import os
 # SQLite3 Database
 # ------------------------
 class Database:
-    def __init__(self, db_path: str, dump_path: str = ''):
+    # Singleton Method
+    __instance = None
+
+    @staticmethod
+    def get_instance(db_path: str = None, dump_path: str = None):
+        if not Database.__instance and db_path:
+            Database.__instance = Database(db_path, dump_path)
+        return Database.__instance
+
+    # ------------------------
+    # Class Methods
+    def __init__(self, db_path: str, dump_path: str = None):
         try:
             new_db = not os.path.exists(db_path)
             self.conn = sqlite3.connect(db_path)
@@ -36,22 +47,51 @@ class Database:
         except sqlite3.Error:
             return False
 
+    def get_users(self):
+        result = []
+        try:
+            with closing(self.conn.cursor()) as c:
+                c.execute("""WITH IsTeach AS 
+                                (SELECT user_id, COUNT(course_id) > 0 AS courses_count FROM Teachers GROUP BY user_id)
+                                SELECT id, email, name, surname, IFNULL(IsTeach.courses_count, 0) AS is_teacher, gender
+                                FROM Users LEFT JOIN IsTeach ON Users.id = IsTeach.user_id;""")
+                rows = c.fetchall()
+                for row in rows:
+                    result_row = dict(map(lambda x, y: (x[0], y), c.description, row))
+                    result.append(result_row)
+        except sqlite3.Error:
+            pass
+        return result
+
     def get_user(self, user_id: int):
         try:
             with closing(self.conn.cursor()) as c:
-                c.execute('SELECT * FROM Users WHERE id = ?', [user_id])
-                return c.fetchone()
+                c.execute("""WITH IsTeach AS 
+                                (SELECT user_id, COUNT(course_id) > 0 AS courses_count FROM Teachers GROUP BY user_id)
+                                SELECT id, email, name, surname, IFNULL(IsTeach.courses_count, 0)AS is_teacher, gender
+                                FROM Users LEFT JOIN IsTeach ON IsTeach.user_id = Users.id WHERE Users.id = ?;""",
+                          [user_id])
+                row = c.fetchone()
+                if row:
+                    return dict(map(lambda x, y: (x[0], y), c.description, row))
         except sqlite3.Error:
-            return ()
+            pass
+        return None
 
-    def is_teacher(self, user_id: int):
+    def get_user_login(self, email: str, password: str):
         try:
             with closing(self.conn.cursor()) as c:
-                c.execute("""SELECT COUNT(*) FROM Users INNER JOIN Teachers 
-                                ON Users.id = Teachers.user_id WHERE Users.id = ?""", [user_id])
-                return c.fetchone()[0] > 0
+                c.execute("""WITH IsTeach AS 
+                                (SELECT user_id, COUNT(course_id) > 0 AS courses_count FROM Teachers GROUP BY user_id)
+                                SELECT id, name, surname, IFNULL(IsTeach.courses_count, 0) AS is_teacher
+                                FROM Users LEFT JOIN IsTeach ON IsTeach.user_id = Users.id
+                                WHERE Users.email = ? AND Users.password = ?;""", [email, password])
+                row = c.fetchone()
+                if row:
+                    return dict(map(lambda x, y: (x[0], y), c.description, row))
         except sqlite3.Error:
-            return False
+            pass
+        return None
 
     # ------------------------
     # Courses
@@ -64,13 +104,31 @@ class Database:
         except sqlite3.Error:
             return False
 
+    def get_courses(self):
+        result = []
+        try:
+            with closing(self.conn.cursor()) as c:
+                c.execute('SELECT * FROM Courses;')
+                rows = c.fetchall()
+                for row in rows:
+                    result_row = dict(map(lambda x, y: (x[0], y), c.description, row))
+                    result.append(result_row)
+        except sqlite3.Error:
+            pass
+        return result
+
     def get_course(self, course_id: int):
+        result = []
         try:
             with closing(self.conn.cursor()) as c:
                 c.execute('SELECT * FROM Courses WHERE id = ?', [course_id])
-                return c.fetchone()
+                row = c.fetchone()
+                if row:
+                    result_row = dict(map(lambda x, y: (x[0], y), c.description, row))
+                    result.append(result_row)
         except sqlite3.Error:
-            return ()
+            pass
+        return result
 
     # ------------------------
     # Lessons

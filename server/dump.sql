@@ -75,10 +75,11 @@ VALUES
     (4, 'saverio.bianchi@email.com', 'NOPWD', 'Saverio', 'Bianchi', 1),
     (5, 'remo.moretti@email.com', 'NOPWD', 'Remo', 'Moretti', 1),
     (6, 'tiziana.ferri@email.com', 'NOPWD', 'Tiziana', 'Ferri', 2),
-    (7, 'martina.colombo.@email.com', 'NOPWD', 'Martina', ' Colombo.', 2),
+    (7, 'martina.colombo.@email.com', 'NOPWD', 'Martina', ' Colombo', 2),
     (8, 'luigi.marchese@email.com', 'NOPWD', 'Luigi', 'Marchese', 1),
     (9, 'elisabetta.ferrari@email.com', 'NOPWD', 'Elisabetta', 'Ferrari', 2),
-    (10, 'gustavo.costa@email.com', 'NOPWD', 'Gustavo', 'Costa', 1);
+    (10, 'gustavo.costa@email.com', 'NOPWD', 'Gustavo', 'Costa', 1),
+    (11, 'giuseppe.eletto@edu.unito.it', 'NOPWD', 'Giuseppe', 'Eletto', 1);
 
 /* Courses */
 INSERT INTO Courses (id, name)
