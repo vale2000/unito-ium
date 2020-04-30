@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-from contextlib2 import closing
 import sqlite3
 import os
 
@@ -7,6 +6,9 @@ import os
 # ------------------------
 # SQLite3 Database
 # ------------------------
+from contextlib import closing
+
+
 class Database:
     # Singleton Method
     __instance = None
@@ -22,7 +24,7 @@ class Database:
     def __init__(self, db_path: str, dump_path: str = None):
         try:
             new_db = not os.path.exists(db_path)
-            self.conn = sqlite3.connect(db_path)
+            self.conn = sqlite3.connect(db_path, check_same_thread=False)
             if new_db and dump_path:
                 if os.path.exists(dump_path):
                     self.__init_db(dump_path)
@@ -83,14 +85,14 @@ class Database:
             with closing(self.conn.cursor()) as c:
                 c.execute("""WITH IsTeach AS 
                                 (SELECT user_id, COUNT(course_id) > 0 AS courses_count FROM Teachers GROUP BY user_id)
-                                SELECT id, name, surname, IFNULL(IsTeach.courses_count, 0) AS is_teacher
+                                SELECT id, IFNULL(IsTeach.courses_count, 0) AS is_teacher
                                 FROM Users LEFT JOIN IsTeach ON IsTeach.user_id = Users.id
                                 WHERE Users.email = ? AND Users.password = ?;""", [email, password])
                 row = c.fetchone()
                 if row:
                     return dict(map(lambda x, y: (x[0], y), c.description, row))
-        except sqlite3.Error:
-            pass
+        except sqlite3.Error as err:
+            print(err)
         return None
 
     # ------------------------
