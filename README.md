@@ -1,4 +1,4 @@
-# Progetto di laboratorio - IUM (+ TWEB) - 2019/2020
+# UniTo - IUM (+ TWEB) - Progetto di laboratorio - 2019/2020
 
 Si sviluppi un’applicazione java web che gestisca **prenotazioni di ripetizioni online** essendo _dotata sia di interfaccia utente per browser web che per accesso mobile._
 - Si assuma che per ogni corso di cui si offrono ripetizioni ci siano uno più docenti alternativi tra cui scegliere con chi fare la ripetizione (per es., lunedi dalle 9.00 alle 10.00 la lezione di matematica può essere tenuta sia da Mario Rossi che da Gianni Verdi).
