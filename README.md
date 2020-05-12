@@ -43,7 +43,7 @@ disdire, le prenotazioni; solo gli amministratori devono poter inserire/rimuover
 	- In caso di errore durante l’inserimento di dati nelle form, l’interfaccia deve permettere all’utente di correggere i dati e ripetere l’operazione senza perdere i dati precedentemente inseriti (cioè, senza riempire d’accapo i moduli online).
 
 ### Requisiti specifici per l’interfaccia utente per il web:
-- L’interfaccia web deve essere implementata utilizzando **View.js** e **HTML5;**
+- L’interfaccia web deve essere implementata utilizzando **Vue.js** e **HTML5;**
 - Il layout delle pagine dell’interfaccia utente deve essere specificato con **CSS** e deve essere **fluido**. 
 - Il controllo dell’input utente lato client deve essere effettuato utilizzando **i tag di HTML5 e/o JavaScript.**
 - Il backend dell’applicazione deve essere implementato in Java.
