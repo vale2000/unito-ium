@@ -5,7 +5,7 @@ Si sviluppi un’applicazione java web che gestisca **prenotazioni di ripetizion
 - Si assuma che ogni docente possa insegnare più di un corso (per es., Mario Rossi insegna sia matematica che scienze).
 - Si assuma che l’applicazione presenti le ripetizioni disponibili di una settimana pre-fissata, dal lunedi al venerdi, al pomeriggio (15.00 – 19.00). In altre parole, non è richiesto di gestire un vero calendario ma solo una griglia di slot temporali di dimensioni limitate (1h ciascuno). Ogni ripetizione disponibile è associata a un orario (dalle ore X alle ore Y del giorno Z) e ai docenti che la potrebbero tenere in quell’orario in quanto non occupati.
 
-Seguono i dettagli richiesti per il progetto.
+#### Seguono i dettagli richiesti per il progetto
 
 L’applicazione deve gestire due tipi di ruolo utente: utente registrato (cliente del servizio di ripetizioni) e amministratore. Si assuma di avere 1 amministratore e 2 clienti pre-registrati.
 
