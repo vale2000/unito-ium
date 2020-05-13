@@ -1,4 +1,4 @@
-# UniTo - IUM (+ TWEB) - Progetto di laboratorio - 2019/2020
+# UniTo - IUM - Progetto di laboratorio - 2019/2020
 (N.B. :: Il repository contiene solo la parte Android e Python3)
 
 Si sviluppi un’applicazione java web che gestisca **prenotazioni di ripetizioni online** essendo _dotata sia di interfaccia utente per browser web che per accesso mobile._
