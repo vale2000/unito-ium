@@ -1,128 +1,185 @@
-/* Create tables */
-/* Users */
-CREATE TABLE IF NOT EXISTS Users (
-    id       INTEGER PRIMARY KEY,
-    email    TEXT NOT NULL UNIQUE,
-    password TEXT NOT NULL,
-    name     TEXT,
-    surname  TEXT,
-    gender   INTEGER DEFAULT 0
+BEGIN TRANSACTION;
+
+-- ----------------------------
+-- Table structure for `roles`
+-- ----------------------------
+CREATE TABLE IF NOT EXISTS roles (
+  id   INTEGER PRIMARY KEY,
+  name TEXT NOT NULL UNIQUE,
+  lesson_add            INTEGER NOT NULL,
+  lesson_add_others     INTEGER NOT NULL,
+  lesson_list           INTEGER NOT NULL,
+  lesson_update         INTEGER NOT NULL,
+  lesson_update_others  INTEGER NOT NULL,
+  lesson_delete         INTEGER NOT NULL,
+  lesson_delete_others  INTEGER NOT NULL,
+  booking_add           INTEGER NOT NULL,
+  booking_add_others    INTEGER NOT NULL,
+  booking_list          INTEGER NOT NULL,
+  booking_list_others   INTEGER NOT NULL,
+  booking_update        INTEGER NOT NULL,
+  booking_update_others INTEGER NOT NULL,
+	user_add              INTEGER NOT NULL,
+  user_list             INTEGER NOT NULL,
+  user_update           INTEGER NOT NULL,
+  user_remove           INTEGER NOT NULL,
+  course_add            INTEGER NOT NULL,
+  course_list           INTEGER NOT NULL,
+  course_update         INTEGER NOT NULL,
+  course_remove         INTEGER NOT NULL
 );
 
-/* Courses */
-CREATE TABLE IF NOT EXISTS Courses (
-    id   INTEGER PRIMARY KEY,
-    name TEXT NOT NULL UNIQUE
-);
-
-/* Teachers */
-CREATE TABLE IF NOT EXISTS Teachers (
-    user_id   INTEGER,
-    course_id INTEGER,
-    PRIMARY KEY (user_id, course_id),
-    FOREIGN KEY (user_id)
-        REFERENCES Users (id)
-            ON DELETE CASCADE
-            ON UPDATE CASCADE,
-    FOREIGN KEY (course_id)
-        REFERENCES Courses (id)
-            ON DELETE CASCADE
-            ON UPDATE CASCADE
-);
-
-/* Lessons */
-CREATE TABLE IF NOT EXISTS Lessons (
-    id         INTEGER PRIMARY KEY,
-    course_id  INTEGER NOT NULL,
-    teacher_id INTEGER NOT NULL,
-    unix_day   INTEGER NOT NULL,
-    init_hour  INTEGER NOT NULL,
-    UNIQUE (course_id, teacher_id),
-    FOREIGN KEY (course_id)
-        REFERENCES Courses (id)
-            ON DELETE CASCADE
-            ON UPDATE CASCADE,
-    FOREIGN KEY (teacher_id)
-        REFERENCES Users (id)
-            ON DELETE CASCADE
-            ON UPDATE CASCADE
-);
-
-/* Bookings */
-CREATE TABLE IF NOT EXISTS Bookings (
-    user_id   INTEGER,
-    lesson_id INTEGER,
-    status    TEXT NOT NULL DEFAULT 'RESERVED',
-    PRIMARY KEY (user_id, lesson_id),
-    FOREIGN KEY (user_id)
-        REFERENCES Users (id)
-            ON DELETE CASCADE
-            ON UPDATE CASCADE,
-    FOREIGN KEY (lesson_id)
-        REFERENCES Lessons (id)
-            ON DELETE CASCADE
-            ON UPDATE CASCADE
-);
-
-/* --------------- */
-/* Populate Tables */
-/* Users */
-INSERT INTO Users (id, email, password, name, surname, gender)
+-- ----------------------------
+-- Records of `roles`
+-- ----------------------------
+INSERT INTO roles (id, name, lesson_add, lesson_add_others, lesson_list, lesson_update, lesson_update_others, lesson_delete, lesson_delete_others, booking_add, booking_add_others, booking_list, booking_list_others, booking_update, booking_update_others, user_add, user_list, user_update, user_remove, course_add, course_list, course_update, course_remove)
 VALUES
-    (1, 'mario.rossi@email.com', 'NOPWD', 'Mario', 'Rossi', 1),
-    (2, 'monica.beneventi@email.com', 'NOPWD', 'Monica', 'Beneventi', 2),
-    (3, 'anna.panicucci@email.com', 'NOPWD', 'Anna', 'Panicucci', 2),
-    (4, 'saverio.bianchi@email.com', 'NOPWD', 'Saverio', 'Bianchi', 1),
-    (5, 'remo.moretti@email.com', 'NOPWD', 'Remo', 'Moretti', 1),
-    (6, 'tiziana.ferri@email.com', 'NOPWD', 'Tiziana', 'Ferri', 2),
-    (7, 'martina.colombo.@email.com', 'NOPWD', 'Martina', ' Colombo', 2),
-    (8, 'luigi.marchese@email.com', 'NOPWD', 'Luigi', 'Marchese', 1),
-    (9, 'elisabetta.ferrari@email.com', 'NOPWD', 'Elisabetta', 'Ferrari', 2),
-    (10, 'gustavo.costa@email.com', 'NOPWD', 'Gustavo', 'Costa', 1),
-    (11, 'giuseppe.eletto@edu.unito.it', 'NOPWD', 'Giuseppe', 'Eletto', 1);
+	(0, 'Guest', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+	(1, 'User', 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+	(2, 'Teacher', 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+	(3, 'Admin', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
 
-/* Courses */
-INSERT INTO Courses (id, name)
+-- ----------------------------
+-- Table structure for `users`
+-- ----------------------------
+CREATE TABLE IF NOT EXISTS users (
+  id       INTEGER PRIMARY KEY,
+  email    TEXT NOT NULL UNIQUE,
+  password TEXT NOT NULL,
+  role_id  INTEGER NOT NULL DEFAULT 1,
+  name     TEXT,
+  surname  TEXT,
+  gender   INTEGER NOT NULL DEFAULT 0,
+  FOREIGN KEY (role_id)
+  	REFERENCES roles (id)
+  		ON DELETE SET DEFAULT
+  		ON UPDATE CASCADE
+);
+
+-- ----------------------------
+-- Records of `users`
+-- ----------------------------
+INSERT INTO users (id, email, password, role_id, name, surname, gender)
 VALUES
-    (1, 'Italiano'),
-    (2, 'Matematica'),
-    (3, 'Geometria'),
-    (4, 'Informatica'),
-    (5, 'Storia'),
-    (6, 'Geografia'),
-    (7, 'Inglese'),
-    (8, 'Latino'),
-    (9, 'Greco'),
-    (10, 'Scienze'),
-    (11, 'Filosofia');
+  (1, 'mario.rossi@email.com', 'FAKE_USER', 2, 'Mario', 'Rossi', 1),
+  (2, 'monica.beneventi@email.com', 'FAKE_USER', 2, 'Monica', 'Beneventi', 2),
+  (3, 'anna.panicucci@email.com', 'FAKE_USER', 2, 'Anna', 'Panicucci', 2),
+  (4, 'saverio.bianchi@email.com', 'FAKE_USER', 2, 'Saverio', 'Bianchi', 1),
+  (5, 'remo.moretti@email.com', 'FAKE_USER', 2, 'Remo', 'Moretti', 1),
+  (6, 'tiziana.ferri@email.com', 'FAKE_USER', 2, 'Tiziana', 'Ferri', 2),
+  (7, 'martina.colombo.@email.com', 'FAKE_USER', 2, 'Martina', ' Colombo', 2),
+  (8, 'luigi.marchese@email.com', 'FAKE_USER', 2, 'Luigi', 'Marchese', 1),
+  (9, 'elisabetta.ferrari@email.com', 'FAKE_USER', 2, 'Elisabetta', 'Ferrari', 2),
+  (10, 'gustavo.costa@email.com', 'FAKE_USER', 2, 'Gustavo', 'Costa', 1),
+  (11, 'giuseppe.eletto@edu.unito.it', 'password123', 1, 'Giuseppe', 'Eletto', 1),
+  (12, 'admin@ium.unito.it', 'password123', 3, 'Admin', 'IUM', 0);
 
-/* Teachers */
-INSERT INTO Teachers (user_id, course_id)
+-- ----------------------------
+-- Table structure for `courses`
+-- ----------------------------
+CREATE TABLE IF NOT EXISTS courses (
+  id   INTEGER PRIMARY KEY,
+  name TEXT NOT NULL UNIQUE
+);
+
+-- ----------------------------
+-- Records of `courses`
+-- ----------------------------
+INSERT INTO courses (id, name)
 VALUES
-    (1, 7),
-    (1, 8),
-    (1, 10),
-    (2, 1),
-    (2, 8),
-    (2, 9),
-    (3, 1),
-    (3, 2),
-    (4, 2),
-    (4, 3),
-    (5, 3),
-    (5, 4),
-    (6, 4),
-    (6, 10),
-    (7, 5),
-    (7, 6),
-    (8, 5),
-    (8, 6),
-    (9, 9),
-    (9, 11),
-    (10, 7),
-    (10, 11);
+  (1, 'Italiano'),
+  (2, 'Matematica'),
+  (3, 'Geometria'),
+  (4, 'Informatica'),
+  (5, 'Storia'),
+  (6, 'Geografia'),
+  (7, 'Inglese'),
+  (8, 'Latino'),
+  (9, 'Greco'),
+  (10, 'Scienze'),
+  (11, 'Filosofia');
 
-/* Lessons */
+-- ----------------------------
+-- Table structure for `teachers`
+-- ----------------------------
+CREATE TABLE IF NOT EXISTS teachers (
+  user_id   INTEGER,
+  course_id INTEGER,
+  PRIMARY KEY (user_id, course_id),
+  FOREIGN KEY (user_id)
+    REFERENCES users (id)
+      ON DELETE CASCADE
+      ON UPDATE CASCADE,
+  FOREIGN KEY (course_id)
+    REFERENCES courses (id)
+      ON DELETE CASCADE
+      ON UPDATE CASCADE
+);
 
-/* Bookings */
+-- ----------------------------
+-- Records of `teachers`
+-- ----------------------------
+INSERT INTO teachers (user_id, course_id)
+VALUES
+  (1, 7),
+  (1, 8),
+  (1, 10),
+  (2, 1),
+  (2, 8),
+  (2, 9),
+  (3, 1),
+  (3, 2),
+  (4, 2),
+  (4, 3),
+  (5, 3),
+  (5, 4),
+  (6, 4),
+  (6, 10),
+  (7, 5),
+  (7, 6),
+  (8, 5),
+  (8, 6),
+  (9, 9),
+  (9, 11),
+  (10, 7),
+  (10, 11);
 
+-- ----------------------------
+-- Table structure for `lessons`
+-- ----------------------------
+CREATE TABLE IF NOT EXISTS lessons (
+  id         INTEGER PRIMARY KEY,
+  course_id  INTEGER NOT NULL,
+  teacher_id INTEGER NOT NULL,
+  unix_day   INTEGER NOT NULL,
+  init_hour  INTEGER NOT NULL,
+  UNIQUE (course_id, teacher_id),
+  FOREIGN KEY (course_id)
+    REFERENCES courses (id)
+      ON DELETE CASCADE
+      ON UPDATE CASCADE,
+  FOREIGN KEY (teacher_id)
+    REFERENCES users (id)
+      ON DELETE CASCADE
+      ON UPDATE CASCADE
+);
+
+-- ----------------------------
+-- Table structure for `bookings`
+-- ----------------------------
+CREATE TABLE IF NOT EXISTS bookings (
+  user_id   INTEGER,
+  lesson_id INTEGER,
+  status    TEXT NOT NULL DEFAULT 'RESERVED',
+  PRIMARY KEY (user_id, lesson_id),
+  FOREIGN KEY (user_id)
+    REFERENCES users (id)
+      ON DELETE CASCADE
+      ON UPDATE CASCADE,
+  FOREIGN KEY (lesson_id)
+    REFERENCES lessons (id)
+      ON DELETE CASCADE
+      ON UPDATE CASCADE
+);
+
+COMMIT TRANSACTION;
