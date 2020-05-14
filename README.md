@@ -1,11 +1,12 @@
-# Progetto di laboratorio - IUM + TWEB - 2019/2020
+# UniTo - IUM - Progetto di laboratorio - 2019/2020
+(N.B. :: Il repository contiene solo la parte Android e Python3)
 
 Si sviluppi un’applicazione java web che gestisca **prenotazioni di ripetizioni online** essendo _dotata sia di interfaccia utente per browser web che per accesso mobile._
 - Si assuma che per ogni corso di cui si offrono ripetizioni ci siano uno più docenti alternativi tra cui scegliere con chi fare la ripetizione (per es., lunedi dalle 9.00 alle 10.00 la lezione di matematica può essere tenuta sia da Mario Rossi che da Gianni Verdi).
 - Si assuma che ogni docente possa insegnare più di un corso (per es., Mario Rossi insegna sia matematica che scienze).
 - Si assuma che l’applicazione presenti le ripetizioni disponibili di una settimana pre-fissata, dal lunedi al venerdi, al pomeriggio (15.00 – 19.00). In altre parole, non è richiesto di gestire un vero calendario ma solo una griglia di slot temporali di dimensioni limitate (1h ciascuno). Ogni ripetizione disponibile è associata a un orario (dalle ore X alle ore Y del giorno Z) e ai docenti che la potrebbero tenere in quell’orario in quanto non occupati.
 
-Seguono i dettagli richiesti per il progetto.
+#### Seguono i dettagli richiesti per il progetto
 
 L’applicazione deve gestire due tipi di ruolo utente: utente registrato (cliente del servizio di ripetizioni) e amministratore. Si assuma di avere 1 amministratore e 2 clienti pre-registrati.
 
@@ -43,7 +44,7 @@ disdire, le prenotazioni; solo gli amministratori devono poter inserire/rimuover
 	- In caso di errore durante l’inserimento di dati nelle form, l’interfaccia deve permettere all’utente di correggere i dati e ripetere l’operazione senza perdere i dati precedentemente inseriti (cioè, senza riempire d’accapo i moduli online).
 
 ### Requisiti specifici per l’interfaccia utente per il web:
-- L’interfaccia web deve essere implementata utilizzando **View.js** e **HTML5;**
+- L’interfaccia web deve essere implementata utilizzando **Vue.js** e **HTML5;**
 - Il layout delle pagine dell’interfaccia utente deve essere specificato con **CSS** e deve essere **fluido**. 
 - Il controllo dell’input utente lato client deve essere effettuato utilizzando **i tag di HTML5 e/o JavaScript.**
 - Il backend dell’applicazione deve essere implementato in Java.
