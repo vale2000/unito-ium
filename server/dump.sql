@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS roles (
   booking_list_others   INTEGER NOT NULL,
   booking_update        INTEGER NOT NULL,
   booking_update_others INTEGER NOT NULL,
-	user_add              INTEGER NOT NULL,
+  user_add              INTEGER NOT NULL,
   user_list             INTEGER NOT NULL,
   user_update           INTEGER NOT NULL,
   user_remove           INTEGER NOT NULL,
