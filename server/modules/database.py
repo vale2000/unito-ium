@@ -10,7 +10,6 @@ from modules import config
 def init_db():
     db_path = config.get('database', 'path')
     dump_path = config.get('database', 'dump')
-
     try:
         new_db = not os.path.exists(db_path)
         with get_db_conn() as database:

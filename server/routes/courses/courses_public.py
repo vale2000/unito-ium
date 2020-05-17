@@ -30,7 +30,7 @@ def course_get(course_id: int):
     with get_db_conn(True) as database:
         cursor = database.cursor()
         cursor.execute('SELECT * FROM courses WHERE id = ?', [course_id])  # TODO show teachers id/name
-        db_data = cursor.fetchall()
+        db_data = cursor.fetchone()
         db_desc = cursor.description
         cursor.close()
     if db_data:

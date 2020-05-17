@@ -19,9 +19,9 @@ class SimpleJWT:
     def check(self, b64_token: str):
         try:
             tkn_str = base64.b64decode(b64_token.encode('ascii')).decode('ascii')
-            tkn_segs = tkn_str.split('.')
-            tkn_sign = SimpleJWT.__gen_sha256_sign(self.secret, tkn_segs[0])
-            if tkn_sign == tkn_segs[1]:
+            tkn_sgs = tkn_str.split('.')
+            tkn_sign = SimpleJWT.__gen_sha256_sign(self.secret, tkn_sgs[0])
+            if tkn_sign == tkn_sgs[1]:
                 return True
         except binascii.Error:
             pass
@@ -31,8 +31,8 @@ class SimpleJWT:
     def read(b64_token: str):
         try:
             tkn_str = base64.b64decode(b64_token.encode('ascii')).decode('ascii')
-            tkn_segs = tkn_str.split('.')
-            return json.loads(base64.b64decode(tkn_segs[0].encode('utf-8')).decode('utf-8'))
+            tkn_sgs = tkn_str.split('.')
+            return json.loads(base64.b64decode(tkn_sgs[0].encode('utf-8')).decode('utf-8'))
         except binascii.Error:
             pass
         return None

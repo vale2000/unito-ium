@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 from flask import Blueprint, make_response
 from modules.database import get_db_conn
-from modules.utils import db_data_to_list
 
 
 route_lessons_public = Blueprint('route_lessons_public', __name__)
@@ -14,11 +13,19 @@ route_lessons_public = Blueprint('route_lessons_public', __name__)
 def lesson_list():
     with get_db_conn(True) as database:
         cursor = database.cursor()
-        cursor.execute('SELECT * FROM lessons')
+        cursor.execute("""SELECT lessons.id, lessons.unix_day, lessons.init_hour, lessons.course_id, courses.name, 
+                            lessons.teacher_id, users.name, users.surname FROM lessons 
+                            JOIN courses ON courses.id = lessons.course_id
+                            JOIN users ON users.id = lessons.teacher_id""")
         db_data = cursor.fetchall()
-        db_desc = cursor.description
         cursor.close()
-    db_result = db_data_to_list(db_data, db_desc)
+        db_result = []
+        if db_data:
+            for row in db_data:
+                teacher = {'id': row[5], 'name': row[6], 'surname': row[7]}
+                course = {'id': row[3], 'name': row[4]}
+                db_result.append({'id': row[0], 'unix_day': row[1], 'init_hour': row[2], 'teacher': teacher,
+                                  'course': course})
     return make_response({'ok': True, 'data': db_result}, 200)
 
 
@@ -29,11 +36,15 @@ def lesson_list():
 def lesson_get(lesson_id: int):
     with get_db_conn(True) as database:
         cursor = database.cursor()
-        cursor.execute('SELECT * FROM lessons WHERE id = ?', [lesson_id])
-        db_data = cursor.fetchall()
-        db_desc = cursor.description
+        cursor.execute("""SELECT lessons.id, lessons.unix_day, lessons.init_hour, lessons.course_id, courses.name, 
+                            lessons.teacher_id, users.name, users.surname FROM lessons 
+                            JOIN courses ON courses.id = lessons.course_id
+                            JOIN users ON users.id = lessons.teacher_id  WHERE lessons.id = ?""", [lesson_id])
+        db_data = cursor.fetchone()
         cursor.close()
     if db_data:
-        row = dict(map(lambda x, y: (x[0], y), db_desc, db_data))
-        return make_response({'ok': True, 'data': row}, 200)
+        teacher = {'id': db_data[5], 'name': db_data[6], 'surname': db_data[7]}
+        course = {'id': db_data[3], 'name': db_data[4]}
+        return make_response({'ok': True, 'data': {'id': db_data[0], 'unix_day': db_data[1], 'init_hour': db_data[2],
+                                                   'teacher': teacher, 'course': course}}, 200)
     return make_response({'ok': False, 'error': 'LESSON_NOT_FOUND'}, 404)

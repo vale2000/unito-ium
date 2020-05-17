@@ -75,7 +75,7 @@ VALUES
   (4, 'saverio.bianchi@email.com', 'FAKE_USER', 2, 'Saverio', 'Bianchi', 1),
   (5, 'remo.moretti@email.com', 'FAKE_USER', 2, 'Remo', 'Moretti', 1),
   (6, 'tiziana.ferri@email.com', 'FAKE_USER', 2, 'Tiziana', 'Ferri', 2),
-  (7, 'martina.colombo.@email.com', 'FAKE_USER', 2, 'Martina', ' Colombo', 2),
+  (7, 'martina.colombo.@email.com', 'FAKE_USER', 2, 'Martina', 'Colombo', 2),
   (8, 'luigi.marchese@email.com', 'FAKE_USER', 2, 'Luigi', 'Marchese', 1),
   (9, 'elisabetta.ferrari@email.com', 'FAKE_USER', 2, 'Elisabetta', 'Ferrari', 2),
   (10, 'gustavo.costa@email.com', 'FAKE_USER', 2, 'Gustavo', 'Costa', 1),
@@ -173,6 +173,15 @@ CREATE TABLE IF NOT EXISTS lessons (
 );
 
 -- ----------------------------
+-- Records of `teachers`
+-- ----------------------------
+INSERT INTO lessons (course_id, teacher_id, unix_day, init_hour)
+VALUES
+  (7, 1, 0, 09),
+  (8, 2, 0, 16),
+  (11, 10, 0, 22);
+
+-- ----------------------------
 -- Table structure for `bookings`
 -- ----------------------------
 CREATE TABLE IF NOT EXISTS bookings (
@@ -190,5 +199,15 @@ CREATE TABLE IF NOT EXISTS bookings (
       ON DELETE CASCADE
       ON UPDATE CASCADE
 );
+
+
+-- ----------------------------
+-- Records of `teachers`
+-- ----------------------------
+INSERT INTO bookings (user_id, lesson_id)
+VALUES
+  (11, 1),
+  (11, 2),
+  (11, 3);
 
 COMMIT TRANSACTION;

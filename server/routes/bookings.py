@@ -3,7 +3,7 @@ import sqlite3
 from flask import Blueprint, request, abort, make_response
 from modules import simple_jwt
 from modules.database import get_db_conn
-from modules.utils import logged_before_request, get_role_perms, db_data_to_list
+from modules.utils import logged_before_request, get_role_perms
 
 
 route_bookings = Blueprint('route_bookings', __name__)
@@ -25,11 +25,23 @@ def booking_list():
                 user_id = req_data.get('user_id', token_data.get('user'))
         with get_db_conn(True) as database:
             cursor = database.cursor()
-            cursor.execute('SELECT id, user_id, lesson_id, status FROM bookings WHERE user_id = ?', [user_id])
+            cursor.execute("""SELECT bookings.id, bookings.status, lessons.id, lessons.unix_day, lessons.init_hour,
+                                lessons.course_id, courses.name, lessons.teacher_id, 
+                                users.name, users.surname FROM bookings 
+                                JOIN lessons ON lessons.id = bookings.lesson_id
+                                JOIN courses ON courses.id = lessons.course_id
+                                JOIN users ON users.id = lessons.teacher_id
+                                WHERE bookings.user_id = ?""", [user_id])
             db_data = cursor.fetchall()
-            db_desc = cursor.description
             cursor.close()
-        db_result = db_data_to_list(db_data, db_desc)
+            db_result = []
+            if db_data:
+                for row in db_data:
+                    course = {'id': row[5], 'name': row[6]}
+                    teacher = {'id': row[7], 'name': row[8], 'surname': row[9]}
+                    lesson = {'id': row[2], 'unix_day': row[3], 'init_hour': row[4],
+                              'course': course, 'teacher': teacher}
+                    db_result.append({'id': row[0], 'status': row[1], 'lesson': lesson})
         return make_response({'ok': True, 'data': db_result}, 200)
     return abort(401)
 
@@ -80,13 +92,21 @@ def booking_get(booking_id: int):
                 user_id = req_data.get('user_id', token_data.get('user'))
         with get_db_conn(True) as database:
             cursor = database.cursor()
-            cursor.execute('SELECT * FROM bookings WHERE id = ? AND user_id = ?', [booking_id, user_id])
+            cursor.execute("""SELECT bookings.id, bookings.status, lessons.id, lessons.unix_day, lessons.init_hour,
+                                lessons.course_id, courses.name, lessons.teacher_id, 
+                                users.name, users.surname FROM bookings 
+                                JOIN lessons ON lessons.id = bookings.lesson_id
+                                JOIN courses ON courses.id = lessons.course_id
+                                JOIN users ON users.id = lessons.teacher_id
+                                WHERE bookings.id = ? AND bookings.user_id = ?""", [booking_id, user_id])
             db_data = cursor.fetchone()
-            db_desc = cursor.description
             cursor.close()
         if db_data:
-            row = dict(map(lambda x, y: (x[0], y), db_desc, db_data))
-            return make_response({'ok': True, 'data': row}, 200)
+            course = {'id': db_data[5], 'name': db_data[6]}
+            teacher = {'id': db_data[7], 'name': db_data[8], 'surname': db_data[9]}
+            lesson = {'id': db_data[2], 'unix_day': db_data[3], 'init_hour': db_data[4],
+                      'course': course, 'teacher': teacher}
+            return make_response({'id': db_data[0], 'status': db_data[1], 'lesson': lesson}, 200)
         return make_response({'ok': False, 'error': 'BOOKING_NOT_FOUND'}, 404)
     return abort(401)
 

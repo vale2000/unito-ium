@@ -18,8 +18,7 @@ def account_login():
         with get_db_conn(True) as database:
             cursor = database.cursor()
             cursor.execute("""SELECT users.id, roles.name, role_id FROM users JOIN roles ON roles.id = users.role_id 
-                                WHERE email = ? AND password = ?""",
-                           [req_data.get('email'), req_data.get('password')])
+                                WHERE email = ? AND password = ?""", [req_data.get('email'), req_data.get('password')])
             db_data = cursor.fetchone()
             cursor.close()
         if db_data is None:

@@ -34,18 +34,20 @@ def db_data_to_list(db_data, db_desc):
 # Return permissions of given "role_id"
 # --------------------------------------
 def get_role_perms(role_id: int):
-    perms = get_role_perms.__cache.get(role_id)
-    if perms:
-        return perms
-    else:
-        with get_db_conn(True) as database:
-            cursor = database.cursor()
-            cursor.execute('SELECT * FROM roles WHERE id = ?', [role_id])
-            db_data = cursor.fetchone()
-            db_desc = cursor.description
-            cursor.close()
-        get_role_perms.__cache[role_id] = dict(map(lambda x, y: (x[0], y), db_desc, db_data))
-        return get_role_perms.__cache.get(role_id)
+    if role_id:
+        perms = get_role_perms.__cache.get(role_id)
+        if perms:
+            return perms
+        else:
+            with get_db_conn(True) as database:
+                cursor = database.cursor()
+                cursor.execute('SELECT * FROM roles WHERE id = ?', [role_id])
+                db_data = cursor.fetchone()
+                db_desc = cursor.description
+                cursor.close()
+            get_role_perms.__cache[role_id] = dict(map(lambda x, y: (x[0], y), db_desc, db_data))
+            return get_role_perms.__cache.get(role_id)
+    return {}
 
 
 get_role_perms.__cache = {}  # Static variable
