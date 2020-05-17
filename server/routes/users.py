@@ -4,7 +4,7 @@ import sqlite3
 from flask import Blueprint, request, abort, make_response
 from modules import simple_jwt
 from modules.database import get_db_conn
-from modules.utils import logged_before_request, get_role_perms
+from modules.utils import logged_before_request, get_role_perms, db_data_to_list
 
 route_users = Blueprint('route_users', __name__)
 route_users.before_request(logged_before_request)
@@ -20,24 +20,12 @@ def user_list():
     if user_perms.get('user_list', 0):
         with get_db_conn(True) as database:
             cursor = database.cursor()
-            cursor.execute("""SELECT users.id, users.email, users.role_id, users.name, users.surname, users.gender,
-                                courses.id, courses.name FROM users
-                                LEFT JOIN teachers ON teachers.user_id = users.id
-                                LEFT JOIN courses ON courses.id = teachers.course_id ORDER BY users.id""")
+            cursor.execute("""SELECT users.id, users.email, users.role_id, users.name, users.surname, users.gender
+                                FROM users""")
             db_data = cursor.fetchall()
+            db_desc = cursor.description
             cursor.close()
-        db_results = []
-        if db_data:  # TODO Migliorare/Rimuovere
-            for key, rows in itertools.groupby(db_data, key=lambda x: x[0]):
-                courses = []
-                row = None
-                for r in rows:
-                    if row is None:
-                        row = r
-                    if r[6] is not None and r[7] is not None:
-                        courses.append({'id': r[6], 'name': r[7]})
-                db_results.append({'id': row[0], 'email': row[1], 'role_id': row[2],  'name': row[3],
-                                   'surname': row[4], 'gender': row[5], 'courses': courses})
+        db_results = db_data_to_list(db_data, db_desc)
         return make_response({'ok': True, 'data': db_results}, 200)
     abort(401)
 

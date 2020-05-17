@@ -200,7 +200,6 @@ CREATE TABLE IF NOT EXISTS bookings (
       ON UPDATE CASCADE
 );
 
-
 -- ----------------------------
 -- Records of `teachers`
 -- ----------------------------
