@@ -471,3 +471,5 @@ hs_err_pid*
 !/gradle/wrapper/gradle-wrapper.jar
 
 # End of https://www.gitignore.io/api/venv,gradle,python,android,pycharm,intellij,androidstudio
+
+.~lock
