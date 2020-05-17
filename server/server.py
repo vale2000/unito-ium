@@ -1,22 +1,24 @@
 #!/usr/bin/python3
 from flask import Flask
-from routes import customs, account, users, bookings, lessons, courses
+from routes import route_users, route_customs, route_account, route_bookings, route_lessons, route_courses
+from modules import config
 
-# ----------------------------
-# Flask Server initialization
-# ----------------------------
+
+# ---------------------
+# Flask initialization
+# ---------------------
 app = Flask(__name__)
-app.register_blueprint(customs.route_customs)
-app.register_blueprint(account.route_account)
-app.register_blueprint(users.route_users)
-app.register_blueprint(bookings.route_bookings)
-app.register_blueprint(lessons.route_lessons)
-app.register_blueprint(courses.route_courses)
+app.register_blueprint(route_customs)
+app.register_blueprint(route_account)
+app.register_blueprint(route_users)
+app.register_blueprint(route_bookings)
+app.register_blueprint(route_lessons)
+app.register_blueprint(route_courses)
 
 
-# ------------------------------------
-# Set JSON Headers for every response
-# ------------------------------------
+# ------------------------
+# Set Flask after request
+# ------------------------
 @app.after_request
 def after_request(response):
     response.headers.set('Access-Control-Allow-Origin', '*')
@@ -24,5 +26,8 @@ def after_request(response):
     return response
 
 
+# -------------------
+# Start Flask server
+# -------------------
 if __name__ == '__main__':
-    app.run()
+    app.run(config.get('server', 'address'), config.getint('server', 'port'))

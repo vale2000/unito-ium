@@ -1,13 +1,55 @@
 #!/usr/bin/python3
-from flask import Blueprint
+import sqlite3
+from flask import Blueprint, request, abort
+from modules import database, simple_jwt
 route_account = Blueprint('route_account', __name__)
 
 
+# --------------------------
+#
+# --------------------------
 @route_account.route('/account/login', methods=['POST'])
 def account_login():
-    pass
+    req_data = request.get_json()
+    if req_data:
+        with database.db_lock():
+            cursor = database.cursor()
+            cursor.execute('SELECT id, role_id FROM users WHERE email = ? AND password = ?',
+                           [req_data.get('email'), req_data.get('password')])
+            db_data = cursor.fetchone()
+            cursor.close()
+        if db_data is None:
+            return '{"ok": false, "error": "USER_NOT_FOUND"}', 404
+        else:
+            if db_data[1] != 0:
+                json_token = {'user': db_data[0], 'role': db_data[1]}
+                return {'ok': True, 'token': simple_jwt.generate(json_token)}
+            else:
+                return '{"ok": false, "error": "NON_LOGGABLE_USER"}', 401
+    abort(400)
 
 
+# --------------------------
+#
+# --------------------------
 @route_account.route('/account/register', methods=['POST'])
 def account_register():
-    pass
+    req_data = request.get_json()
+    result = {'ok': True}
+    if req_data:
+        with database.db_lock():
+            try:
+                cursor = database.cursor()
+                cursor.execute('INSERT INTO users (email, password) VALUES (?, ?)',
+                               [req_data.get('email'), req_data.get('password')])
+                database.commit()
+            except sqlite3.IntegrityError:
+                database.rollback()
+                result = {'ok': False, 'error': 'USER_EXIST'}, 500
+            except sqlite3.Error as e:
+                database.rollback()
+                result = {'ok': False, 'error': str(e)}, 500
+            finally:
+                cursor.close()
+        return result
+    abort(400)

@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS roles (
 -- ----------------------------
 INSERT INTO roles (id, name, lesson_add, lesson_add_others, lesson_list, lesson_update, lesson_update_others, lesson_delete, lesson_delete_others, booking_add, booking_add_others, booking_list, booking_list_others, booking_update, booking_update_others, user_add, user_list, user_update, user_remove, course_add, course_list, course_update, course_remove)
 VALUES
-	(0, 'Guest', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+	(0, 'Fake User', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
 	(1, 'User', 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0),
 	(2, 'Teacher', 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0),
 	(3, 'Admin', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
@@ -168,10 +168,11 @@ CREATE TABLE IF NOT EXISTS lessons (
 -- Table structure for `bookings`
 -- ----------------------------
 CREATE TABLE IF NOT EXISTS bookings (
-  user_id   INTEGER,
-  lesson_id INTEGER,
+  id        INTEGER PRIMARY KEY,
+  user_id   INTEGER NOT NULL,
+  lesson_id INTEGER NOT NULL,
   status    TEXT NOT NULL DEFAULT 'RESERVED',
-  PRIMARY KEY (user_id, lesson_id),
+  UNIQUE (user_id, lesson_id),
   FOREIGN KEY (user_id)
     REFERENCES users (id)
       ON DELETE CASCADE
