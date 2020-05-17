@@ -6,38 +6,46 @@ BEGIN TRANSACTION;
 CREATE TABLE IF NOT EXISTS roles (
   id   INTEGER PRIMARY KEY,
   name TEXT NOT NULL UNIQUE,
+
   lesson_add            INTEGER NOT NULL,
   lesson_add_others     INTEGER NOT NULL,
-  lesson_list           INTEGER NOT NULL,
   lesson_update         INTEGER NOT NULL,
   lesson_update_others  INTEGER NOT NULL,
   lesson_delete         INTEGER NOT NULL,
   lesson_delete_others  INTEGER NOT NULL,
+
+  booking_get           INTEGER NOT NULL,
+  booking_get_others    INTEGER NOT NULL,
   booking_add           INTEGER NOT NULL,
   booking_add_others    INTEGER NOT NULL,
   booking_list          INTEGER NOT NULL,
   booking_list_others   INTEGER NOT NULL,
   booking_update        INTEGER NOT NULL,
   booking_update_others INTEGER NOT NULL,
+  booking_delete        INTEGER NOT NULL,
+  booking_delete_others INTEGER NOT NULL,
+
+  user_get              INTEGER NOT NULL,
+  user_get_others       INTEGER NOT NULL,
   user_add              INTEGER NOT NULL,
   user_list             INTEGER NOT NULL,
   user_update           INTEGER NOT NULL,
-  user_remove           INTEGER NOT NULL,
+  user_delete           INTEGER NOT NULL,
+
   course_add            INTEGER NOT NULL,
-  course_list           INTEGER NOT NULL,
   course_update         INTEGER NOT NULL,
-  course_remove         INTEGER NOT NULL
+  course_delete         INTEGER NOT NULL
 );
 
 -- ----------------------------
 -- Records of `roles`
 -- ----------------------------
-INSERT INTO roles (id, name, lesson_add, lesson_add_others, lesson_list, lesson_update, lesson_update_others, lesson_delete, lesson_delete_others, booking_add, booking_add_others, booking_list, booking_list_others, booking_update, booking_update_others, user_add, user_list, user_update, user_remove, course_add, course_list, course_update, course_remove)
+INSERT INTO roles (id, name, lesson_add, lesson_add_others, lesson_update, lesson_update_others, lesson_delete, lesson_delete_others, booking_get, booking_get_others, booking_add, booking_add_others, booking_list, booking_list_others, booking_update, booking_update_others, booking_delete, booking_delete_others, user_get, user_get_others, user_add, user_list, user_update, user_delete, course_add, course_update, course_delete)
 VALUES
-	(0, 'Fake User', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
-	(1, 'User', 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0),
-	(2, 'Teacher', 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0),
-	(3, 'Admin', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+	(0, 'Fake User', 0,0,0,0,0,0,1,0,1,0,1,0,1,0,0,0,1,0,0,0,0,0,0,0,0),
+	(1, 'User', 0,0,0,0,0,0,1,0,1,0,1,0,1,0,0,0,1,0,0,0,0,0,0,0,0),
+	(2, 'Teacher', 1,0,1,0,1,0,1,0,1,0,1,0,1,0,0,0,1,1,0,0,0,0,0,0,0),
+	(3, 'Admin', 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1);
 
 -- ----------------------------
 -- Table structure for `users`

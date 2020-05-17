@@ -1,7 +1,10 @@
 #!/usr/bin/python3
 import sqlite3
 from flask import Blueprint, request, abort
-from modules import database, simple_jwt
+from modules import simple_jwt
+from modules.database import get_db_conn
+
+
 route_account = Blueprint('route_account', __name__)
 
 
@@ -12,9 +15,10 @@ route_account = Blueprint('route_account', __name__)
 def account_login():
     req_data = request.get_json()
     if req_data:
-        with database.db_lock():
+        with get_db_conn(True) as database:
             cursor = database.cursor()
-            cursor.execute('SELECT id, role_id FROM users WHERE email = ? AND password = ?',
+            cursor.execute("""SELECT users.id, roles.name, role_id FROM users JOIN roles ON roles.id = users.role_id 
+                                WHERE email = ? AND password = ?""",
                            [req_data.get('email'), req_data.get('password')])
             db_data = cursor.fetchone()
             cursor.close()
@@ -22,7 +26,7 @@ def account_login():
             return '{"ok": false, "error": "USER_NOT_FOUND"}', 404
         else:
             if db_data[1] != 0:
-                json_token = {'user': db_data[0], 'role': db_data[1]}
+                json_token = {'user': db_data[0], 'role_name': db_data[1], 'role_id': db_data[2]}
                 return {'ok': True, 'token': simple_jwt.generate(json_token)}
             else:
                 return '{"ok": false, "error": "NON_LOGGABLE_USER"}', 401
@@ -37,7 +41,7 @@ def account_register():
     req_data = request.get_json()
     result = {'ok': True}
     if req_data:
-        with database.db_lock():
+        with get_db_conn() as database:
             try:
                 cursor = database.cursor()
                 cursor.execute('INSERT INTO users (email, password) VALUES (?, ?)',
