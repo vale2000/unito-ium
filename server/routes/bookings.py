@@ -26,9 +26,8 @@ def booking_list():
         with get_db_conn(True) as database:
             cursor = database.cursor()
             cursor.execute("""SELECT bookings.id, bookings.status, lessons.id, lessons.unix_day, lessons.init_hour,
-                                lessons.course_id, courses.name, lessons.teacher_id, 
-                                users.name, users.surname FROM bookings 
-                                JOIN lessons ON lessons.id = bookings.lesson_id
+                                lessons.course_id, courses.name, lessons.teacher_id, users.name, users.surname 
+                                FROM bookings JOIN lessons ON lessons.id = bookings.lesson_id
                                 JOIN courses ON courses.id = lessons.course_id
                                 JOIN users ON users.id = lessons.teacher_id
                                 WHERE bookings.user_id = ?""", [user_id])
@@ -93,9 +92,8 @@ def booking_get(booking_id: int):
         with get_db_conn(True) as database:
             cursor = database.cursor()
             cursor.execute("""SELECT bookings.id, bookings.status, lessons.id, lessons.unix_day, lessons.init_hour,
-                                lessons.course_id, courses.name, lessons.teacher_id, 
-                                users.name, users.surname FROM bookings 
-                                JOIN lessons ON lessons.id = bookings.lesson_id
+                                lessons.course_id, courses.name, lessons.teacher_id, users.name, users.surname 
+                                FROM bookings JOIN lessons ON lessons.id = bookings.lesson_id
                                 JOIN courses ON courses.id = lessons.course_id
                                 JOIN users ON users.id = lessons.teacher_id
                                 WHERE bookings.id = ? AND bookings.user_id = ?""", [booking_id, user_id])
