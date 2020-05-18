@@ -57,7 +57,7 @@ def lesson_update(lesson_id: int):
             if not user_perms.get('lesson_update_others', 0):
                 teacher_id = token_data.get('user')
                 req_data.remove('teacher_id')
-            sql_str = 'UPDATE lessons SET ' + (', '.join("%s = ?" % v for v in req_data.keys())) \
+            sql_str = 'UPDATE lessons SET ' + (', '.join(f'{v} = ?' for v in req_data.keys())) \
                       + ' WHERE id = ? AND teacher_id = ?'
             with get_db_conn() as database:
                 try:

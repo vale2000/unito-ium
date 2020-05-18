@@ -125,7 +125,7 @@ def booking_update(booking_id: int):
                 user_id = token_data.get('user')
                 req_data.remove('user_id')
                 req_data.remove('lesson_id')
-            sql_str = 'UPDATE bookings SET ' + (', '.join("%s = ?" % v for v in req_data.keys())) \
+            sql_str = 'UPDATE bookings SET ' + (', '.join(f'{v} = ?' for v in req_data.keys())) \
                       + ' WHERE id = ? AND user_id = ?'
             with get_db_conn() as database:
                 try:

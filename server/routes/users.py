@@ -110,7 +110,7 @@ def user_update(user_id: int):
                 if user_id != token_data.get('user'):
                     return abort(401)
             req_data.remove('id')
-            sql_str = 'UPDATE users SET ' + (', '.join("%s = ?" % v for v in req_data.keys())) + ' WHERE id = ?'
+            sql_str = 'UPDATE users SET ' + (', '.join(f'{v} = ?' for v in req_data.keys())) + ' WHERE id = ?'
             with get_db_conn() as database:
                 try:
                     cursor = database.cursor()
