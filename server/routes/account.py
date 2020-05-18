@@ -1,16 +1,15 @@
 #!/usr/bin/python3
 import sqlite3
-from flask import Blueprint, request, abort
+from flask import Blueprint, request, abort, make_response
 from modules import simple_jwt
 from modules.database import get_db_conn
-
 
 route_account = Blueprint('route_account', __name__)
 
 
-# --------------------------
-#
-# --------------------------
+# ------------------------------
+# Login by returning user token
+# ------------------------------
 @route_account.route('/account/login', methods=['POST'])
 def account_login():
     req_data = request.get_json()
@@ -22,17 +21,17 @@ def account_login():
             db_data = cursor.fetchone()
             cursor.close()
         if db_data:
-            if not db_data[1]:
-                return '{"ok": false, "error": "NON_LOGGABLE_USER"}', 401
+            if db_data[2] == 0 or db_data[2] == 2:  # TODO Fake and Teachers
+                return make_response('{"ok": false, "error": "NON_LOGGABLE_USER"}', 401)
             json_token = {'user': db_data[0], 'role_name': db_data[1], 'role_id': db_data[2]}
-            return {'ok': True, 'token': simple_jwt.generate(json_token)}
-        return '{"ok": false, "error": "USER_NOT_FOUND"}', 404
+            return make_response({'ok': True, 'token': simple_jwt.generate(json_token)})
+        return make_response('{"ok": false, "error": "USER_NOT_FOUND"}', 404)
     abort(400)
 
 
-# --------------------------
-#
-# --------------------------
+# ------------------------------
+# Register a new user to server
+# ------------------------------
 @route_account.route('/account/register', methods=['POST'])
 def account_register():
     req_data = request.get_json()
@@ -46,10 +45,10 @@ def account_register():
                 database.commit()
             except sqlite3.IntegrityError:
                 database.rollback()
-                result = {'ok': False, 'error': 'USER_EXIST'}, 500
+                result = make_response({'ok': False, 'error': 'USER_EXIST'}, 500)
             except sqlite3.Error as e:
                 database.rollback()
-                result = {'ok': False, 'error': str(e)}, 500
+                result = make_response({'ok': False, 'error': str(e)}, 500)
             finally:
                 cursor.close()
         return result

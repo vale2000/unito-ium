@@ -5,7 +5,6 @@ from modules import simple_jwt
 from modules.database import get_db_conn
 from modules.utils import logged_before_request, get_role_perms
 
-
 route_lessons_auth = Blueprint('route_lessons_auth', __name__)
 route_lessons_auth.before_request(logged_before_request)  # Check for login
 

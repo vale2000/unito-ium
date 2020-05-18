@@ -42,7 +42,7 @@ def user_add():
         if user_perms.get('user_add', 0):
             req_data.remove('id')
             if req_data.get('password') is None:
-                req_data.set('password', 'FAKE_USER')
+                req_data.set('password', '')
                 req_data.set('role_id', 0)
             sql_str = 'INSERT INTO users (' \
                       + (', '.join(req_data.keys())) + ') VALUES (' + (', '.join('?' for x in req_data.keys())) + ')'

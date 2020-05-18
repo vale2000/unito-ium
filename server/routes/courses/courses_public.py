@@ -4,7 +4,6 @@ from flask import Blueprint, make_response
 from modules.database import get_db_conn
 from modules.utils import db_data_to_list
 
-
 route_courses_public = Blueprint('route_courses_public', __name__)
 
 

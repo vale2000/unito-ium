@@ -2,7 +2,6 @@
 from flask import Blueprint, make_response
 from modules.database import get_db_conn
 
-
 route_lessons_public = Blueprint('route_lessons_public', __name__)
 
 

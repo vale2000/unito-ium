@@ -5,7 +5,6 @@ from modules import simple_jwt
 from modules.database import get_db_conn
 from modules.utils import logged_before_request, get_role_perms
 
-
 route_bookings = Blueprint('route_bookings', __name__)
 route_bookings.before_request(logged_before_request)  # Check for login
 
