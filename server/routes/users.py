@@ -40,7 +40,7 @@ def user_add():
     req_data = request.get_json()
     if req_data:
         if user_perms.get('user_add', 0):
-            req_data.remove('id')
+            req_data.pop('id', None)
             if req_data.get('password') is None:
                 req_data.set('password', '')
                 req_data.set('role_id', 0)
@@ -49,7 +49,7 @@ def user_add():
             with get_db_conn() as database:
                 try:
                     cursor = database.cursor()
-                    cursor.execute(sql_str, req_data.values())
+                    cursor.execute(sql_str, list(req_data.values()))
                     last_id_inserted = cursor.lastrowid
                     database.commit()
                     result = make_response({'ok': True, 'data': last_id_inserted}, 200)
@@ -109,12 +109,12 @@ def user_update(user_id: int):
             if not user_perms.get('user_get_others', 0):
                 if user_id != token_data.get('user'):
                     return abort(401)
-            req_data.remove('id')
+            req_data.pop('id', None)
             sql_str = 'UPDATE users SET ' + (', '.join(f'{v} = ?' for v in req_data.keys())) + ' WHERE id = ?'
             with get_db_conn() as database:
                 try:
                     cursor = database.cursor()
-                    cursor.execute(sql_str, req_data.values() + [user_id])
+                    cursor.execute(sql_str, list(req_data.values()) + [user_id])
                     database.commit()
                     result = make_response({'ok': True}, 200)
                 except sqlite3.Error as e:

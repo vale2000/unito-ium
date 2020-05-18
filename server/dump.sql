@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS roles (
 -- ----------------------------
 INSERT INTO roles (id, name, lesson_add, lesson_add_others, lesson_update, lesson_update_others, lesson_delete, lesson_delete_others, booking_get, booking_get_others, booking_add, booking_add_others, booking_list, booking_list_others, booking_update, booking_update_others, booking_delete, booking_delete_others, user_get, user_get_others, user_add, user_list, user_update, user_delete, course_add, course_update, course_delete)
 VALUES
-	(0, 'Fake User', 0,0,0,0,0,0,1,0,1,0,1,0,1,0,0,0,1,0,0,0,0,0,0,0,0),
+	(0, 'Deleted', 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
 	(1, 'User', 0,0,0,0,0,0,1,0,1,0,1,0,1,0,0,0,1,0,0,0,0,0,0,0,0),
 	(2, 'Teacher', 1,0,1,0,1,0,1,0,1,0,1,0,1,0,0,0,1,1,0,0,0,0,0,0,0),
 	(3, 'Admin', 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1);

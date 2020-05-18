@@ -28,9 +28,8 @@ def booking_list():
                                 lessons.course_id, courses.name, lessons.teacher_id, users.name, users.surname 
                                 FROM bookings JOIN lessons ON lessons.id = bookings.lesson_id
                                 JOIN courses ON courses.id = lessons.course_id
-                                JOIN users ON users.id = lessons.teacher_id
-                                WHERE bookings.user_id = ?
-                                ORDER BY lessons.unix_day, lessons.init_hour""", [user_id])
+                                JOIN users ON users.id = lessons.teacher_id WHERE bookings.user_id = ?
+                                ORDER BY lessons.unix_day, lessons.init_hour DESC""", [user_id])
             db_data = cursor.fetchall()
             cursor.close()
             db_result = []
@@ -119,18 +118,18 @@ def booking_update(booking_id: int):
     req_data = request.get_json()
     if req_data:
         if user_perms.get('booking_update', 0) or user_perms.get('booking_update_others', 0):
-            req_data.remove('id')
+            req_data.pop('id', None)
             user_id = req_data.get('user_id', token_data.get('user'))
             if not user_perms.get('booking_update_others', 0):
                 user_id = token_data.get('user')
-                req_data.remove('user_id')
-                req_data.remove('lesson_id')
+                req_data.pop('user_id', None)
+                req_data.pop('lesson_id', None)
             sql_str = 'UPDATE bookings SET ' + (', '.join(f'{v} = ?' for v in req_data.keys())) \
                       + ' WHERE id = ? AND user_id = ?'
             with get_db_conn() as database:
                 try:
                     cursor = database.cursor()
-                    cursor.execute(sql_str, req_data.values() + [booking_id, user_id])
+                    cursor.execute(sql_str, list(req_data.values()) + [booking_id, user_id])
                     database.commit()
                     result = make_response({'ok': True}, 200)
                 except sqlite3.Error:

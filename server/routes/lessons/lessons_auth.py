@@ -52,17 +52,17 @@ def lesson_update(lesson_id: int):
     req_data = request.get_json()
     if req_data:
         if user_perms.get('lesson_update', 0) or user_perms.get('lesson_update_others', 0):
-            req_data.remove('id')
+            req_data.pop('id', None)
             teacher_id = req_data.get('teacher_id', token_data.get('user'))
             if not user_perms.get('lesson_update_others', 0):
                 teacher_id = token_data.get('user')
-                req_data.remove('teacher_id')
+                req_data.pop('teacher_id', None)
             sql_str = 'UPDATE lessons SET ' + (', '.join(f'{v} = ?' for v in req_data.keys())) \
                       + ' WHERE id = ? AND teacher_id = ?'
             with get_db_conn() as database:
                 try:
                     cursor = database.cursor()
-                    cursor.execute(sql_str, req_data.values() + [lesson_id, teacher_id])
+                    cursor.execute(sql_str, list(req_data.values()) + [lesson_id, teacher_id])
                     database.commit()
                     result = make_response({'ok': True}, 200)
                 except sqlite3.Error:

@@ -22,7 +22,7 @@ def account_login():
             cursor.close()
         if db_data:
             if db_data[2] == 0 or db_data[2] == 2:  # TODO Fake and Teachers
-                return make_response('{"ok": false, "error": "NON_LOGGABLE_USER"}', 401)
+                return make_response('{"ok": false, "error": "USER_DISABLED"}', 401)
             json_token = {'user': db_data[0], 'role_name': db_data[1], 'role_id': db_data[2]}
             return make_response({'ok': True, 'token': simple_jwt.generate(json_token)})
         return make_response('{"ok": false, "error": "USER_NOT_FOUND"}', 404)
