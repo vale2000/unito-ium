@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 from flask import Blueprint, make_response
+
+
 route_customs = Blueprint('route_customs', __name__)
 
 
@@ -8,7 +10,7 @@ route_customs = Blueprint('route_customs', __name__)
 # --------------------------
 @route_customs.route('/')
 def home_page():
-    return '{}'
+    return '{"ok": true, "data": "Hi!"}'
 
 
 # --------------------------

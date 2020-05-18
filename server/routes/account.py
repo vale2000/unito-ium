@@ -21,14 +21,12 @@ def account_login():
                                 WHERE email = ? AND password = ?""", [req_data.get('email'), req_data.get('password')])
             db_data = cursor.fetchone()
             cursor.close()
-        if db_data is None:
-            return '{"ok": false, "error": "USER_NOT_FOUND"}', 404
-        else:
-            if db_data[1] != 0:
-                json_token = {'user': db_data[0], 'role_name': db_data[1], 'role_id': db_data[2]}
-                return {'ok': True, 'token': simple_jwt.generate(json_token)}
-            else:
+        if db_data:
+            if not db_data[1]:
                 return '{"ok": false, "error": "NON_LOGGABLE_USER"}', 401
+            json_token = {'user': db_data[0], 'role_name': db_data[1], 'role_id': db_data[2]}
+            return {'ok': True, 'token': simple_jwt.generate(json_token)}
+        return '{"ok": false, "error": "USER_NOT_FOUND"}', 404
     abort(400)
 
 

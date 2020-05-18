@@ -69,16 +69,16 @@ CREATE TABLE IF NOT EXISTS users (
 -- ----------------------------
 INSERT INTO users (id, email, password, role_id, name, surname, gender)
 VALUES
-  (1, 'mario.rossi@email.com', 'FAKE_USER', 2, 'Mario', 'Rossi', 1),
-  (2, 'monica.beneventi@email.com', 'FAKE_USER', 2, 'Monica', 'Beneventi', 2),
-  (3, 'anna.panicucci@email.com', 'FAKE_USER', 2, 'Anna', 'Panicucci', 2),
-  (4, 'saverio.bianchi@email.com', 'FAKE_USER', 2, 'Saverio', 'Bianchi', 1),
-  (5, 'remo.moretti@email.com', 'FAKE_USER', 2, 'Remo', 'Moretti', 1),
-  (6, 'tiziana.ferri@email.com', 'FAKE_USER', 2, 'Tiziana', 'Ferri', 2),
-  (7, 'martina.colombo.@email.com', 'FAKE_USER', 2, 'Martina', 'Colombo', 2),
-  (8, 'luigi.marchese@email.com', 'FAKE_USER', 2, 'Luigi', 'Marchese', 1),
-  (9, 'elisabetta.ferrari@email.com', 'FAKE_USER', 2, 'Elisabetta', 'Ferrari', 2),
-  (10, 'gustavo.costa@email.com', 'FAKE_USER', 2, 'Gustavo', 'Costa', 1),
+  (1, 'mario.rossi@email.com', '', 2, 'Mario', 'Rossi', 1),
+  (2, 'monica.beneventi@email.com', '', 2, 'Monica', 'Beneventi', 2),
+  (3, 'anna.panicucci@email.com', '', 2, 'Anna', 'Panicucci', 2),
+  (4, 'saverio.bianchi@email.com', '', 2, 'Saverio', 'Bianchi', 1),
+  (5, 'remo.moretti@email.com', '', 2, 'Remo', 'Moretti', 1),
+  (6, 'tiziana.ferri@email.com', '', 2, 'Tiziana', 'Ferri', 2),
+  (7, 'martina.colombo.@email.com', '', 2, 'Martina', 'Colombo', 2),
+  (8, 'luigi.marchese@email.com', '', 2, 'Luigi', 'Marchese', 1),
+  (9, 'elisabetta.ferrari@email.com', '', 2, 'Elisabetta', 'Ferrari', 2),
+  (10, 'gustavo.costa@email.com', '', 2, 'Gustavo', 'Costa', 1),
   (11, 'giuseppe.eletto@edu.unito.it', 'password123', 1, 'Giuseppe', 'Eletto', 1),
   (12, 'admin@ium.unito.it', 'password123', 3, 'Admin', 'IUM', 0);
 
