@@ -12,13 +12,15 @@ route_lessons_public = Blueprint('route_lessons_public', __name__)
 def lesson_list():
     with get_db_conn(True) as database:  # TODO Rimuovere i professori e aggiungere lista lezioni
         cursor = database.cursor()
-        cursor.execute("""SELECT lessons.id, lessons.unix_day, lessons.init_hour, courses.id, courses.name,
-                            users.id, users.name, users.surname FROM lessons
+        cursor.execute("""SELECT lessons.id, lessons.unix_day, lessons.init_hour, courses.id, courses.name, users.id,
+                            users.name, users.surname FROM lessons
                             JOIN courses ON courses.id = lessons.course_id
                             LEFT JOIN teachers ON teachers.course_id = lessons.course_id
                             LEFT JOIN users ON users.id = teachers.user_id
-                            WHERE NOT EXISTS (SELECT * FROM bookings WHERE bookings.status != 'CANCELED'
-                            AND bookings.lesson_id = lessons.id AND bookings.teacher_id = teachers.user_id)
+                            WHERE NOT EXISTS (SELECT * FROM bookings 
+                            JOIN lessons AS booking_lesson ON booking_lesson.id = bookings.lesson_id
+                            WHERE bookings.status != 'CANCELED'AND bookings.teacher_id = teachers.user_id AND
+                            booking_lesson.unix_day = lessons.unix_day AND booking_lesson.init_hour = lessons.init_hour)
                             ORDER BY lessons.course_id, lessons.unix_day, lessons.init_hour""")
         db_data = cursor.fetchall()
         cursor.close()
@@ -50,13 +52,15 @@ def lesson_list():
 def lesson_get(lesson_id: int):
     with get_db_conn(True) as database:  # TODO Check
         cursor = database.cursor()
-        cursor.execute("""SELECT lessons.id, lessons.unix_day, lessons.init_hour, courses.id, courses.name,
-                            users.id, users.name, users.surname FROM lessons
+        cursor.execute("""SELECT lessons.id, lessons.unix_day, lessons.init_hour, courses.id, courses.name, users.id,
+                            users.name, users.surname FROM lessons
                             JOIN courses ON courses.id = lessons.course_id
                             LEFT JOIN teachers ON teachers.course_id = lessons.course_id
                             LEFT JOIN users ON users.id = teachers.user_id
-                            WHERE NOT EXISTS (SELECT * FROM bookings WHERE bookings.status != 'CANCELED'
-                            AND bookings.lesson_id = lessons.id AND bookings.teacher_id = teachers.user_id)
+                            WHERE NOT EXISTS (SELECT * FROM bookings 
+                            JOIN lessons AS booking_lesson ON booking_lesson.id = bookings.lesson_id
+                            WHERE bookings.status != 'CANCELED'AND bookings.teacher_id = teachers.user_id AND
+                            booking_lesson.unix_day = lessons.unix_day AND booking_lesson.init_hour = lessons.init_hour) 
                             AND lessons.id = ?""", [lesson_id])
         db_data = cursor.fetchall()
         cursor.close()
