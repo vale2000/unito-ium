@@ -158,16 +158,11 @@ VALUES
 CREATE TABLE IF NOT EXISTS lessons (
   id         INTEGER PRIMARY KEY,
   course_id  INTEGER NOT NULL,
-  teacher_id INTEGER NOT NULL,
   unix_day   INTEGER NOT NULL,
   init_hour  INTEGER NOT NULL,
-  UNIQUE (course_id, teacher_id),
+  UNIQUE (course_id, unix_day, init_hour),
   FOREIGN KEY (course_id)
     REFERENCES courses (id)
-      ON DELETE CASCADE
-      ON UPDATE CASCADE,
-  FOREIGN KEY (teacher_id)
-    REFERENCES users (id)
       ON DELETE CASCADE
       ON UPDATE CASCADE
 );
@@ -175,22 +170,27 @@ CREATE TABLE IF NOT EXISTS lessons (
 -- ----------------------------
 -- Records of `teachers`
 -- ----------------------------
-INSERT INTO lessons (course_id, teacher_id, unix_day, init_hour)
+INSERT INTO lessons (course_id, unix_day, init_hour)
 VALUES
-  (7, 1, 0, 09),
-  (8, 2, 0, 16),
-  (11, 10, 0, 22);
+  (7, 0, 09),
+  (8, 0, 16),
+  (11, 0, 22);
 
 -- ----------------------------
 -- Table structure for `bookings`
 -- ----------------------------
 CREATE TABLE IF NOT EXISTS bookings (
-  id        INTEGER PRIMARY KEY,
-  user_id   INTEGER NOT NULL,
-  lesson_id INTEGER NOT NULL,
-  status    TEXT NOT NULL DEFAULT 'RESERVED',
-  UNIQUE (user_id, lesson_id),
+  id         INTEGER PRIMARY KEY,
+  user_id    INTEGER NOT NULL,
+  teacher_id INTEGER NOT NULL,
+  lesson_id  INTEGER NOT NULL,
+  status     TEXT NOT NULL DEFAULT 'RESERVED',
+  UNIQUE (user_id, lesson_id, teacher_id),
   FOREIGN KEY (user_id)
+    REFERENCES users (id)
+      ON DELETE CASCADE
+      ON UPDATE CASCADE,
+  FOREIGN KEY (teacher_id)
     REFERENCES users (id)
       ON DELETE CASCADE
       ON UPDATE CASCADE,
@@ -203,10 +203,10 @@ CREATE TABLE IF NOT EXISTS bookings (
 -- ----------------------------
 -- Records of `teachers`
 -- ----------------------------
-INSERT INTO bookings (user_id, lesson_id)
+INSERT INTO bookings (user_id, teacher_id, lesson_id)
 VALUES
-  (11, 1),
-  (11, 2),
-  (11, 3);
+  (11, 10, 1),
+  (11, 2, 2),
+  (11, 9, 3);
 
 COMMIT TRANSACTION;

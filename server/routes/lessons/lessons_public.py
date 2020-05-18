@@ -10,18 +10,16 @@ route_lessons_public = Blueprint('route_lessons_public', __name__)
 # --------------------------
 @route_lessons_public.route('/lessons', methods=['GET'])
 def lesson_list():
-    if 'legacy' in request.args:
-        sql_order = 'lessons.unix_day, lessons.init_hour'
-    else:
-        sql_order = 'lessons.course_id, lessons.unix_day, lessons.init_hour'
-    with get_db_conn(True) as database:
+    with get_db_conn(True) as database:  # TODO Rimuovere i professori e aggiungere lista lezioni
         cursor = database.cursor()
-        cursor.execute("""SELECT lessons.id, lessons.unix_day, lessons.init_hour, lessons.course_id, courses.name, 
-                            lessons.teacher_id, users.name, users.surname FROM lessons 
+        cursor.execute("""SELECT lessons.id, lessons.unix_day, lessons.init_hour, courses.id, courses.name,
+                            users.id, users.name, users.surname FROM lessons
                             JOIN courses ON courses.id = lessons.course_id
-                            JOIN users ON users.id = lessons.teacher_id
-                            WHERE NOT EXISTS (SELECT * FROM bookings WHERE bookings.status != "CANCELED" 
-                            AND bookings.lesson_id = lessons.id) ORDER BY """ + sql_order)
+                            LEFT JOIN teachers ON teachers.course_id = lessons.course_id
+                            LEFT JOIN users ON users.id = teachers.user_id
+                            WHERE NOT EXISTS (SELECT * FROM bookings WHERE bookings.status != 'CANCELED'
+                            AND bookings.lesson_id = lessons.id AND bookings.teacher_id = teachers.user_id)
+                            ORDER BY lessons.course_id, lessons.unix_day, lessons.init_hour""")
         db_data = cursor.fetchall()
         cursor.close()
     db_results = []
@@ -34,14 +32,14 @@ def lesson_list():
                 db_results.append({'course': course, 'lesson': lesson})
         else:
             for key, rows in itertools.groupby(db_data, key=lambda x: x[3]):
-                static_col = None
-                lessons = []
+                stat_col = None
+                teachers = []
                 for r in rows:
-                    if static_col is None:
-                        static_col = r
-                    lessons.append({'id': r[0], 'unix_day': r[1], 'init_hour': r[2],
-                                    'teacher': {'id': r[5], 'name': r[6], 'surname': r[7]}})
-                db_results.append({'course': {'id': static_col[3], 'name': static_col[4]}, 'lessons': lessons})
+                    if stat_col is None:
+                        stat_col = r
+                    teachers.append({'id': r[5], 'name': r[6], 'surname': r[7]})
+                lesson = {'id': stat_col[0], 'unix_day': stat_col[1], 'init_hour': stat_col[2], 'teachers': teachers}
+                db_results.append({'course': {'id': stat_col[3], 'name': stat_col[4]}, 'lesson': lesson})
     return make_response({'ok': True, 'data': db_results}, 200)
 
 
@@ -50,17 +48,24 @@ def lesson_list():
 # --------------------------
 @route_lessons_public.route('/lessons/<int:lesson_id>', methods=['GET'])
 def lesson_get(lesson_id: int):
-    with get_db_conn(True) as database:
+    with get_db_conn(True) as database:  # TODO Check
         cursor = database.cursor()
-        cursor.execute("""SELECT lessons.id, lessons.unix_day, lessons.init_hour, lessons.course_id, courses.name, 
-                            lessons.teacher_id, users.name, users.surname FROM lessons 
+        cursor.execute("""SELECT lessons.id, lessons.unix_day, lessons.init_hour, courses.id, courses.name,
+                            users.id, users.name, users.surname FROM lessons
                             JOIN courses ON courses.id = lessons.course_id
-                            JOIN users ON users.id = lessons.teacher_id WHERE lessons.id = ?""", [lesson_id])
-        db_data = cursor.fetchone()
+                            LEFT JOIN teachers ON teachers.course_id = lessons.course_id
+                            LEFT JOIN users ON users.id = teachers.user_id
+                            WHERE NOT EXISTS (SELECT * FROM bookings WHERE bookings.status != 'CANCELED'
+                            AND bookings.lesson_id = lessons.id AND bookings.teacher_id = teachers.user_id)
+                            AND lessons.id = ?""", [lesson_id])
+        db_data = cursor.fetchall()
         cursor.close()
     if db_data:
-        teacher = {'id': db_data[5], 'name': db_data[6], 'surname': db_data[7]}
-        course = {'id': db_data[3], 'name': db_data[4]}
-        return make_response({'ok': True, 'data': {'id': db_data[0], 'unix_day': db_data[1], 'init_hour': db_data[2],
-                                                   'course': course, 'teacher': teacher}}, 200)
+        teachers = []
+        for key, rows in itertools.groupby(db_data, key=lambda x: x[3]):
+            for r in rows:
+                teachers.append({'id': r[5], 'name': r[6], 'surname': r[7]})
+        lesson = {'id': db_data[0][0], 'unix_day': db_data[0][1], 'init_hour': db_data[0][2], 'teachers': teachers}
+        return make_response({'ok': True, 'data': {'course': {'id': db_data[0][3], 'name': db_data[0][4]},
+                                                   'lesson': lesson}}, 200)
     return make_response({'ok': False, 'error': 'LESSON_NOT_FOUND'}, 404)
