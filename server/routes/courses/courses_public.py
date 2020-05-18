@@ -1,4 +1,6 @@
 #!/usr/bin/python3
+import itertools
+
 from flask import Blueprint, make_response
 from modules.database import get_db_conn
 from modules.utils import db_data_to_list
@@ -29,11 +31,18 @@ def course_list():
 def course_get(course_id: int):
     with get_db_conn(True) as database:
         cursor = database.cursor()
-        cursor.execute('SELECT * FROM courses WHERE id = ?', [course_id])  # TODO show teachers id/name
-        db_data = cursor.fetchone()
-        db_desc = cursor.description
+        cursor.execute("""SELECT courses.id, courses.name, users.id, users.name, users.surname FROM courses
+                            LEFT JOIN teachers ON teachers.course_id = courses.id
+                            LEFT JOIN users ON users.id = teachers.user_id
+                            WHERE courses.id = ? ORDER BY courses.id""", [course_id])
+        db_data = cursor.fetchall()
         cursor.close()
     if db_data:
-        row = dict(map(lambda x, y: (x[0], y), db_desc, db_data))
-        return make_response({'ok': True, 'data': row}, 200)
+        users = []
+        for key, rows in itertools.groupby(db_data, key=lambda x: x[0]):
+            for r in rows:
+                if r[2] is not None:
+                    users.append({'id': r[2], 'name': r[3], 'surname': r[4]})
+        db_result = {'id': db_data[0][0], 'name': db_data[0][1], 'users': users}
+        return make_response({'ok': True, 'data': db_result}, 200)
     return make_response({'ok': False, 'error': 'COURSE_NOT_FOUND'}, 404)

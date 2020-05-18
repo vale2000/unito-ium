@@ -87,7 +87,7 @@ def user_get(user_id: int):
             courses = []
             for key, rows in itertools.groupby(db_data, key=lambda x: x[0]):
                 for r in rows:
-                    if r[6] is not None and r[7] is not None:
+                    if r[6] is not None:
                         courses.append({'id': r[6], 'name': r[7]})
             db_result = {'id': db_data[0][0], 'email': db_data[0][1], 'role_id': db_data[0][2],
                          'name': db_data[0][3], 'surname': db_data[0][4], 'courses': courses}
