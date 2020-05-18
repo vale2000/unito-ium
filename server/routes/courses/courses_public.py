@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 import itertools
-
 from flask import Blueprint, make_response
 from modules.database import get_db_conn
 from modules.utils import db_data_to_list
