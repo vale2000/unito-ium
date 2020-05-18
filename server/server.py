@@ -12,6 +12,7 @@ from modules.database import init_db
 # ---------------------
 app = Flask(__name__)
 app.config['JSON_SORT_KEYS'] = False
+app.config['JSONIFY_PRETTYPRINT_REGULAR'] = False
 app.register_blueprint(route_customs)
 app.register_blueprint(route_account)
 app.register_blueprint(route_users)
