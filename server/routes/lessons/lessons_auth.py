@@ -18,16 +18,12 @@ def lesson_add():
     user_perms = get_role_perms(token_data.get('role_id'))
     req_data = request.get_json()
     if req_data:
-        if user_perms.get('lesson_add', 0) or user_perms.get('lesson_add_other', 0):
-            user_id = token_data.get('user')
-            if user_perms.get('lesson_add_other', 0):
-                user_id = req_data.get('teacher_id', token_data.get('user'))
+        if user_perms.get('lesson_add', 0):
             with get_db_conn() as database:
                 try:
                     cursor = database.cursor()
-                    cursor.execute("""INSERT INTO lessons (course_id, teacher_id, unix_day, init_hour) 
-                                        VALUES (?, ?, ?, ?)""", [req_data.get('course_id'), user_id,
-                                                                 req_data.get('unix_day'), req_data.get('init_hour')])
+                    cursor.execute("""INSERT INTO lessons (course_id, unix_day, init_hour) VALUES (?, ?, ?)""",
+                                   [req_data.get('course_id'), req_data.get('unix_day'), req_data.get('init_hour')])
                     last_id_inserted = cursor.lastrowid
                     database.commit()
                     result = make_response({'ok': True, 'data': last_id_inserted}, 200)
@@ -51,18 +47,13 @@ def lesson_update(lesson_id: int):
     user_perms = get_role_perms(token_data.get('role_id'))
     req_data = request.get_json()
     if req_data:
-        if user_perms.get('lesson_update', 0) or user_perms.get('lesson_update_others', 0):
+        if user_perms.get('lesson_update', 0):
             req_data.pop('id', None)
-            teacher_id = req_data.get('teacher_id', token_data.get('user'))
-            if not user_perms.get('lesson_update_others', 0):
-                teacher_id = token_data.get('user')
-                req_data.pop('teacher_id', None)
-            sql_str = 'UPDATE lessons SET ' + (', '.join(f'{v} = ?' for v in req_data.keys())) \
-                      + ' WHERE id = ? AND teacher_id = ?'
+            sql_str = 'UPDATE lessons SET ' + (', '.join(f'{v} = ?' for v in req_data.keys())) + ' WHERE id = ?'
             with get_db_conn() as database:
                 try:
                     cursor = database.cursor()
-                    cursor.execute(sql_str, list(req_data.values()) + [lesson_id, teacher_id])
+                    cursor.execute(sql_str, list(req_data.values()) + [lesson_id])
                     database.commit()
                     result = make_response({'ok': True}, 200)
                 except sqlite3.Error:
@@ -82,16 +73,11 @@ def lesson_update(lesson_id: int):
 def lesson_remove(lesson_id: int):
     token_data = simple_jwt.read(request.headers.get('Authorization').split(' ')[1])
     user_perms = get_role_perms(token_data.get('role_id'))
-    if user_perms.get('lesson_delete', 0) or user_perms.get('lesson_delete_others', 0):
-        teacher_id = token_data.get('user')
-        if user_perms.get('lesson_delete_others', 0):
-            req_data = request.get_json()
-            if req_data:
-                teacher_id = req_data.get('user_id', token_data.get('user'))
+    if user_perms.get('lesson_delete', 0):
         with get_db_conn() as database:
             try:
                 cursor = database.cursor()
-                cursor.execute('DELETE FROM lessons WHERE id = ? AND teacher_id = ?', [lesson_id, teacher_id])
+                cursor.execute('DELETE FROM lessons WHERE id = ?', [lesson_id])
                 database.commit()
                 result = make_response({'ok': True}, 200)
             except sqlite3.Error:

@@ -41,6 +41,6 @@ def course_get(course_id: int):
             for r in rows:
                 if r[2] is not None:
                     users.append({'id': r[2], 'name': r[3], 'surname': r[4]})
-        db_result = {'id': db_data[0][0], 'name': db_data[0][1], 'users': users}
+        db_result = {'id': db_data[0][0], 'name': db_data[0][1], 'teachers': users}
         return make_response({'ok': True, 'data': db_result}, 200)
     return make_response({'ok': False, 'error': 'COURSE_NOT_FOUND'}, 404)

@@ -8,11 +8,8 @@ CREATE TABLE IF NOT EXISTS roles (
   name TEXT NOT NULL UNIQUE,
 
   lesson_add            INTEGER NOT NULL,
-  lesson_add_others     INTEGER NOT NULL,
   lesson_update         INTEGER NOT NULL,
-  lesson_update_others  INTEGER NOT NULL,
   lesson_delete         INTEGER NOT NULL,
-  lesson_delete_others  INTEGER NOT NULL,
 
   booking_get           INTEGER NOT NULL,
   booking_get_others    INTEGER NOT NULL,
@@ -40,12 +37,12 @@ CREATE TABLE IF NOT EXISTS roles (
 -- ----------------------------
 -- Records of `roles`
 -- ----------------------------
-INSERT INTO roles (id, name, lesson_add, lesson_add_others, lesson_update, lesson_update_others, lesson_delete, lesson_delete_others, booking_get, booking_get_others, booking_add, booking_add_others, booking_list, booking_list_others, booking_update, booking_update_others, booking_delete, booking_delete_others, user_get, user_get_others, user_add, user_list, user_update, user_delete, course_add, course_update, course_delete)
+INSERT INTO roles (id, name, lesson_add, lesson_update, lesson_delete, booking_get, booking_get_others, booking_add, booking_add_others, booking_list, booking_list_others, booking_update, booking_update_others, booking_delete, booking_delete_others, user_get, user_get_others, user_add, user_list, user_update, user_delete, course_add, course_update, course_delete)
 VALUES
-	(0, 'Deleted', 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
-	(1, 'User', 0,0,0,0,0,0,1,0,1,0,1,0,1,0,0,0,1,0,0,0,0,0,0,0,0),
-	(2, 'Teacher', 1,0,1,0,1,0,1,0,1,0,1,0,1,0,0,0,1,1,0,0,0,0,0,0,0),
-	(3, 'Admin', 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1);
+	(0, 'Deleted', 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
+	(1, 'User', 0,0,0,1,0,1,0,1,0,1,0,0,0,1,0,0,0,0,0,0,0,0),
+	(2, 'Teacher', 0,0,0,1,0,1,0,1,0,1,0,0,0,1,1,0,0,0,0,0,0,0),
+	(3, 'Admin', 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1);
 
 -- ----------------------------
 -- Table structure for `users`

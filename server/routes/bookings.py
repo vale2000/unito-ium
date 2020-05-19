@@ -25,22 +25,23 @@ def booking_list():
         with get_db_conn(True) as database:
             cursor = database.cursor()
             cursor.execute("""SELECT bookings.id, bookings.status, lessons.id, lessons.unix_day, lessons.init_hour,
-                                lessons.course_id, courses.name, lessons.teacher_id, users.name, users.surname 
+                                lessons.course_id, courses.name, bookings.teacher_id, users.name, users.surname 
                                 FROM bookings JOIN lessons ON lessons.id = bookings.lesson_id
                                 JOIN courses ON courses.id = lessons.course_id
-                                JOIN users ON users.id = lessons.teacher_id WHERE bookings.user_id = ?
-                                ORDER BY lessons.unix_day, lessons.init_hour DESC""", [user_id])
+                                JOIN users ON users.id = bookings.teacher_id
+                                WHERE bookings.user_id = ?
+                                ORDER BY lessons.unix_day DESC, lessons.init_hour DESC""", [user_id])
             db_data = cursor.fetchall()
             cursor.close()
-            db_result = []
+            db_results = []
             if db_data:
                 for row in db_data:
                     course = {'id': row[5], 'name': row[6]}
                     teacher = {'id': row[7], 'name': row[8], 'surname': row[9]}
                     lesson = {'id': row[2], 'unix_day': row[3], 'init_hour': row[4],
                               'course': course, 'teacher': teacher}
-                    db_result.append({'id': row[0], 'status': row[1], 'lesson': lesson})
-        return make_response({'ok': True, 'data': db_result}, 200)
+                    db_results.append({'id': row[0], 'status': row[1], 'lesson': lesson})
+        return make_response({'ok': True, 'data': db_results}, 200)
     return abort(401)
 
 
@@ -55,13 +56,13 @@ def booking_add():
     if req_data:
         if user_perms.get('booking_add', 0) or user_perms.get('booking_add_other', 0):
             user_id = token_data.get('user')
-            if user_perms.get('booking_add_other', 0) and req_data.get('user_id') is not None:
-                user_id = req_data.get('user_id')
+            if user_perms.get('booking_add_other', 0):
+                user_id = req_data.get('user_id', token_data.get('user'))
             with get_db_conn() as database:
                 try:
                     cursor = database.cursor()
-                    cursor.execute('INSERT INTO bookings (user_id, lesson_id) VALUES (?, ?)',
-                                   [user_id, req_data.get('lesson_id')])
+                    cursor.execute('INSERT INTO bookings (user_id, teacher_id, lesson_id) VALUES (?, ?, ?)',
+                                   [user_id, req_data.get('teacher_id'), req_data.get('lesson_id')])
                     last_id_inserted = cursor.lastrowid
                     database.commit()
                     result = make_response({'ok': True, 'data': last_id_inserted}, 200)
@@ -91,10 +92,10 @@ def booking_get(booking_id: int):
         with get_db_conn(True) as database:
             cursor = database.cursor()
             cursor.execute("""SELECT bookings.id, bookings.status, lessons.id, lessons.unix_day, lessons.init_hour,
-                                lessons.course_id, courses.name, lessons.teacher_id, users.name, users.surname 
+                                lessons.course_id, courses.name, bookings.teacher_id, users.name, users.surname 
                                 FROM bookings JOIN lessons ON lessons.id = bookings.lesson_id
                                 JOIN courses ON courses.id = lessons.course_id
-                                JOIN users ON users.id = lessons.teacher_id
+                                JOIN users ON users.id = bookings.teacher_id
                                 WHERE bookings.id = ? AND bookings.user_id = ?""", [booking_id, user_id])
             db_data = cursor.fetchone()
             cursor.close()
@@ -103,7 +104,7 @@ def booking_get(booking_id: int):
             teacher = {'id': db_data[7], 'name': db_data[8], 'surname': db_data[9]}
             lesson = {'id': db_data[2], 'unix_day': db_data[3], 'init_hour': db_data[4],
                       'course': course, 'teacher': teacher}
-            return make_response({'id': db_data[0], 'status': db_data[1], 'lesson': lesson}, 200)
+            return make_response({'ok': True, 'data': {'id': db_data[0], 'status': db_data[1], 'lesson': lesson}}, 200)
         return make_response({'ok': False, 'error': 'BOOKING_NOT_FOUND'}, 404)
     return abort(401)
 
@@ -123,6 +124,7 @@ def booking_update(booking_id: int):
             if not user_perms.get('booking_update_others', 0):
                 user_id = token_data.get('user')
                 req_data.pop('user_id', None)
+                req_data.pop('teacher_id', None)
                 req_data.pop('lesson_id', None)
             sql_str = 'UPDATE bookings SET ' + (', '.join(f'{v} = ?' for v in req_data.keys())) \
                       + ' WHERE id = ? AND user_id = ?'
