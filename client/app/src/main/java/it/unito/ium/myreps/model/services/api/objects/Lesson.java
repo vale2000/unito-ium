@@ -5,6 +5,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.time.Instant;
+import java.util.Date;
 
 import it.unito.ium.myreps.components.RecyclerViewRow;
 
@@ -12,17 +14,20 @@ public final class Lesson extends RecyclerViewRow implements Serializable {
     private static final long serialVersionUID = 1795672724728252255L;
 
     private final int id;
-    private final long unixDay;
-    private final int initHour;
+    private final Date date;
+    private final int hour;
     private final Course course;
     private final User[] teachers;
 
     public Lesson(JSONObject jsonLesson) {
         try {
             this.id = jsonLesson.has("id") ? jsonLesson.getInt("id") : -1;
-            this.unixDay = jsonLesson.has("unix_day") ? jsonLesson.getLong("unix_day") : -1L;
-            this.initHour = jsonLesson.has("init_hour") ? jsonLesson.getInt("init_hour") : -1;
 
+            long unixDay = jsonLesson.has("unix_day") ? jsonLesson.getLong("unix_day") : -1L;
+            unixDay = unixDay - (unixDay % 86400 /* 1 Day */); // TODO "trasportare" sul server (all'inserimento)
+            this.date = Date.from(Instant.ofEpochSecond(unixDay * 1000));
+
+            this.hour = jsonLesson.has("init_hour") ? jsonLesson.getInt("init_hour") : -1;
             this.course = jsonLesson.has("course") ? new Course(jsonLesson.getJSONObject("course")) : null;
 
             User[] teachers = null;
@@ -35,8 +40,6 @@ public final class Lesson extends RecyclerViewRow implements Serializable {
                 }
             }
             this.teachers = teachers;
-
-
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
@@ -46,12 +49,12 @@ public final class Lesson extends RecyclerViewRow implements Serializable {
         return id;
     }
 
-    public long getUnixDay() {
-        return unixDay;
+    public Date getDate() {
+        return date;
     }
 
-    public int getInitHour() {
-        return initHour;
+    public int getHour() {
+        return hour;
     }
 
     public Course getCourse() {
