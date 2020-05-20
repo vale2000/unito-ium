@@ -18,8 +18,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import it.unito.ium.myreps.R;
 import it.unito.ium.myreps.model.services.api.ServerError;
-import it.unito.ium.myreps.model.services.config.ConfigKey;
-import it.unito.ium.myreps.model.services.config.ConfigManager;
+import it.unito.ium.myreps.model.services.api.objects.User;
 
 public final class ProfileFragment extends BaseFragment {
     private Unbinder unbinder;
@@ -56,12 +55,6 @@ public final class ProfileFragment extends BaseFragment {
     }
 
     private void loadProfileData() {
-        ConfigManager<ConfigKey> configManager = getModel().getConfigManager();
-        if (configManager.getBoolean(ConfigKey.USERDATA_CACHED)) {
-            loadDataToLayout();
-            return;
-        }
-
         getModel().getApiManager().getProfileInfo((valid, response) -> {
             ServerError serverError = ServerError.SERVER_OFFLINE;
             if (valid) {
@@ -70,12 +63,16 @@ public final class ProfileFragment extends BaseFragment {
                     if (ok) {
                         JSONObject data = response.getJSONObject("data");
 
-                        configManager.setBoolean(ConfigKey.USERDATA_CACHED, true);
-                        configManager.setString(ConfigKey.USERDATA_NAME, data.getString("name"));
-                        configManager.setString(ConfigKey.USERDATA_SURNAME, data.getString("surname"));
-                        configManager.setString(ConfigKey.USERDATA_EMAIL, data.getString("email"));
+                        User userProfile = new User(data);
+                        runOnUiThread(() -> {
+                            profileLoading.setVisibility(View.GONE);
 
-                        runOnUiThread(this::loadDataToLayout);
+                            profileName.setText(userProfile.getName());
+                            profileSurname.setText(userProfile.getSurname());
+                            profileEmail.setText(userProfile.getEmail());
+
+                            profileLayout.setVisibility(View.VISIBLE);
+                        });
                         return;
                     }
 
@@ -93,17 +90,5 @@ public final class ProfileFragment extends BaseFragment {
             ServerError finalServerError = serverError;
             runOnUiThread(() -> Toast.makeText(getContext(), finalServerError.toString(), Toast.LENGTH_SHORT).show());
         });
-    }
-
-    private void loadDataToLayout() {
-        ConfigManager<ConfigKey> configManager = getModel().getConfigManager();
-
-        profileLoading.setVisibility(View.GONE);
-
-        profileName.setText(configManager.getString(ConfigKey.USERDATA_NAME));
-        profileSurname.setText(configManager.getString(ConfigKey.USERDATA_SURNAME));
-        profileEmail.setText(configManager.getString(ConfigKey.USERDATA_EMAIL));
-
-        profileLayout.setVisibility(View.VISIBLE);
     }
 }

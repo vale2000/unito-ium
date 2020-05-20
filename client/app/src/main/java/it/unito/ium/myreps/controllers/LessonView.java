@@ -13,8 +13,6 @@ import it.unito.ium.myreps.R;
 import it.unito.ium.myreps.components.RecyclerViewRow;
 
 public final class LessonView extends BaseView {
-    private RecyclerViewRow lesson;
-
     @BindView(R.id.lesson_header_subject)
     TextView headerSubject;
     @BindView(R.id.lesson_header_prof)
@@ -28,10 +26,6 @@ public final class LessonView extends BaseView {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(null);
-
-        lesson = (RecyclerViewRow) getIntent().getSerializableExtra("lesson");
-        headerSubject.setText(lesson.getSubject());
-        headerProfessor.setText(lesson.getProfessor());
     }
 
     @Override

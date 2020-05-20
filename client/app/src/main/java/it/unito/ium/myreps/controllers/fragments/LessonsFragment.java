@@ -23,6 +23,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -34,6 +35,7 @@ import it.unito.ium.myreps.components.RecyclerViewAdapter;
 import it.unito.ium.myreps.components.RecyclerViewRow;
 import it.unito.ium.myreps.controllers.LessonView;
 import it.unito.ium.myreps.model.services.api.ServerError;
+import it.unito.ium.myreps.model.services.api.objects.Lesson;
 
 public final class LessonsFragment extends BaseFragment {
     private RecyclerViewAdapter recyclerViewAdapter;
@@ -145,17 +147,18 @@ public final class LessonsFragment extends BaseFragment {
                 if (valid) {
                     boolean ok = response.getBoolean("ok");
                     if (ok) {
-                        ArrayList<RecyclerViewRow> lessonsList = new ArrayList<>();
+                        ArrayList<RecyclerViewRow> lessonList = new ArrayList<>();
                         JSONArray data = response.getJSONArray("data");
 
-
-                        // TODO handle server data
-
+                        for (int i = 0; i < data.length(); i++) {
+                            JSONObject jsonLesson = data.getJSONObject(i);
+                            lessonList.add(new Lesson(jsonLesson));
+                        }
 
                         runOnUiThread(() -> {
-                            recyclerViewAdapter.setDataSet(lessonsList);
+                            recyclerViewAdapter.setDataSet(lessonList);
                             swipeRefreshLayout.setRefreshing(false);
-                            emptyText.setVisibility(lessonsList.isEmpty() ? View.VISIBLE : View.GONE);
+                            emptyText.setVisibility(lessonList.isEmpty() ? View.VISIBLE : View.GONE);
                         });
                         return;
                     }

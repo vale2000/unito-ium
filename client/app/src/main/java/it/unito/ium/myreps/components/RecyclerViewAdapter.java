@@ -16,20 +16,20 @@ import java.util.List;
 import it.unito.ium.myreps.R;
 
 public final class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> implements Filterable {
-    private List<RecyclerViewRow> dataset;
-    private List<RecyclerViewRow> datasetShown;
+    private List<RecyclerViewRow> dataSet;
+    private List<RecyclerViewRow> dataSetShown;
 
     private ItemClickListener itemClickListener;
 
     public RecyclerViewAdapter() {
         this.itemClickListener = null;
-        this.dataset = new ArrayList<>();
-        this.datasetShown = this.dataset;
+        this.dataSet = new ArrayList<>();
+        this.dataSetShown = this.dataSet;
     }
 
     public void setDataSet(List<RecyclerViewRow> dataset) {
-        this.dataset = dataset;
-        this.datasetShown = dataset;
+        this.dataSet = dataset;
+        this.dataSetShown = dataset;
         notifyDataSetChanged();
     }
 
@@ -47,15 +47,14 @@ public final class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewAdapter.ViewHolder holder, int position) {
-        RecyclerViewRow item = datasetShown.get(position);
-        holder.headerText.setText(item.getSubject());
-        holder.hoursText.setText(RecyclerViewRow.minutesToString(item.getMinutes()));
-        holder.profText.setText(item.getProfessor());
+        RecyclerViewRow item = dataSetShown.get(position);
+        holder.headerText.setText(item.getHeader());
+        holder.descText.setText(item.getDescription());
     }
 
     @Override
     public int getItemCount() {
-        return datasetShown.size();
+        return dataSetShown.size();
     }
 
     @Override
@@ -67,15 +66,13 @@ public final class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
                 String charString = charSequence.toString().toLowerCase();
 
                 if (charString.isEmpty()) {
-                    results.values = dataset;
+                    results.values = dataSet;
                 } else {
                     List<RecyclerViewRow> filteredList = new ArrayList<>();
-                    for (RecyclerViewRow row : dataset) {
-                        if (row.getSubject().toLowerCase().contains(charString) ||
-                                row.getProfessor().toLowerCase().contains(charString)) {
+                    for (RecyclerViewRow row : dataSet) {
+                        if (row.getHeader().toLowerCase().contains(charString)) {
                             filteredList.add(row);
                         }
-
                     }
                     results.values = filteredList;
                 }
@@ -84,8 +81,9 @@ public final class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
             }
 
             @Override
+            @SuppressWarnings("unchecked")
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                datasetShown = (ArrayList<RecyclerViewRow>) results.values;
+                dataSetShown = (ArrayList<RecyclerViewRow>) results.values;
                 notifyDataSetChanged();
             }
         };
@@ -93,19 +91,17 @@ public final class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView
 
     final class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView headerText;
-        private final TextView hoursText;
-        private final TextView profText;
+        private final TextView descText;
 
         ViewHolder(View v) {
             super(v);
 
             headerText = v.findViewById(R.id.rv_row_header);
-            hoursText = v.findViewById(R.id.rv_row_hours);
-            profText = v.findViewById(R.id.rv_row_prof);
+            descText = v.findViewById(R.id.rv_row_description);
 
             v.setOnClickListener(v1 -> {
                 if (itemClickListener != null)
-                    itemClickListener.onClick(v, datasetShown.get(getAdapterPosition()));
+                    itemClickListener.onClick(v, dataSetShown.get(getAdapterPosition()));
             });
         }
     }

@@ -16,7 +16,8 @@ public enum ConfigKey {
         ConfigKey configKey = null;
         try {
             configKey = ConfigKey.valueOf(s.toUpperCase());
-        } catch (EnumConstantNotPresentException ignored) {}
+        } catch (EnumConstantNotPresentException ignored) {
+        }
         return configKey;
     }
 

@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 public enum ServerError {
     LOGIN_DISABLED("Login for this user is disabled"),
     LOGIN_FAILED("Wrong email or password"),
+    USER_ALREADY_EXIST("This user is already registered"),
     USER_NOT_FOUND("User not found"),
     BOOKING_NOT_FOUND("Booking not found"),
     LESSON_NOT_FOUND("Lesson not found"),

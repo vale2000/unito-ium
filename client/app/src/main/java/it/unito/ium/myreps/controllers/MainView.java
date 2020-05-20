@@ -38,8 +38,12 @@ public final class MainView extends BaseView {
         }
     }
 
+    private int lastItemId = -1;
     private final BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = item -> {
         int itemId = item.getItemId();
+
+        if (itemId == lastItemId) return false;
+        lastItemId = itemId;
 
         if (itemId == R.id.main_bottom_nav_lessons) {
             actionBar.setTitle("Available lessons");
