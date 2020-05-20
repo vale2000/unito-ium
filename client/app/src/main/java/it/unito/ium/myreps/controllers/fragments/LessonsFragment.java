@@ -89,11 +89,13 @@ public final class LessonsFragment extends BaseFragment {
     private final SearchView.OnQueryTextListener mOnQueryTextListener = new SearchView.OnQueryTextListener() {
         @Override
         public boolean onQueryTextSubmit(String query) {
+            recyclerViewAdapter.getFilter().filter(query);
             return true;
         }
 
         @Override
-        public boolean onQueryTextChange(String newText) {
+        public boolean onQueryTextChange(String query) {
+            recyclerViewAdapter.getFilter().filter(query);
             return true;
         }
     };
