@@ -1,60 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c6797c23-7be6-4e18-9dfa-9720d41d4835" name="Default Changelist" comment="" />
+    <list default="true" id="70e60815-3bfe-45c1-8682-8a87a1026056" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ProjectId" id="1cBF15SJ6xpiY1I6YOxFIFpdt0F" />
+  <component name="ProjectId" id="1cBFsjnG6uIvuzGjwW7zF1zqnwL" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="DatabaseDriversLRU" value="sqlite" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
-  </component>
-  <component name="RunManager">
-    <configuration name="server" type="PythonConfigurationType" factoryName="Python">
-      <module name="server" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="/usr/bin/python3.8" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="false" />
-      <option name="ADD_SOURCE_ROOTS" value="false" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/server.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
   </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="c6797c23-7be6-4e18-9dfa-9720d41d4835" name="Default Changelist" comment="" />
-      <created>1589993861566</created>
+      <changelist id="70e60815-3bfe-45c1-8682-8a87a1026056" name="Default Changelist" comment="" />
+      <created>1589994288501</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1589993861566</updated>
-      <workItem from="1589993864146" duration="118000" />
-      <workItem from="1589993997522" duration="45000" />
+      <updated>1589994288501</updated>
+      <workItem from="1589994291414" duration="366000" />
+      <workItem from="1589994767559" duration="3173000" />
     </task>
     <servers />
   </component>
@@ -62,40 +38,17 @@
     <option name="version" value="2" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="418" y="185" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1589993952507">
+    <state x="278" y="368" width="1353" height="292" key="#SQL_Dialects" timestamp="1589994430655">
       <screen x="0" y="0" width="1920" height="1054" />
     </state>
-    <state x="418" y="185" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1054@0.0.1920.1054" timestamp="1589993952507" />
-    <state x="743" y="285" width="424" height="482" key="FileChooserDialogImpl" timestamp="1589993941064">
+    <state x="278" y="368" width="1353" height="292" key="#SQL_Dialects/0.0.1920.1054@0.0.1920.1054" timestamp="1589994430655" />
+    <state x="418" y="173" width="800" height="675" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1589994805416">
       <screen x="0" y="0" width="1920" height="1054" />
     </state>
-    <state x="743" y="285" width="424" height="482" key="FileChooserDialogImpl/0.0.1920.1054@0.0.1920.1054" timestamp="1589993941064" />
-    <state width="1874" height="275" key="GridCell.Tab.0.bottom" timestamp="1589993914124">
+    <state x="418" y="173" width="800" height="675" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1054@0.0.1920.1054" timestamp="1589994805416" />
+    <state x="738" y="272" width="424" height="482" key="FileChooserDialogImpl" timestamp="1589994804280">
       <screen x="0" y="0" width="1920" height="1054" />
     </state>
-    <state width="1874" height="275" key="GridCell.Tab.0.bottom/0.0.1920.1054@0.0.1920.1054" timestamp="1589993914124" />
-    <state width="1874" height="275" key="GridCell.Tab.0.center" timestamp="1589993914124">
-      <screen x="0" y="0" width="1920" height="1054" />
-    </state>
-    <state width="1874" height="275" key="GridCell.Tab.0.center/0.0.1920.1054@0.0.1920.1054" timestamp="1589993914124" />
-    <state width="1874" height="275" key="GridCell.Tab.0.left" timestamp="1589993914124">
-      <screen x="0" y="0" width="1920" height="1054" />
-    </state>
-    <state width="1874" height="275" key="GridCell.Tab.0.left/0.0.1920.1054@0.0.1920.1054" timestamp="1589993914124" />
-    <state width="1874" height="275" key="GridCell.Tab.0.right" timestamp="1589993914124">
-      <screen x="0" y="0" width="1920" height="1054" />
-    </state>
-    <state width="1874" height="275" key="GridCell.Tab.0.right/0.0.1920.1054@0.0.1920.1054" timestamp="1589993914124" />
-    <state x="449" y="162" key="SettingsEditor" timestamp="1589994041170">
-      <screen x="0" y="0" width="1920" height="1054" />
-    </state>
-    <state x="449" y="162" key="SettingsEditor/0.0.1920.1054@0.0.1920.1054" timestamp="1589994041170" />
-    <state x="685" y="427" width="540" height="296" key="vcs.readOnlyHandler.ReadOnlyStatusDialog" timestamp="1589993979952">
-      <screen x="0" y="0" width="1920" height="1054" />
-    </state>
-    <state x="685" y="427" width="540" height="296" key="vcs.readOnlyHandler.ReadOnlyStatusDialog/0.0.1920.1054@0.0.1920.1054" timestamp="1589993979952" />
-  </component>
-  <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/server$server.coverage" NAME="server Coverage Results" MODIFIED="1589993909940" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <state x="738" y="272" width="424" height="482" key="FileChooserDialogImpl/0.0.1920.1054@0.0.1920.1054" timestamp="1589994804280" />
   </component>
 </project>

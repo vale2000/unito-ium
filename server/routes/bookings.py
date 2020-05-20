@@ -39,9 +39,9 @@ def booking_list():
                 for row in db_data:
                     course = {'id': row[5], 'name': row[6]}
                     teacher = {'id': row[7], 'name': row[8], 'surname': row[9]}
-                    lesson = {'id': row[2], 'unix_day': row[3], 'init_hour': row[4],
-                              'course': course, 'teacher': teacher}
-                    db_results.append({'id': row[0], 'status': row[1], 'lesson': lesson})
+                    lesson = {'id': row[2], 'unix_day': row[3], 'init_hour': row[4]}
+                    db_results.append({'id': row[0], 'status': row[1], 'lesson': lesson, 'course': course,
+                                       'teacher': teacher})
         return make_response({'ok': True, 'data': db_results}, 200)
     return abort(401)
 
@@ -104,9 +104,9 @@ def booking_get(booking_id: int):
         if db_data:
             course = {'id': db_data[5], 'name': db_data[6]}
             teacher = {'id': db_data[7], 'name': db_data[8], 'surname': db_data[9]}
-            lesson = {'id': db_data[2], 'unix_day': db_data[3], 'init_hour': db_data[4],
-                      'course': course, 'teacher': teacher}
-            return make_response({'ok': True, 'data': {'id': db_data[0], 'status': db_data[1], 'lesson': lesson}}, 200)
+            lesson = {'id': db_data[2], 'unix_day': db_data[3], 'init_hour': db_data[4]}
+            return make_response({'ok': True, 'data': {'id': db_data[0], 'status': db_data[1], 'lesson': lesson,
+                                                       'course': course, 'teacher': teacher}}, 200)
         return server_error('BOOKING_NOT_FOUND')
     return abort(401)
 

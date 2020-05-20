@@ -31,8 +31,8 @@ def account_profile():
         for key, rows in itertools.groupby(db_data, key=lambda x: x[0]):
             courses = []
             for r in rows:
-                if db_data[0][7] is not None:
-                    courses.append({'id': db_data[0][7], 'name': db_data[0][8]})
+                if r[7] is not None:
+                    courses.append({'id': r[7], 'name': r[8]})
             user['courses'] = courses
         return make_response({'ok': True, 'data': user}, 200)
     return server_error('USER_ALREADY_EXIST')
