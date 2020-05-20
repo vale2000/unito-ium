@@ -4,6 +4,7 @@ from flask import Blueprint, request, abort, make_response
 from modules import simple_jwt
 from modules.database import get_db_conn
 from modules.utils import logged_before_request, get_role_perms
+from server_error import server_error
 
 route_courses_auth = Blueprint('route_courses_auth', __name__)
 route_courses_auth.before_request(logged_before_request)  # Check for login
@@ -15,7 +16,7 @@ route_courses_auth.before_request(logged_before_request)  # Check for login
 @route_courses_auth.route('/courses', methods=['POST'])
 def course_add():
     token_data = simple_jwt.read(request.headers.get('Authorization').split(' ')[1])
-    user_perms = get_role_perms(token_data.get('role_id'))
+    user_perms = get_role_perms(token_data.get('user'))
     req_data = request.get_json()
     if req_data:
         if user_perms.get('course_add', 0):
@@ -28,7 +29,8 @@ def course_add():
                     result = make_response({'ok': True, 'data': last_id_inserted}, 200)
                 except sqlite3.Error as e:
                     database.rollback()
-                    result = make_response({'ok': False, 'error': str(e)}, 500)
+                    result = abort(500)
+                    print(e)
                 finally:
                     cursor.close()
             return result
@@ -55,7 +57,7 @@ def course_update(course_id: int):
                     result = make_response({'ok': True}, 200)
                 except sqlite3.Error:
                     database.rollback()
-                    result = make_response({'ok': False, 'error': 'COURSE_NOT_FOUND'}, 404)
+                    result = server_error('COURSE_NOT_FOUND')
                 finally:
                     cursor.close()
             return result
@@ -79,7 +81,7 @@ def course_remove(course_id: int):
                 result = make_response({'ok': True}, 200)
             except sqlite3.Error:
                 database.rollback()
-                result = make_response({'ok': False, 'error': 'COURSE_NOT_FOUND'}, 404)
+                result = server_error('COURSE_NOT_FOUND')
             finally:
                 cursor.close()
         return result

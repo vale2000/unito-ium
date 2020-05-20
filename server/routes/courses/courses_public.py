@@ -3,6 +3,7 @@ import itertools
 from flask import Blueprint, make_response
 from modules.database import get_db_conn
 from modules.utils import db_data_to_list
+from server_error import server_error
 
 route_courses_public = Blueprint('route_courses_public', __name__)
 
@@ -43,4 +44,4 @@ def course_get(course_id: int):
                     users.append({'id': r[2], 'name': r[3], 'surname': r[4]})
         db_result = {'id': db_data[0][0], 'name': db_data[0][1], 'teachers': users}
         return make_response({'ok': True, 'data': db_result}, 200)
-    return make_response({'ok': False, 'error': 'COURSE_NOT_FOUND'}, 404)
+    return server_error('COURSE_NOT_FOUND')

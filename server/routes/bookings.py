@@ -4,6 +4,7 @@ from flask import Blueprint, request, abort, make_response
 from modules import simple_jwt
 from modules.database import get_db_conn
 from modules.utils import logged_before_request, get_role_perms
+from server_error import server_error
 
 route_bookings = Blueprint('route_bookings', __name__)
 route_bookings.before_request(logged_before_request)  # Check for login
@@ -68,7 +69,8 @@ def booking_add():
                     result = make_response({'ok': True, 'data': last_id_inserted}, 200)
                 except sqlite3.Error as e:
                     database.rollback()
-                    result = make_response({'ok': False, 'error': str(e)}, 500)
+                    result = abort(500)
+                    print(e)
                 finally:
                     cursor.close()
             return result
@@ -105,7 +107,7 @@ def booking_get(booking_id: int):
             lesson = {'id': db_data[2], 'unix_day': db_data[3], 'init_hour': db_data[4],
                       'course': course, 'teacher': teacher}
             return make_response({'ok': True, 'data': {'id': db_data[0], 'status': db_data[1], 'lesson': lesson}}, 200)
-        return make_response({'ok': False, 'error': 'BOOKING_NOT_FOUND'}, 404)
+        return server_error('BOOKING_NOT_FOUND')
     return abort(401)
 
 
@@ -136,7 +138,7 @@ def booking_update(booking_id: int):
                     result = make_response({'ok': True}, 200)
                 except sqlite3.Error:
                     database.rollback()
-                    result = make_response({'ok': False, 'error': 'BOOKING_NOT_FOUND'}, 404)
+                    result = server_error('BOOKING_NOT_FOUND')
                 finally:
                     cursor.close()
             return result
@@ -165,7 +167,7 @@ def booking_remove(booking_id: int):
                 result = make_response({'ok': True}, 200)
             except sqlite3.Error:
                 database.rollback()
-                result = make_response({'ok': False, 'error': 'BOOKING_NOT_FOUND'}, 404)
+                result = server_error('BOOKING_NOT_FOUND')
             finally:
                 cursor.close()
         return result

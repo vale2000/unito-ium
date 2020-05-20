@@ -4,6 +4,7 @@ from flask import Blueprint, request, abort, make_response
 from modules import simple_jwt
 from modules.database import get_db_conn
 from modules.utils import logged_before_request, get_role_perms
+from server_error import server_error
 
 route_lessons_auth = Blueprint('route_lessons_auth', __name__)
 route_lessons_auth.before_request(logged_before_request)  # Check for login
@@ -29,11 +30,11 @@ def lesson_add():
                     result = make_response({'ok': True, 'data': last_id_inserted}, 200)
                 except sqlite3.Error as e:
                     database.rollback()
-                    result = make_response({'ok': False, 'error': str(e)}, 500)
+                    result = abort(500)
+                    print(e)
                 finally:
                     cursor.close()
             return result
-
         return abort(401)
     return abort(400)
 
@@ -58,7 +59,7 @@ def lesson_update(lesson_id: int):
                     result = make_response({'ok': True}, 200)
                 except sqlite3.Error:
                     database.rollback()
-                    result = make_response({'ok': False, 'error': 'LESSON_NOT_FOUND'}, 404)
+                    result = server_error('LESSON_NOT_FOUND')
                 finally:
                     cursor.close()
             return result
@@ -82,7 +83,7 @@ def lesson_remove(lesson_id: int):
                 result = make_response({'ok': True}, 200)
             except sqlite3.Error:
                 database.rollback()
-                result = make_response({'ok': False, 'error': 'LESSON_NOT_FOUND'}, 404)
+                result = server_error('LESSON_NOT_FOUND')
             finally:
                 cursor.close()
         return result

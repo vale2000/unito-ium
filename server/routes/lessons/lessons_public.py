@@ -2,6 +2,8 @@
 import itertools
 from flask import Blueprint, make_response, request
 from modules.database import get_db_conn
+from server_error import server_error
+
 route_lessons_public = Blueprint('route_lessons_public', __name__)
 
 
@@ -71,4 +73,4 @@ def lesson_get(lesson_id: int):
         return make_response({'ok': True, 'data': {'id': db_data[0][0], 'unix_day': db_data[0][1],
                                                    'init_hour': db_data[0][2], 'teachers_free': teachers,
                                                    'course': course}}, 200)
-    return make_response({'ok': False, 'error': 'LESSON_NOT_FOUND'}, 404)
+    return server_error('LESSON_NOT_FOUND')

@@ -5,6 +5,7 @@ from flask import Blueprint, request, abort, make_response
 from modules import simple_jwt
 from modules.database import get_db_conn
 from modules.utils import logged_before_request, get_role_perms, db_data_to_list
+from server_error import server_error
 
 route_users = Blueprint('route_users', __name__)
 route_users.before_request(logged_before_request)
@@ -55,7 +56,8 @@ def user_add():
                     result = make_response({'ok': True, 'data': last_id_inserted}, 200)
                 except sqlite3.Error as e:
                     database.rollback()
-                    result = make_response({'ok': False, 'error': str(e)}, 500)
+                    result = abort(500)
+                    print(e)
                 finally:
                     cursor.close()
             return result
@@ -93,7 +95,7 @@ def user_get(user_id: int):
                          'name': db_data[0][3], 'surname': db_data[0][4], 'courses': courses}
             return make_response({'ok': True, 'data': db_result}, 200)
         else:
-            return make_response({'ok': False, 'error': 'USER_NOT_FOUND'}, 404)
+            return server_error('USER_NOT_FOUND')
 
 
 # --------------------------
@@ -119,7 +121,7 @@ def user_update(user_id: int):
                     result = make_response({'ok': True}, 200)
                 except sqlite3.Error as e:
                     database.rollback()
-                    result = make_response({'ok': False, 'error': 'USER_NOT_FOUND'}, 404)
+                    result = server_error('USER_NOT_FOUND')
                     print(e)
                 finally:
                     cursor.close()
@@ -143,7 +145,7 @@ def user_remove(user_id: int):
                 result = make_response({'ok': True}, 200)
             except sqlite3.Error as e:
                 database.rollback()
-                result = make_response({'ok': False, 'error': 'USER_NOT_FOUND'}, 404)
+                result = server_error('USER_NOT_FOUND')
                 print(e)
             finally:
                 cursor.close()
