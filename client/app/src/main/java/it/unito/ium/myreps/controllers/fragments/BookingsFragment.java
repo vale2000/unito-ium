@@ -130,16 +130,11 @@ public final class BookingsFragment extends BaseFragment {
 
         recyclerViewAdapter = new RecyclerViewAdapter();
 
-
-
-
         recyclerViewAdapter.setItemClickListener((view, item) -> {
             Intent i = new Intent(getContext(), LessonView.class);
             i.putExtra("lesson_id", item);
             startActivity(i);
         });
-
-
 
         recyclerView.setAdapter(recyclerViewAdapter);
         swipeRefreshLayout.setOnRefreshListener(() -> {
