@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.Launcher"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".controllers.MainController">
+        <activity android:name=".controllers.MainView">
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
@@ -28,9 +28,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".controllers.LoginController" />
-        <activity android:name=".controllers.UserController" />
-        <activity android:name=".controllers.LessonController" />
+        <activity android:name=".controllers.fragments.LoginFragment" />
+        <activity android:name=".controllers.LessonView" />
     </application>
 
 </manifest>

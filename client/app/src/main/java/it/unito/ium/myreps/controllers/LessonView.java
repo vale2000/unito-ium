@@ -3,7 +3,6 @@ package it.unito.ium.myreps.controllers;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,7 +12,7 @@ import butterknife.ButterKnife;
 import it.unito.ium.myreps.R;
 import it.unito.ium.myreps.components.RecyclerViewRow;
 
-public final class LessonController extends BaseController {
+public final class LessonView extends BaseView {
     private RecyclerViewRow lesson;
 
     @BindView(R.id.lesson_header_subject)
@@ -24,7 +23,7 @@ public final class LessonController extends BaseController {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.lesson_view);
+        setContentView(R.layout.view_lesson);
         ButterKnife.bind(this);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

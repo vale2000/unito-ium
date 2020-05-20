@@ -20,18 +20,4 @@
         <item name="android:textColorSecondary">@color/toolbarTextColor</item>
         <item name="android:textColorHint">@color/toolbarTextColor</item>
     </style>
-
-    <!-- Floating Action Buttons -->
-    <style name="AppTheme.Fab" parent="Widget.MaterialComponents.FloatingActionButton">
-        <item name="tint">@android:color/white</item>
-    </style>
-
-    <style name="AppTheme.Fab.Action" parent="AppTheme.Fab">
-        <item name="backgroundTint">@color/colorFabAction</item>
-    </style>
-
-    <style name="AppTheme.Fab.Mini" parent="AppTheme.Fab">
-        <item name="backgroundTint">@color/colorFabMini</item>
-    </style>
-
 </resources>

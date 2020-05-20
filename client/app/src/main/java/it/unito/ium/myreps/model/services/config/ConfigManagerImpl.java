@@ -6,51 +6,51 @@ import android.content.SharedPreferences;
 
 import it.unito.ium.myreps.model.Model;
 
-final class ConfigManagerImpl implements ConfigManager {
+final class ConfigManagerImpl<T> implements ConfigManager<T> {
     private final SharedPreferences sharedPreferences;
 
     ConfigManagerImpl(Model model) {
-        this.sharedPreferences = ((Application) model).getSharedPreferences("app_config_data", Context.MODE_PRIVATE);
+        sharedPreferences = ((Application) model).getSharedPreferences("APP_CONFIG_DATA", Context.MODE_PRIVATE);
     }
 
     @Override
-    public boolean contains(String key) {
-        return sharedPreferences.contains(key);
+    public synchronized boolean contains(T key) {
+        return sharedPreferences.contains(key.toString());
     }
 
     @Override
-    public String getString(String key) {
-        return sharedPreferences.getString(key, null);
+    public synchronized String getString(T key) {
+        return sharedPreferences.getString(key.toString(), null);
     }
 
     @Override
-    public void setString(String key, String value) {
+    public synchronized void setString(T key, String value) {
         sharedPreferences.edit()
-                .putString(key, value)
+                .putString(key.toString(), value)
                 .apply();
     }
 
     @Override
-    public boolean getBoolean(String key) {
-        return sharedPreferences.getBoolean(key, false);
+    public synchronized boolean getBoolean(T key) {
+        return sharedPreferences.getBoolean(key.toString(), false);
     }
 
     @Override
-    public void setBoolean(String key, boolean value) {
+    public synchronized void setBoolean(T key, boolean value) {
         sharedPreferences.edit()
-                .putBoolean(key, value)
+                .putBoolean(key.toString(), value)
                 .apply();
     }
 
     @Override
-    public int getInteger(String key) {
-        return sharedPreferences.getInt(key, -1);
+    public synchronized int getInteger(T key) {
+        return sharedPreferences.getInt(key.toString(), -1);
     }
 
     @Override
-    public void setInteger(String key, int value) {
+    public synchronized void setInteger(T key, int value) {
         sharedPreferences.edit()
-                .putInt(key, value)
+                .putInt(key.toString(), value)
                 .apply();
     }
 }

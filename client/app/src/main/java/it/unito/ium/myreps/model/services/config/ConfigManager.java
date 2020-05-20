@@ -1,17 +1,17 @@
 package it.unito.ium.myreps.model.services.config;
 
-public interface ConfigManager {
-    boolean contains(String key);
+public interface ConfigManager<T> {
+    boolean contains(T key);
 
-    String getString(String key);
+    String getString(T key);
 
-    void setString(String key, String value);
+    void setString(T key, String value);
 
-    boolean getBoolean(String key);
+    boolean getBoolean(T key);
 
-    void setBoolean(String key, boolean value);
+    void setBoolean(T key, boolean value);
 
-    int getInteger(String key);
+    int getInteger(T key);
 
-    void setInteger(String key, int value);
+    void setInteger(T key, int value);
 }

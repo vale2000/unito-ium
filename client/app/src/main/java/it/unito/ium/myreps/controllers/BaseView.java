@@ -10,8 +10,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import it.unito.ium.myreps.R;
 import it.unito.ium.myreps.model.Model;
+import it.unito.ium.myreps.model.services.config.ConfigKey;
 
-abstract class BaseController extends AppCompatActivity {
+abstract class BaseView extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         setTheme(R.style.AppTheme); // Restore AppTheme
@@ -33,6 +34,10 @@ abstract class BaseController extends AppCompatActivity {
             }
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    protected boolean isLoggedIn() {
+        return getModel().getConfigManager().getString(ConfigKey.AUTH_TOKEN) != null;
     }
 
     protected Model getModel() {
