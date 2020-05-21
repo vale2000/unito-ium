@@ -29,7 +29,7 @@ def booking_list():
                                 lessons.course_id, courses.name, bookings.teacher_id, users.name, users.surname 
                                 FROM bookings JOIN lessons ON lessons.id = bookings.lesson_id
                                 JOIN courses ON courses.id = lessons.course_id
-                                JOIN users ON users.id = bookings.teacher_id
+                                LEFT JOIN users ON users.id = bookings.teacher_id
                                 WHERE bookings.user_id = ?
                                 ORDER BY lessons.unix_day DESC, lessons.init_hour DESC""", [user_id])
             db_data = cursor.fetchall()

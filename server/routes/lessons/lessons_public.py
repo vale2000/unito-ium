@@ -62,5 +62,5 @@ def lesson_get(lesson_id: int):
         course = {'id': db_data[0][3], 'name': db_data[0][4]}
         return make_response({'ok': True, 'data': {'id': db_data[0][0], 'unix_day': db_data[0][1],
                                                    'init_hour': db_data[0][2], 'course': course,
-                                                   'available_teachers': teachers}}, 200)
+                                                   'teachers_free': teachers}}, 200)
     return server_error('LESSON_NOT_FOUND')

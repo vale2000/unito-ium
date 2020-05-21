@@ -45,8 +45,8 @@ def user_add():
             if req_data.get('password') is None:
                 req_data.set('password', '')
                 req_data.set('role_id', 0)
-            sql_str = 'INSERT INTO users (' \
-                      + (', '.join(req_data.keys())) + ') VALUES (' + (', '.join('?' for x in req_data.keys())) + ')'
+            sql_str = 'INSERT INTO users (' + (', '.join(req_data.keys())) + ') VALUES (' \
+                      + (', '.join('?' for x in req_data.keys())) + ')'
             with get_db_conn() as database:
                 try:
                     cursor = database.cursor()
