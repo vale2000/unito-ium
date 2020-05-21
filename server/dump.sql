@@ -1,15 +1,11 @@
 BEGIN TRANSACTION;
 
--- ----------------------------
+-- ---------------------------------
 -- Table structure for `roles`
--- ----------------------------
+-- ---------------------------------
 CREATE TABLE IF NOT EXISTS roles (
   id   INTEGER PRIMARY KEY,
   name TEXT NOT NULL UNIQUE,
-
-  lesson_add            INTEGER NOT NULL,
-  lesson_update         INTEGER NOT NULL,
-  lesson_delete         INTEGER NOT NULL,
 
   booking_get           INTEGER NOT NULL,
   booking_get_others    INTEGER NOT NULL,
@@ -34,23 +30,23 @@ CREATE TABLE IF NOT EXISTS roles (
   course_delete         INTEGER NOT NULL
 );
 
--- ----------------------------
+-- ---------------------------------
 -- Records of `roles`
--- ----------------------------
-INSERT INTO roles (id, name, lesson_add, lesson_update, lesson_delete, booking_get, booking_get_others, booking_add, booking_add_others, booking_list, booking_list_others, booking_update, booking_update_others, booking_delete, booking_delete_others, user_get, user_get_others, user_add, user_list, user_update, user_delete, course_add, course_update, course_delete)
+-- ---------------------------------
+INSERT INTO roles (id, name, booking_get, booking_get_others, booking_add, booking_add_others, booking_list, booking_list_others, booking_update, booking_update_others, booking_delete, booking_delete_others, user_get, user_get_others, user_add, user_list, user_update, user_delete, course_add, course_update, course_delete)
 VALUES
-	(0, 'Deleted', 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
-	(1, 'User', 0,0,0,1,0,1,0,1,0,1,0,0,0,1,0,0,0,0,0,0,0,0),
-	(2, 'Teacher', 0,0,0,1,0,1,0,1,0,1,0,0,0,1,1,0,0,0,0,0,0,0),
-	(3, 'Admin', 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1);
+	(0, 'Deleted',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
+	(1, 'User', 1,0,1,0,1,0,1,0,0,0,1,0,0,0,0,0,0,0,0),
+	(2, 'Teacher', 1,0,1,0,1,0,1,0,0,0,1,1,0,0,0,0,0,0,0),
+	(3, 'Admin', 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1);
 
--- ----------------------------
+-- ---------------------------------
 -- Table structure for `users`
--- ----------------------------
+-- ---------------------------------
 CREATE TABLE IF NOT EXISTS users (
   id       INTEGER PRIMARY KEY,
-  email    TEXT NOT NULL UNIQUE,
-  password TEXT NOT NULL,
+  email    TEXT    NOT NULL UNIQUE,
+  password TEXT    NOT NULL,
   role_id  INTEGER NOT NULL DEFAULT 1,
   name     TEXT,
   surname  TEXT,
@@ -61,9 +57,9 @@ CREATE TABLE IF NOT EXISTS users (
   		ON UPDATE CASCADE
 );
 
--- ----------------------------
+-- ---------------------------------
 -- Records of `users`
--- ----------------------------
+-- ---------------------------------
 INSERT INTO users (id, email, password, role_id, name, surname, gender)
 VALUES
   (1, 'mario.rossi@email.com', '', 2, 'Mario', 'Rossi', 1),
@@ -79,17 +75,17 @@ VALUES
   (11, 'giuseppe.eletto@edu.unito.it', 'password123', 1, 'Giuseppe', 'Eletto', 1),
   (12, 'admin@ium.unito.it', 'password123', 3, 'Admin', 'IUM', 0);
 
--- ----------------------------
+-- ---------------------------------
 -- Table structure for `courses`
--- ----------------------------
+-- ---------------------------------
 CREATE TABLE IF NOT EXISTS courses (
   id   INTEGER PRIMARY KEY,
   name TEXT NOT NULL UNIQUE
 );
 
--- ----------------------------
+-- ---------------------------------
 -- Records of `courses`
--- ----------------------------
+-- ---------------------------------
 INSERT INTO courses (id, name)
 VALUES
   (1, 'Italiano'),
@@ -104,9 +100,9 @@ VALUES
   (10, 'Scienze'),
   (11, 'Filosofia');
 
--- ----------------------------
+-- ---------------------------------
 -- Table structure for `teachers`
--- ----------------------------
+-- ---------------------------------
 CREATE TABLE IF NOT EXISTS teachers (
   user_id   INTEGER,
   course_id INTEGER,
@@ -121,9 +117,9 @@ CREATE TABLE IF NOT EXISTS teachers (
       ON UPDATE CASCADE
 );
 
--- ----------------------------
+-- ---------------------------------
 -- Records of `teachers`
--- ----------------------------
+-- ---------------------------------
 INSERT INTO teachers (user_id, course_id)
 VALUES
   (1, 7),
@@ -149,61 +145,51 @@ VALUES
   (10, 7),
   (10, 11);
 
--- ----------------------------
--- Table structure for `lessons`
--- ----------------------------
-CREATE TABLE IF NOT EXISTS lessons (
-  id         INTEGER PRIMARY KEY,
-  course_id  INTEGER NOT NULL,
-  unix_day   INTEGER NOT NULL,
-  init_hour  INTEGER NOT NULL,
-  UNIQUE (course_id, unix_day, init_hour),
-  FOREIGN KEY (course_id)
-    REFERENCES courses (id)
-      ON DELETE CASCADE
-      ON UPDATE CASCADE
-);
-
--- ----------------------------
--- Records of `teachers`
--- ----------------------------
-INSERT INTO lessons (course_id, unix_day, init_hour)
-VALUES
-  (7, 0, 09),
-  (8, 0, 16),
-  (11, 0, 22);
-
--- ----------------------------
+-- ---------------------------------
 -- Table structure for `bookings`
--- ----------------------------
+-- ---------------------------------
 CREATE TABLE IF NOT EXISTS bookings (
   id         INTEGER PRIMARY KEY,
   user_id    INTEGER NOT NULL,
+  course_id  INTEGER NOT NULL,
   teacher_id INTEGER NOT NULL,
-  lesson_id  INTEGER NOT NULL,
-  status     TEXT NOT NULL DEFAULT 'RESERVED',
-  UNIQUE (user_id, lesson_id, teacher_id),
+  day        INTEGER NOT NULL,
+  hour       INTEGER NOT NULL,
+  status     TEXT    NOT NULL DEFAULT 'RESERVED',
+  UNIQUE (user_id, day, hour),
+  UNIQUE (teacher_id, day, hour),
   FOREIGN KEY (user_id)
     REFERENCES users (id)
+      ON DELETE CASCADE
+      ON UPDATE CASCADE,
+  FOREIGN KEY (course_id)
+    REFERENCES courses (id)
       ON DELETE CASCADE
       ON UPDATE CASCADE,
   FOREIGN KEY (teacher_id)
     REFERENCES users (id)
       ON DELETE CASCADE
-      ON UPDATE CASCADE,
-  FOREIGN KEY (lesson_id)
-    REFERENCES lessons (id)
-      ON DELETE CASCADE
       ON UPDATE CASCADE
 );
 
--- ----------------------------
--- Records of `teachers`
--- ----------------------------
-INSERT INTO bookings (user_id, teacher_id, lesson_id)
+-- ---------------------------------
+-- Table structure for `weeksum`
+-- ---------------------------------
+CREATE TABLE IF NOT EXISTS weeksum (
+  to_sum INTEGER PRIMARY KEY
+);
+
+-- ---------------------------------
+-- Records of `weeksum`
+-- ---------------------------------
+INSERT INTO weeksum (to_sum)
 VALUES
-  (11, 10, 1),
-  (11, 2, 2),
-  (11, 9, 3);
+	(86400),
+	(172800),
+	(259200),
+	(345600),
+	(432000),
+	(518400),
+	(604800);
 
 COMMIT TRANSACTION;

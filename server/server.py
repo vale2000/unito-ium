@@ -1,8 +1,7 @@
 #!/usr/bin/python3
 from flask import Flask
-from routes import route_users, route_customs, route_bookings
+from routes import route_users, route_customs, route_bookings, route_lessons
 from routes.account import route_account_public, route_account_auth
-from routes.lessons import route_lessons_auth, route_lessons_public
 from routes.courses import route_courses_auth, route_courses_public
 from modules import config
 from modules.database import init_db
@@ -17,11 +16,10 @@ app.config['JSONIFY_PRETTYPRINT_REGULAR'] = False
 app.register_blueprint(route_customs)
 app.register_blueprint(route_account_auth)
 app.register_blueprint(route_account_public)
-app.register_blueprint(route_lessons_auth)
-app.register_blueprint(route_lessons_public)
 app.register_blueprint(route_courses_auth)
 app.register_blueprint(route_courses_public)
 app.register_blueprint(route_users)
+app.register_blueprint(route_lessons)
 app.register_blueprint(route_bookings)
 
 

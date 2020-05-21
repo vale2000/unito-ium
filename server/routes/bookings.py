@@ -24,22 +24,22 @@ def booking_list():
             if req_data:
                 user_id = req_data.get('user_id', token_data.get('user'))
         with get_db_conn(True) as database:
+            print(user_id)
             cursor = database.cursor()
-            cursor.execute("""SELECT bookings.id, bookings.status, lessons.id, lessons.unix_day, lessons.init_hour,
-                                lessons.course_id, courses.name, bookings.teacher_id, users.name, users.surname 
-                                FROM bookings JOIN lessons ON lessons.id = bookings.lesson_id
-                                JOIN courses ON courses.id = lessons.course_id
+            cursor.execute("""SELECT bookings.id, bookings.status, bookings.day, bookings.hour, courses.id, 
+                                courses.name, bookings.teacher_id, users.name, users.surname FROM bookings
+                                JOIN courses ON courses.id = bookings.course_id
                                 LEFT JOIN users ON users.id = bookings.teacher_id
                                 WHERE bookings.user_id = ?
-                                ORDER BY lessons.unix_day DESC, lessons.init_hour DESC""", [user_id])
+                                ORDER BY bookings.day DESC, bookings.hour DESC""", [user_id])
             db_data = cursor.fetchall()
             cursor.close()
             db_results = []
             if db_data:
                 for row in db_data:
-                    course = {'id': row[5], 'name': row[6]}
-                    teacher = {'id': row[7], 'name': row[8], 'surname': row[9]}
-                    lesson = {'id': row[2], 'unix_day': row[3], 'init_hour': row[4]}
+                    course = {'id': row[4], 'name': row[5]}
+                    teacher = {'id': row[6], 'name': row[7], 'surname': row[8]}
+                    lesson = {'day': row[2], 'hour': row[3]}
                     db_results.append({'id': row[0], 'status': row[1], 'lesson': lesson, 'course': course,
                                        'teacher': teacher})
         return make_response({'ok': True, 'data': db_results}, 200)
@@ -93,18 +93,17 @@ def booking_get(booking_id: int):
                 user_id = req_data.get('user_id', token_data.get('user'))
         with get_db_conn(True) as database:
             cursor = database.cursor()
-            cursor.execute("""SELECT bookings.id, bookings.status, lessons.id, lessons.unix_day, lessons.init_hour,
-                                lessons.course_id, courses.name, bookings.teacher_id, users.name, users.surname 
-                                FROM bookings JOIN lessons ON lessons.id = bookings.lesson_id
-                                JOIN courses ON courses.id = lessons.course_id
-                                JOIN users ON users.id = bookings.teacher_id
+            cursor.execute("""SELECT bookings.id, bookings.status, bookings.day, bookings.hour, courses.id, 
+                                courses.name, bookings.teacher_id, users.name, users.surname FROM bookings
+                                JOIN courses ON courses.id = bookings.course_id
+                                LEFT JOIN users ON users.id = bookings.teacher_id
                                 WHERE bookings.id = ? AND bookings.user_id = ?""", [booking_id, user_id])
             db_data = cursor.fetchone()
             cursor.close()
         if db_data:
-            course = {'id': db_data[5], 'name': db_data[6]}
-            teacher = {'id': db_data[7], 'name': db_data[8], 'surname': db_data[9]}
-            lesson = {'id': db_data[2], 'unix_day': db_data[3], 'init_hour': db_data[4]}
+            course = {'id': db_data[4], 'name': db_data[5]}
+            teacher = {'id': db_data[6], 'name': db_data[7], 'surname': db_data[8]}
+            lesson = {'day': db_data[2], 'hour': db_data[3]}
             return make_response({'ok': True, 'data': {'id': db_data[0], 'status': db_data[1], 'lesson': lesson,
                                                        'course': course, 'teacher': teacher}}, 200)
         return server_error('BOOKING_NOT_FOUND')
