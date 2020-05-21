@@ -29,21 +29,4 @@ public final class Course extends RecyclerViewRow implements Serializable {
     public String getName() {
         return name;
     }
-
-    // --------------------------------------------------------
-    // RecyclerViewRow Methods
-    @Override
-    public String getType() {
-        return null;
-    }
-
-    @Override
-    public String getHeader() {
-        return null;
-    }
-
-    @Override
-    public String getDescription() {
-        return null;
-    }
 }

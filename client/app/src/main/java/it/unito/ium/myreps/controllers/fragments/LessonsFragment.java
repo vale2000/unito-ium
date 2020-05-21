@@ -31,14 +31,15 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import it.unito.ium.myreps.R;
-import it.unito.ium.myreps.components.RecyclerViewAdapter;
 import it.unito.ium.myreps.components.RecyclerViewRow;
+import it.unito.ium.myreps.components.RvLessonAdapter;
+import it.unito.ium.myreps.components.RvRowSeparator;
 import it.unito.ium.myreps.controllers.LessonView;
 import it.unito.ium.myreps.model.services.api.ServerError;
 import it.unito.ium.myreps.model.services.api.objects.Lesson;
 
 public final class LessonsFragment extends BaseFragment {
-    private RecyclerViewAdapter recyclerViewAdapter;
+    private RvLessonAdapter rvLessonAdapter;
     private SearchView searchView;
     private Unbinder unbinder;
 
@@ -89,13 +90,13 @@ public final class LessonsFragment extends BaseFragment {
     private final SearchView.OnQueryTextListener mOnQueryTextListener = new SearchView.OnQueryTextListener() {
         @Override
         public boolean onQueryTextSubmit(String query) {
-            recyclerViewAdapter.getFilter().filter(query);
+            rvLessonAdapter.getFilter().filter(query);
             return true;
         }
 
         @Override
         public boolean onQueryTextChange(String query) {
-            recyclerViewAdapter.getFilter().filter(query);
+            rvLessonAdapter.getFilter().filter(query);
             return true;
         }
     };
@@ -127,11 +128,11 @@ public final class LessonsFragment extends BaseFragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        recyclerViewAdapter = new RecyclerViewAdapter();
-        recyclerView.setAdapter(recyclerViewAdapter);
-        recyclerViewAdapter.setItemClickListener((view, item) -> {
+        rvLessonAdapter = new RvLessonAdapter();
+        recyclerView.setAdapter(rvLessonAdapter);
+        rvLessonAdapter.setRowClickListener((view, item) -> {
             Intent i = new Intent(getContext(), LessonView.class);
-            i.putExtra("lesson_id", item);
+            i.putExtra("lesson_id", (Lesson)item);
             startActivity(i);
         });
 
@@ -149,16 +150,28 @@ public final class LessonsFragment extends BaseFragment {
                 if (valid) {
                     boolean ok = response.getBoolean("ok");
                     if (ok) {
+                        String lastCourse = null;
+                        // Date lastDay = null;  // TODO restore
                         ArrayList<RecyclerViewRow> lessonList = new ArrayList<>();
                         JSONArray data = response.getJSONArray("data");
 
                         for (int i = 0; i < data.length(); i++) {
                             JSONObject jsonLesson = data.getJSONObject(i);
-                            lessonList.add(new Lesson(jsonLesson));
+                            Lesson lesson = new Lesson(jsonLesson);
+
+                            if (!lesson.getCourse().getName().equals(lastCourse)) {
+                                lastCourse = lesson.getCourse().getName();
+                                lessonList.add(new RvRowSeparator(lastCourse));
+                            }
+
+                            // if (!lesson.getDate().equals(lastDay)) {
+                            //    lastDay = lesson.getDate();
+                                lessonList.add(lesson);
+                            // }
                         }
 
                         runOnUiThread(() -> {
-                            recyclerViewAdapter.setDataSet(lessonList);
+                            rvLessonAdapter.setDataSet(lessonList);
                             swipeRefreshLayout.setRefreshing(false);
                             emptyText.setVisibility(lessonList.isEmpty() ? View.VISIBLE : View.GONE);
                         });

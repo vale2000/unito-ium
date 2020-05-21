@@ -31,15 +31,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import it.unito.ium.myreps.R;
-import it.unito.ium.myreps.components.RecyclerViewAdapter;
+import it.unito.ium.myreps.components.RvBookingAdapter;
 import it.unito.ium.myreps.components.RecyclerViewRow;
 import it.unito.ium.myreps.controllers.LessonView;
 import it.unito.ium.myreps.model.services.api.ServerError;
 import it.unito.ium.myreps.model.services.api.objects.Booking;
-import it.unito.ium.myreps.model.services.api.objects.Lesson;
 
 public final class BookingsFragment extends BaseFragment {
-    private RecyclerViewAdapter recyclerViewAdapter;
+    private RvBookingAdapter rvBookingAdapter;
     private SearchView searchView;
     private Unbinder unbinder;
 
@@ -90,13 +89,13 @@ public final class BookingsFragment extends BaseFragment {
     private final SearchView.OnQueryTextListener mOnQueryTextListener = new SearchView.OnQueryTextListener() {
         @Override
         public boolean onQueryTextSubmit(String query) {
-            recyclerViewAdapter.getFilter().filter(query);
+            rvBookingAdapter.getFilter().filter(query);
             return true;
         }
 
         @Override
         public boolean onQueryTextChange(String query) {
-            recyclerViewAdapter.getFilter().filter(query);
+            rvBookingAdapter.getFilter().filter(query);
             return true;
         }
     };
@@ -128,15 +127,15 @@ public final class BookingsFragment extends BaseFragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        recyclerViewAdapter = new RecyclerViewAdapter();
+        rvBookingAdapter = new RvBookingAdapter();
 
-        recyclerViewAdapter.setItemClickListener((view, item) -> {
+        rvBookingAdapter.setRowClickListener((view, item) -> {
             Intent i = new Intent(getContext(), LessonView.class);
-            i.putExtra("lesson_id", item);
+            i.putExtra("lesson_id", (Booking)item);
             startActivity(i);
         });
 
-        recyclerView.setAdapter(recyclerViewAdapter);
+        recyclerView.setAdapter(rvBookingAdapter);
         swipeRefreshLayout.setOnRefreshListener(() -> {
             closeSearchView();
             loadRecyclerView();
@@ -160,7 +159,7 @@ public final class BookingsFragment extends BaseFragment {
                         }
 
                         runOnUiThread(() -> {
-                            recyclerViewAdapter.setDataSet(bookingList);
+                            rvBookingAdapter.setDataSet(bookingList);
                             swipeRefreshLayout.setRefreshing(false);
                             emptyText.setVisibility(bookingList.isEmpty() ? View.VISIBLE : View.GONE);
                         });

@@ -61,23 +61,6 @@ public final class Booking extends RecyclerViewRow implements Serializable {
     }
 
     // --------------------------------------------------------
-    // RecyclerViewRow Methods
-    @Override
-    public String getType() {
-        return null;
-    }
-
-    @Override
-    public String getHeader() {
-        return course.getName();
-    }
-
-    @Override
-    public String getDescription() {
-        return status.toString();
-    }
-
-    // --------------------------------------------------------
     // Private Objects
     public enum Status {RESERVED, CANCELED, DONE}
 }

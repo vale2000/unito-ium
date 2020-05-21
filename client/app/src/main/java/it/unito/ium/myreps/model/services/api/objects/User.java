@@ -84,23 +84,6 @@ public final class User extends RecyclerViewRow implements Serializable {
     }
 
     // --------------------------------------------------------
-    // RecyclerViewRow Methods
-    @Override
-    public String getType() {
-        return null;
-    }
-
-    @Override
-    public String getHeader() {
-        return null;
-    }
-
-    @Override
-    public String getDescription() {
-        return null;
-    }
-
-    // --------------------------------------------------------
     // Private Objects
     public enum Gender {
         OTHER(0),
