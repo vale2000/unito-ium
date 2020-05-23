@@ -15,6 +15,7 @@ import java.util.List;
 
 import it.unito.ium.myreps.R;
 import it.unito.ium.myreps.model.services.api.objects.Booking;
+import it.unito.ium.myreps.model.services.api.objects.User;
 
 public final class RvBookingAdapter extends RecyclerView.Adapter<RvBookingAdapter.ViewHolder> implements Filterable {
     private List<RecyclerViewRow> dataSet;
@@ -47,13 +48,14 @@ public final class RvBookingAdapter extends RecyclerView.Adapter<RvBookingAdapte
 
     @Override
     public void onBindViewHolder(@NonNull RvBookingAdapter.ViewHolder holder, int position) {
-        Booking item = (Booking)dataSetShown.get(position);
-        String teacher = item.getTeacher().getName() + " " + item.getTeacher().getSurname();
+        Booking item = (Booking) dataSetShown.get(position);
+        User teacher = item.getLesson().getTeacher(0);
+        String teacherName = teacher.getName() + " " + teacher.getSurname();
 
-        holder.bookingName.setText(item.getCourse().getName());
+        holder.bookingName.setText(item.getLesson().getCourse().getName());
         holder.bookingStatus.setText(item.getStatus().name());
-        holder.bookingTeacher.setText(teacher);
-        holder.bookingDate.setText(""+item.getLesson().getDate());
+        holder.bookingTeacher.setText(teacherName);
+        holder.bookingDate.setText(item.getLesson().getDate().toString());
     }
 
     @Override
@@ -76,7 +78,8 @@ public final class RvBookingAdapter extends RecyclerView.Adapter<RvBookingAdapte
                     for (RecyclerViewRow row : dataSet) {
                         Booking booking = (Booking) row;
 
-                        if (!booking.getCourse().getName().toLowerCase().contains(charString)) continue;
+                        if (!booking.getLesson().getCourse().getName().toLowerCase().contains(charString))
+                            continue;
 
                         filteredList.add(row);
                     }

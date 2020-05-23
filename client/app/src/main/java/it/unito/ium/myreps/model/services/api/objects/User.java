@@ -8,16 +8,20 @@ import java.io.Serializable;
 
 import it.unito.ium.myreps.components.RecyclerViewRow;
 
-public final class User extends RecyclerViewRow implements Serializable {
-    private static final long serialVersionUID = 4129009001043634337L;
+public class User extends RecyclerViewRow implements Serializable {
+    private static final long serialVersionUID = 3184088961832375562L;
 
     private final int id;
     private final String email;
     private final String name;
     private final String surname;
     private final Gender gender;
+
     private final Role role;
+
+    // As Teacher
     private final Course[] courses;
+    private final int[] freeHours;
 
     public User(JSONObject jsonUser) {
         try {
@@ -39,6 +43,16 @@ public final class User extends RecyclerViewRow implements Serializable {
                 }
             }
             this.courses = courses;
+
+            int[] freeHours = null;
+            if (jsonUser.has("available_on")) {
+                JSONArray availableOn = jsonUser.getJSONArray("available_on");
+                freeHours = new int[availableOn.length()];
+                for (int i = 0; i < freeHours.length; i++) {
+                    freeHours[i] = availableOn.getInt(i);
+                }
+            }
+            this.freeHours = freeHours;
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
@@ -81,6 +95,10 @@ public final class User extends RecyclerViewRow implements Serializable {
 
     public Course[] getCourses() {
         return courses;
+    }
+
+    public int[] getFreeHours() {
+        return freeHours;
     }
 
     // --------------------------------------------------------

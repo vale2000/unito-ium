@@ -5,29 +5,42 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.util.Date;
+import java.util.Locale;
 
 import it.unito.ium.myreps.components.RecyclerViewRow;
 
 public final class Lesson extends RecyclerViewRow implements Serializable {
-    private static final long serialVersionUID = 1795672724728252255L;
+    private static final long serialVersionUID = -1609365345742781595L;
 
-    private final int id;
-    private final long date;
-    private final int hour;
+    private static final SimpleDateFormat DATE_YEAR_FORMAT = new SimpleDateFormat("dd/MM/yyyy", Locale.UK);
+    private static final SimpleDateFormat DATE_HOUR_FORMAT = new SimpleDateFormat("HH:mm", Locale.UK);
+    private static final SimpleDateFormat DATE_WEEK_FORMAT = new SimpleDateFormat("EEEE", Locale.UK);
+
+    private final Date date;
     private final Course course;
+
+    private final int teachersNum;
     private final User[] teachers;
 
     public Lesson(JSONObject jsonLesson) {
         try {
-            this.id = jsonLesson.has("id") ? jsonLesson.getInt("id") : -1;
-
-            this.date = jsonLesson.has("unix_day") ? jsonLesson.getLong("unix_day") : -1L;
-            this.hour = jsonLesson.has("init_hour") ? jsonLesson.getInt("init_hour") : -1;
             this.course = jsonLesson.has("course") ? new Course(jsonLesson.getJSONObject("course")) : null;
 
+            Date date = null;
+            if (jsonLesson.has("day")) {
+                long day = jsonLesson.getLong("day");
+                int hour = jsonLesson.has("hour") ? jsonLesson.getInt("hour") : 0;
+                Instant instant = Instant.ofEpochSecond(day + hour);
+                date = Date.from(instant);
+            }
+            this.date = date;
+
             User[] teachers = null;
-            if (jsonLesson.has("teachers_free")) {
-                JSONArray jsonTeachers = jsonLesson.getJSONArray("available_teachers");
+            if (jsonLesson.has("teachers")) {
+                JSONArray jsonTeachers = jsonLesson.getJSONArray("teachers");
                 teachers = new User[jsonTeachers.length()];
                 for (int i = 0; i < teachers.length; i++) {
                     JSONObject course = jsonTeachers.getJSONObject(i);
@@ -35,25 +48,45 @@ public final class Lesson extends RecyclerViewRow implements Serializable {
                 }
             }
             this.teachers = teachers;
+
+            if (jsonLesson.has("free_teachers")) {
+                this.teachersNum = jsonLesson.getInt("free_teachers");
+            } else if (this.teachers != null) {
+                this.teachersNum = this.teachers.length;
+            } else {
+                this.teachersNum = 0;
+            }
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public int getID() {
-        return id;
-    }
-
-    public long getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public int getHour() {
-        return hour;
+    public String getYearDay() {
+        return DATE_YEAR_FORMAT.format(date);
+    }
+
+    public String getWeekDay() {
+        return DATE_WEEK_FORMAT.format(date);
+    }
+
+    public String getHour() {
+        return DATE_HOUR_FORMAT.format(date);
     }
 
     public Course getCourse() {
         return course;
+    }
+
+    public int getTeachersNum() {
+        return teachersNum;
+    }
+
+    public User getTeacher(int i) {
+        return teachers[i];
     }
 
     public User[] getTeachers() {

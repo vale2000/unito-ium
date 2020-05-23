@@ -2,6 +2,9 @@ package it.unito.ium.myreps.controllers.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -14,15 +17,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import it.unito.ium.myreps.R;
 import it.unito.ium.myreps.model.services.api.ServerError;
 import it.unito.ium.myreps.model.services.api.objects.User;
+import it.unito.ium.myreps.model.services.config.ConfigKey;
+import it.unito.ium.myreps.model.services.config.ConfigManager;
 
 public final class ProfileFragment extends BaseFragment {
-    private Unbinder unbinder;
-
     @BindView(R.id.fragment_profile_loading)
     View profileLoading;
 
@@ -40,18 +41,31 @@ public final class ProfileFragment extends BaseFragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_profile, container, false);
-        unbinder = ButterKnife.bind(this, view);
-
+        View view = createView(inflater, R.layout.fragment_profile, container);
+        setHasOptionsMenu(true);
         loadProfileData();
-
         return view;
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.fragment_profile, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.fragment_profile_menu_disconnect) {
+            logOutAccount();
+            return true;
+        }
+        return false;
+    }
+
+    private void logOutAccount() {
+        ConfigManager<ConfigKey> configManager = getModel().getConfigManager();
+        configManager.setString(ConfigKey.AUTH_TOKEN, null);
+        switchFragment(R.id.main_frame_container, new LoginFragment(new ProfileFragment()));
     }
 
     private void loadProfileData() {

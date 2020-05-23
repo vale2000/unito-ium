@@ -1,6 +1,6 @@
 <resources>
     <!-- Base Application -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -13,7 +13,7 @@
     </style>
 
     <!-- ToolBar -->
-    <style name="AppTheme.ToolBar">
+    <style name="AppTheme.ToolBar" parent="AppTheme">
         <item name="android:background">@color/toolbarBackground</item>
         <item name="android:textColor">@color/toolbarTextColor</item>
         <item name="android:textColorPrimary">@color/toolbarTextColor</item>

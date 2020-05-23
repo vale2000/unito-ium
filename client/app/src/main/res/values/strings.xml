@@ -10,12 +10,16 @@
     <string name="main_bottom_nav_lessons">Lessons</string>
     <string name="main_bottom_nav_bookings">Bookings</string>
     <string name="main_bottom_nav_profile">Profile</string>
+    <string name="main_bottom_nav_login">Login</string>
 
     <!-- Lessons Fragment -->
-    <string name="fragment_lessons_list_tv_empty">There are no lessons available</string>
+    <string name="fragment_lessons_list_rv_empty">There are no lessons available</string>
 
     <!-- Bookings Fragment -->
-    <string name="fragment_bookings_list_tv_empty">You have no saved bookings</string>
+    <string name="fragment_bookings_list_rv_empty">You have no saved bookings</string>
+
+    <!-- Profile Fragment -->
+    <string name="fragment_profile_menu_disconnect">Log Out</string>
 
     <!-- Login Fragment -->
     <string name="fragment_login_input_email_hint">Email</string>
@@ -24,4 +28,8 @@
     <string name="fragment_login_input_password_hint">Password</string>
     <string name="fragment_login_input_password_error">This field cannot be left empty</string>
     <string name="fragment_login_button_text">Log In</string>
+
+    <!-- Rv Row Lesson -->
+    <string name="rv_row_lesson_description">%1$d teacher(s) available</string>
+
 </resources>

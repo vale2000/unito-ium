@@ -10,7 +10,6 @@ import androidx.annotation.Nullable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import it.unito.ium.myreps.R;
-import it.unito.ium.myreps.components.RecyclerViewRow;
 
 public final class LessonView extends BaseView {
     @BindView(R.id.lesson_header_subject)
@@ -34,6 +33,6 @@ public final class LessonView extends BaseView {
             super.onBackPressed();
             return true;
         }
-        return super.onOptionsItemSelected(item);
+        return false;
     }
 }

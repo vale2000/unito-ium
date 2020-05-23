@@ -63,8 +63,10 @@ public final class RvLessonAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 break;
             case 1:
                 RvLessonAdapter.ViewHolder viewHolder1 = (RvLessonAdapter.ViewHolder) holder;
-                // viewHolder1.courseName.setText(item.getHeader());
-                // viewHolder1.bookingStatus.setText(item.getDescription());
+                Lesson lesson = (Lesson) item;
+                viewHolder1.courseName.setText(lesson.getCourse().getName());
+                String description = viewHolder1.itemView.getContext().getString(R.string.rv_row_lesson_description, lesson.getTeachersNum());
+                viewHolder1.bookingStatus.setText(description);
                 break;
         }
     }
@@ -90,7 +92,8 @@ public final class RvLessonAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                         if (row.getType() == 0) continue;
 
                         Lesson lesson = (Lesson) row;
-                        if (!lesson.getCourse().getName().toLowerCase().contains(charString)) continue;
+                        if (!lesson.getCourse().getName().toLowerCase().contains(charString))
+                            continue;
 
                         filteredList.add(row);
                     }

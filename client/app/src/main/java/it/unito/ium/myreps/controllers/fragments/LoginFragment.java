@@ -17,9 +17,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import org.json.JSONException;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 import it.unito.ium.myreps.R;
 import it.unito.ium.myreps.model.services.api.ServerError;
 import it.unito.ium.myreps.model.services.config.ConfigKey;
@@ -27,8 +25,6 @@ import it.unito.ium.myreps.model.services.config.ConfigManager;
 import it.unito.ium.myreps.utils.MailUtils;
 
 public final class LoginFragment extends BaseFragment {
-    private Unbinder unbinder;
-
     @BindView(R.id.login_input_email)
     TextInputEditText emailEditText;
 
@@ -49,20 +45,13 @@ public final class LoginFragment extends BaseFragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_login, container, false);
-        unbinder = ButterKnife.bind(this, view);
+        View view = createView(inflater, R.layout.fragment_login, container);
 
         ConfigManager<ConfigKey> configManager = getModel().getConfigManager();
         emailEditText.setText(configManager.getString(ConfigKey.USERDATA_EMAIL));
         pwdEditText.setText(configManager.getString(ConfigKey.USERDATA_PASSWORD));
 
         return view;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
     }
 
     @OnClick(R.id.login_button_exec)
@@ -90,7 +79,7 @@ public final class LoginFragment extends BaseFragment {
 
         ConfigManager<ConfigKey> configManager = getModel().getConfigManager();
         getModel().getApiManager().setCredentials(email, password)
-                .doLogin((valid, response) -> runOnUiThread(() -> {
+                .doLogin((valid, response) -> {
                     ServerError serverError = ServerError.SERVER_OFFLINE;
                     try {
                         if (valid) {
@@ -98,14 +87,13 @@ public final class LoginFragment extends BaseFragment {
                             if (ok) {
                                 String token = response.getString("token");
 
+                                getModel().getApiManager().setAuthToken(token);
+
                                 configManager.setString(ConfigKey.AUTH_TOKEN, token);
                                 configManager.setString(ConfigKey.USERDATA_EMAIL, email);
                                 configManager.setString(ConfigKey.USERDATA_PASSWORD, password);
 
-                                getActivity().getSupportFragmentManager()
-                                        .beginTransaction()
-                                        .replace(R.id.main_frame_container, nextFragment)
-                                        .commit();
+                                switchFragment(R.id.main_frame_container, nextFragment);
                                 return;
                             }
                             configManager.setString(ConfigKey.AUTH_TOKEN, null);
@@ -120,7 +108,9 @@ public final class LoginFragment extends BaseFragment {
                         e.printStackTrace();
                         serverError = ServerError.UNKNOWN_ERROR;
                     }
-                    Toast.makeText(getContext(), serverError.toString(), Toast.LENGTH_LONG).show();
-                }));
+
+                    ServerError finalServerError = serverError;
+                    runOnUiThread(() -> Toast.makeText(getContext(), finalServerError.toString(), Toast.LENGTH_LONG).show());
+                });
     }
 }

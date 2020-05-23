@@ -28,11 +28,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import it.unito.ium.myreps.R;
-import it.unito.ium.myreps.components.RvBookingAdapter;
 import it.unito.ium.myreps.components.RecyclerViewRow;
+import it.unito.ium.myreps.components.RvBookingAdapter;
 import it.unito.ium.myreps.controllers.LessonView;
 import it.unito.ium.myreps.model.services.api.ServerError;
 import it.unito.ium.myreps.model.services.api.objects.Booking;
@@ -40,7 +38,6 @@ import it.unito.ium.myreps.model.services.api.objects.Booking;
 public final class BookingsFragment extends BaseFragment {
     private RvBookingAdapter rvBookingAdapter;
     private SearchView searchView;
-    private Unbinder unbinder;
 
     @BindView(R.id.fragment_list_swiperefresh)
     SwipeRefreshLayout swipeRefreshLayout;
@@ -53,11 +50,10 @@ public final class BookingsFragment extends BaseFragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_list, container, false);
-        unbinder = ButterKnife.bind(this, view);
+        View view = createView(inflater, R.layout.fragment_list, container);
         setHasOptionsMenu(true);
 
-        emptyText.setText(R.string.fragment_bookings_list_tv_empty);
+        emptyText.setText(R.string.fragment_bookings_list_rv_empty);
 
         initRecyclerView();
         loadRecyclerView();
@@ -66,18 +62,12 @@ public final class BookingsFragment extends BaseFragment {
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
-
-    @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.list_fragment, menu);
+        inflater.inflate(R.menu.fragment_rv_list, menu);
 
         SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
         if (searchManager != null) {
-            searchView = (SearchView) menu.findItem(R.id.menu_item_search).getActionView();
+            searchView = (SearchView) menu.findItem(R.id.fragment_rv_search).getActionView();
             searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
             searchView.setMaxWidth(Integer.MAX_VALUE);
             searchView.setOnQueryTextListener(mOnQueryTextListener);
@@ -102,11 +92,7 @@ public final class BookingsFragment extends BaseFragment {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.menu_item_search) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+        return item.getItemId() == R.id.fragment_rv_search;
     }
 
     private void closeSearchView() {
@@ -131,7 +117,7 @@ public final class BookingsFragment extends BaseFragment {
 
         rvBookingAdapter.setRowClickListener((view, item) -> {
             Intent i = new Intent(getContext(), LessonView.class);
-            i.putExtra("lesson_id", (Booking)item);
+            i.putExtra("lesson_id", (Booking) item);
             startActivity(i);
         });
 
@@ -161,7 +147,7 @@ public final class BookingsFragment extends BaseFragment {
                         runOnUiThread(() -> {
                             rvBookingAdapter.setDataSet(bookingList);
                             swipeRefreshLayout.setRefreshing(false);
-                            emptyText.setVisibility(bookingList.isEmpty() ? View.VISIBLE : View.GONE);
+                            emptyText.setVisibility(View.GONE);
                         });
                         return;
                     }
@@ -181,6 +167,7 @@ public final class BookingsFragment extends BaseFragment {
             runOnUiThread(() -> {
                 Toast.makeText(getContext(), finalServerError.toString(), Toast.LENGTH_LONG).show();
                 swipeRefreshLayout.setRefreshing(false);
+                rvBookingAdapter.setDataSet(new ArrayList<>());
                 emptyText.setVisibility(View.VISIBLE);
             });
         });

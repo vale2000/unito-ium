@@ -21,6 +21,7 @@
             android:id="@+id/login_input_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
             android:hint="@string/fragment_login_input_email_hint"
             android:singleLine="true" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -41,6 +42,7 @@
             android:id="@+id/login_input_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="textPassword"
             android:hint="@string/fragment_login_input_password_hint"
             android:singleLine="true" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -55,7 +57,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/login_input_layout_password" />
 
-    <!-- GuideLines -->
+    <!-- GuideLine -->
     <!-- Horizontal -->
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/login_horizontal_guideline"
