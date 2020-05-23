@@ -16,7 +16,7 @@ route_bookings.before_request(logged_before_request)  # Check for login
 @route_bookings.route('/bookings', methods=['GET'])
 def booking_list():
     token_data = simple_jwt.read(request.headers.get('Authorization').split(' ')[1])
-    user_perms = get_role_perms(token_data.get('role_id'))
+    user_perms = get_role_perms(token_data.get('role'))
     if user_perms.get('booking_list', 0) or user_perms.get('booking_list_others', 0):
         user_id = token_data.get('user')
         if user_perms.get('booking_list_others', 0):
@@ -24,7 +24,6 @@ def booking_list():
             if req_data:
                 user_id = req_data.get('user_id', token_data.get('user'))
         with get_db_conn(True) as database:
-            print(user_id)
             cursor = database.cursor()
             cursor.execute("""SELECT bookings.id, bookings.status, bookings.day, bookings.hour, courses.id, 
                                 courses.name, bookings.teacher_id, users.name, users.surname FROM bookings
@@ -39,9 +38,8 @@ def booking_list():
                 for row in db_data:
                     course = {'id': row[4], 'name': row[5]}
                     teacher = {'id': row[6], 'name': row[7], 'surname': row[8]}
-                    lesson = {'day': row[2], 'hour': row[3]}
-                    db_results.append({'id': row[0], 'status': row[1], 'lesson': lesson, 'course': course,
-                                       'teacher': teacher})
+                    lesson = {'day': row[2], 'hour': row[3], 'course': course, 'teachers': [teacher]}
+                    db_results.append({'id': row[0], 'status': row[1], 'lesson': lesson})
         return make_response({'ok': True, 'data': db_results}, 200)
     return abort(401)
 
@@ -52,7 +50,7 @@ def booking_list():
 @route_bookings.route('/bookings', methods=['POST'])
 def booking_add():
     token_data = simple_jwt.read(request.headers.get('Authorization').split(' ')[1])
-    user_perms = get_role_perms(token_data.get('role_id'))
+    user_perms = get_role_perms(token_data.get('role'))
     req_data = request.get_json()
     if req_data:
         if user_perms.get('booking_add', 0) or user_perms.get('booking_add_other', 0):
@@ -84,7 +82,7 @@ def booking_add():
 @route_bookings.route('/bookings/<int:booking_id>', methods=['GET'])
 def booking_get(booking_id: int):
     token_data = simple_jwt.read(request.headers.get('Authorization').split(' ')[1])
-    user_perms = get_role_perms(token_data.get('role_id'))
+    user_perms = get_role_perms(token_data.get('role'))
     if user_perms.get('booking_get', 0) or user_perms.get('booking_get_others', 0):
         user_id = token_data.get('user')
         if user_perms.get('booking_get_others', 0):
@@ -103,9 +101,8 @@ def booking_get(booking_id: int):
         if db_data:
             course = {'id': db_data[4], 'name': db_data[5]}
             teacher = {'id': db_data[6], 'name': db_data[7], 'surname': db_data[8]}
-            lesson = {'day': db_data[2], 'hour': db_data[3]}
-            return make_response({'ok': True, 'data': {'id': db_data[0], 'status': db_data[1], 'lesson': lesson,
-                                                       'course': course, 'teacher': teacher}}, 200)
+            lesson = {'day': db_data[2], 'hour': db_data[3], 'course': course, 'teachers': [teacher]}
+            return make_response({'ok': True, 'data': {'id': db_data[0], 'status': db_data[1], 'lesson': lesson}}, 200)
         return server_error('BOOKING_NOT_FOUND')
     return abort(401)
 
@@ -116,7 +113,7 @@ def booking_get(booking_id: int):
 @route_bookings.route('/bookings/<int:booking_id>', methods=['PUT'])
 def booking_update(booking_id: int):
     token_data = simple_jwt.read(request.headers.get('Authorization').split(' ')[1])
-    user_perms = get_role_perms(token_data.get('role_id'))
+    user_perms = get_role_perms(token_data.get('role'))
     req_data = request.get_json()
     if req_data:
         if user_perms.get('booking_update', 0) or user_perms.get('booking_update_others', 0):
@@ -151,7 +148,7 @@ def booking_update(booking_id: int):
 @route_bookings.route('/bookings/<int:booking_id>', methods=['DELETE'])
 def booking_remove(booking_id: int):
     token_data = simple_jwt.read(request.headers.get('Authorization').split(' ')[1])
-    user_perms = get_role_perms(token_data.get('role_id'))
+    user_perms = get_role_perms(token_data.get('role'))
     if user_perms.get('booking_delete', 0) or user_perms.get('booking_delete_others', 0):
         user_id = token_data.get('user')
         if user_perms.get('booking_delete_others', 0):

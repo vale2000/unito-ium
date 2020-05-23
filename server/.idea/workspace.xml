@@ -49,7 +49,7 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.lessons_public" />
+        <item itemvalue="Python.lessons" />
       </list>
     </recent_temporary>
   </component>
@@ -67,6 +67,8 @@
       <workItem from="1589994767559" duration="3790000" />
       <workItem from="1590019035274" duration="5234000" />
       <workItem from="1590058461963" duration="6393000" />
+      <workItem from="1590144398235" duration="8457000" />
+      <workItem from="1590181595334" duration="3852000" />
     </task>
     <servers />
   </component>
@@ -102,6 +104,10 @@
       <screen x="0" y="0" width="1920" height="1054" />
     </state>
     <state width="1874" height="275" key="GridCell.Tab.0.right/0.0.1920.1054@0.0.1920.1054" timestamp="1590065902962" />
+    <state x="654" y="265" width="611" height="610" key="find.popup" timestamp="1590157154480">
+      <screen x="0" y="0" width="1920" height="1054" />
+    </state>
+    <state x="654" y="265" width="611" height="610" key="find.popup/0.0.1920.1054@0.0.1920.1054" timestamp="1590157154480" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/server$lessons_public.coverage" NAME="lessons_public Coverage Results" MODIFIED="1590065900933" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/routes/lessons" />

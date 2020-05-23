@@ -17,14 +17,14 @@ def account_login():
     if req_data:
         with get_db_conn(True) as database:
             cursor = database.cursor()
-            cursor.execute("""SELECT users.id, roles.name, role_id FROM users JOIN roles ON roles.id = users.role_id 
-                                WHERE email = ? AND password = ?""", [req_data.get('email'), req_data.get('password')])
+            cursor.execute("""SELECT id, role_id FROM users WHERE email = ? AND password = ?""",
+                           [req_data.get('email'), req_data.get('password')])
             db_data = cursor.fetchone()
             cursor.close()
         if db_data:
-            if db_data[2] == 0 or db_data[2] == 2:  # TODO Fake and Teachers
+            if db_data[1] == 0 or db_data[1] == 2:  # Deleted and Teachers
                 return server_error('LOGIN_DISABLED')
-            json_token = {'user': db_data[0], 'role_name': db_data[1], 'role_id': db_data[2]}
+            json_token = {'user': db_data[0], 'role': db_data[1]}
             return make_response({'ok': True, 'token': simple_jwt.generate(json_token)})
         return server_error('LOGIN_FAILED')
     return abort(400)

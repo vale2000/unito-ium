@@ -1,4 +1,6 @@
 #!/usr/bin/python3
+import sys
+
 from flask import Flask
 from routes import route_users, route_customs, route_bookings, route_lessons
 from routes.account import route_account_public, route_account_auth
@@ -38,4 +40,4 @@ def after_request(response):
 # -------------------
 if __name__ == '__main__':
     init_db()
-    app.run(config.get('server', 'address'), config.getint('server', 'port'))
+    app.run(config.get('server', 'address'), config.getint('server', 'port'), debug=True)

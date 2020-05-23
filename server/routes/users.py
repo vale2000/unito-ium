@@ -4,7 +4,7 @@ import sqlite3
 from flask import Blueprint, request, abort, make_response
 from modules import simple_jwt
 from modules.database import get_db_conn
-from modules.utils import logged_before_request, get_role_perms, db_data_to_list
+from modules.utils import logged_before_request, get_role_perms
 from server_error import server_error
 
 route_users = Blueprint('route_users', __name__)
@@ -17,16 +17,19 @@ route_users.before_request(logged_before_request)
 @route_users.route('/users', methods=['GET'])
 def user_list():
     token_data = simple_jwt.read(request.headers.get('Authorization').split(' ')[1])
-    user_perms = get_role_perms(token_data.get('role_id'))
+    user_perms = get_role_perms(token_data.get('role'))
     if user_perms.get('user_list', 0):
         with get_db_conn(True) as database:
             cursor = database.cursor()
-            cursor.execute("""SELECT users.id, users.email, users.role_id, users.name, users.surname, users.gender
+            cursor.execute("""SELECT users.id, users.email, users.name, users.surname, users.gender, users.role_id
                                 FROM users""")
             db_data = cursor.fetchall()
-            db_desc = cursor.description
             cursor.close()
-        db_results = db_data_to_list(db_data, db_desc)
+        db_results = []
+        if db_data:
+            for row in db_data:
+                db_results.append({'id': row[0], 'email': row[1], 'name': row[2], 'surname': row[3],
+                                   'gender': row[4], 'role': {'id': row[5]}})
         return make_response({'ok': True, 'data': db_results}, 200)
     abort(401)
 
@@ -37,7 +40,7 @@ def user_list():
 @route_users.route('/users', methods=['POST'])
 def user_add():
     token_data = simple_jwt.read(request.headers.get('Authorization').split(' ')[1])
-    user_perms = get_role_perms(token_data.get('role_id'))
+    user_perms = get_role_perms(token_data.get('role'))
     req_data = request.get_json()
     if req_data:
         if user_perms.get('user_add', 0):
@@ -71,7 +74,7 @@ def user_add():
 @route_users.route('/users/<int:user_id>', methods=['GET'])
 def user_get(user_id: int):
     token_data = simple_jwt.read(request.headers.get('Authorization').split(' ')[1])
-    user_perms = get_role_perms(token_data.get('role_id'))
+    user_perms = get_role_perms(token_data.get('role'))
     if user_perms.get('user_get', 0) or user_perms.get('user_get_others', 0):
         if not user_perms.get('user_get_others', 0):
             if user_id != token_data.get('user'):
@@ -107,7 +110,7 @@ def user_get(user_id: int):
 @route_users.route('/users/<int:user_id>', methods=['PUT'])
 def user_update(user_id: int):
     token_data = simple_jwt.read(request.headers.get('Authorization').split(' ')[1])
-    user_perms = get_role_perms(token_data.get('role_id'))
+    user_perms = get_role_perms(token_data.get('role'))
     req_data = request.get_json()
     if req_data:
         if user_perms.get('user_get', 0) or user_perms.get('user_get_others', 0):
@@ -138,7 +141,7 @@ def user_update(user_id: int):
 @route_users.route('/users/<int:user_id>', methods=['DELETE'])
 def user_remove(user_id: int):
     token_data = simple_jwt.read(request.headers.get('Authorization').split(' ')[1])
-    user_perms = get_role_perms(token_data.get('role_id'))
+    user_perms = get_role_perms(token_data.get('role'))
     if user_perms.get('user_delete', 0):
         with get_db_conn() as database:
             try:
