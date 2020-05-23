@@ -23,6 +23,7 @@ abstract class BaseView extends AppCompatActivity {
     public void setContentView(int layoutResID) {
         super.setContentView(layoutResID);
         setSupportActionBar(findViewById(R.id.app_toolbar));
+        setActionBar(null);
     }
 
     @Override
@@ -33,7 +34,7 @@ abstract class BaseView extends AppCompatActivity {
                 return true;
             }
         }
-        return super.onOptionsItemSelected(item);
+        return false;
     }
 
     protected boolean isLoggedIn() {

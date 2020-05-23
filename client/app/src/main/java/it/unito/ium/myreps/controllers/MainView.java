@@ -26,6 +26,7 @@ public final class MainView extends BaseView {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.view_main);
         ButterKnife.bind(this);
 
@@ -33,7 +34,7 @@ public final class MainView extends BaseView {
         actionBar = getSupportActionBar();
 
         if (savedInstanceState == null) {
-            actionBar.setTitle("Available lessons");
+            actionBar.setTitle(getString(R.string.main_bottom_nav_lessons));
             loadFragment(new LessonsFragment());
         }
     }
@@ -46,23 +47,23 @@ public final class MainView extends BaseView {
         lastItemId = itemId;
 
         if (itemId == R.id.main_bottom_nav_lessons) {
-            actionBar.setTitle("Available lessons");
+            actionBar.setTitle(getString(R.string.main_bottom_nav_lessons));
             loadFragment(new LessonsFragment());
             return true;
         } else {
             if (isLoggedIn()) {
                 switch (itemId) {
                     case R.id.main_bottom_nav_profile:
-                        actionBar.setTitle("Profile");
+                        actionBar.setTitle(getString(R.string.main_bottom_nav_profile));
                         loadFragment(new ProfileFragment());
                         return true;
                     case R.id.main_bottom_nav_bookings:
-                        actionBar.setTitle("Bookings");
+                        actionBar.setTitle(getString(R.string.main_bottom_nav_bookings));
                         loadFragment(new BookingsFragment());
                         return true;
                 }
             } else {
-                actionBar.setTitle("Login");
+                actionBar.setTitle(getString(R.string.main_bottom_nav_login));
                 switch (itemId) {
                     case R.id.main_bottom_nav_profile:
                         loadFragment(new LoginFragment(new ProfileFragment()));
