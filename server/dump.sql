@@ -184,13 +184,12 @@ CREATE TABLE IF NOT EXISTS weeksum (
 -- ---------------------------------
 INSERT INTO weeksum (to_sum)
 VALUES
-	-- (86400),
+	(86400),
 	(172800),
 	(259200),
 	(345600),
 	(432000),
 	(518400),
-	(604800),
-	(691200);
+	(604800);
 
 COMMIT TRANSACTION;
