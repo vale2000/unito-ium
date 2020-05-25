@@ -1,0 +1,34 @@
+<resources>
+    <!-- Manifest -->
+    <string name="app_name">MyReps</string>
+
+    <!-- Menu -->
+    <string name="menu_item_search_string">Search</string>
+    <string name="menu_search_hint">Type Lesson or Professor name…</string>
+
+    <!-- Main Bottom Nav -->
+    <string name="activity_main_bnav_lessons">Lessons</string>
+    <string name="activity_main_bnav_bookings">Bookings</string>
+    <string name="activity_main_bnav_profile">Profile</string>
+    <string name="activity_main_bnav_login">Login</string>
+
+    <!-- Lessons Fragment -->
+    <string name="fragment_lesson_list_rv_empty">There are no lessons available</string>
+
+    <!-- Bookings Fragment -->
+    <string name="fragment_booking_list_rv_empty">You have no saved bookings</string>
+
+    <!-- Profile Fragment -->
+    <string name="fragment_profile_menu_disconnect">Log Out</string>
+
+    <!-- Login Fragment -->
+    <string name="fragment_login_input_email_hint">Email</string>
+    <string name="fragment_login_input_email_error_empty">This field cannot be left empty</string>
+    <string name="fragment_login_input_email_error_invalid">Please enter a valid email address</string>
+    <string name="fragment_login_input_password_hint">Password</string>
+    <string name="fragment_login_input_password_error">This field cannot be left empty</string>
+    <string name="fragment_login_button_text">Log In</string>
+
+    <!-- Rv Row Lesson -->
+    <string name="rv_row_lesson_description">%1$d teacher(s) available</string>
+</resources>
