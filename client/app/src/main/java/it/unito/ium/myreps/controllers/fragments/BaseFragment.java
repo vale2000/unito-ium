@@ -9,13 +9,16 @@ import androidx.fragment.app.Fragment;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import it.unito.ium.myreps.model.AppModel;
 import it.unito.ium.myreps.model.Model;
 import it.unito.ium.myreps.model.services.config.ConfigKey;
 
-abstract class BaseFragment extends Fragment {
+public abstract class BaseFragment extends Fragment {
     private Unbinder unbinder;
 
-    protected View createView(LayoutInflater inflater, int layout, ViewGroup container) {
+    public abstract String getTitle();
+
+    protected View bindView(LayoutInflater inflater, int layout, ViewGroup container) {
         View view = inflater.inflate(layout, container, false);
         unbinder = ButterKnife.bind(this, view);
         return view;
@@ -32,21 +35,12 @@ abstract class BaseFragment extends Fragment {
     }
 
     protected Model getModel() {
-        Activity activity = getActivity();
-        return activity != null ? (Model) activity.getApplication() : null;
+        return AppModel.getInstance();
     }
 
     protected void runOnUiThread(Runnable runnable) {
         Activity activity = getActivity();
         if (activity == null) throw new NullPointerException();
         else activity.runOnUiThread(runnable);
-    }
-
-    protected void switchFragment(int id, Fragment fragment) {
-        runOnUiThread(() -> getActivity()
-                .getSupportFragmentManager()
-                .beginTransaction()
-                .replace(id, fragment)
-                .commit());
     }
 }

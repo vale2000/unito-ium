@@ -1,6 +1,7 @@
 package it.unito.ium.myreps.controllers.fragments;
 
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,7 +9,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -22,7 +22,6 @@ import it.unito.ium.myreps.R;
 import it.unito.ium.myreps.model.services.api.ServerError;
 import it.unito.ium.myreps.model.services.config.ConfigKey;
 import it.unito.ium.myreps.model.services.config.ConfigManager;
-import it.unito.ium.myreps.utils.MailUtils;
 
 public final class LoginFragment extends BaseFragment {
     @BindView(R.id.login_input_email)
@@ -37,15 +36,11 @@ public final class LoginFragment extends BaseFragment {
     @BindView(R.id.login_input_layout_password)
     TextInputLayout pwdInputLayout;
 
-    private Fragment nextFragment;
-
-    public LoginFragment(Fragment nextFragment) {
-        this.nextFragment = nextFragment;
-    }
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = createView(inflater, R.layout.fragment_login, container);
+        View view = bindView(inflater, R.layout.fragment_login, container);
+
+        setMenuVisibility(false);
 
         ConfigManager<ConfigKey> configManager = getModel().getConfigManager();
         emailEditText.setText(configManager.getString(ConfigKey.USERDATA_EMAIL));
@@ -65,7 +60,7 @@ public final class LoginFragment extends BaseFragment {
             return;
         }
 
-        if (!MailUtils.validate(email)) {
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).find()) {
             emailInputLayout.setError(getString(R.string.fragment_login_input_email_error_invalid));
             emailEditText.requestFocus();
             return;
@@ -93,7 +88,7 @@ public final class LoginFragment extends BaseFragment {
                                 configManager.setString(ConfigKey.USERDATA_EMAIL, email);
                                 configManager.setString(ConfigKey.USERDATA_PASSWORD, password);
 
-                                switchFragment(R.id.main_frame_container, nextFragment);
+                                // switchFragment(R.id.view_main_fragments_container, nextFragment);
                                 return;
                             }
                             configManager.setString(ConfigKey.AUTH_TOKEN, null);
@@ -112,5 +107,10 @@ public final class LoginFragment extends BaseFragment {
                     ServerError finalServerError = serverError;
                     runOnUiThread(() -> Toast.makeText(getContext(), finalServerError.toString(), Toast.LENGTH_LONG).show());
                 });
+    }
+
+    @Override
+    public String getTitle() {
+        return getModel().getString(R.string.main_bottom_nav_login);
     }
 }

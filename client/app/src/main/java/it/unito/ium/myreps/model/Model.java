@@ -12,4 +12,6 @@ public interface Model {
     ConfigManager<ConfigKey> getConfigManager();
 
     ApiManager getApiManager();
+
+    String getString(int id);
 }

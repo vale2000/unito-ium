@@ -1,6 +1,9 @@
 package it.unito.ium.myreps.components;
 
-public abstract class RecyclerViewRow {
+import java.io.Serializable;
+
+public abstract class RecyclerViewRow implements Serializable {
+    private static final long serialVersionUID = -4095012894177251775L;
 
     public int getType() {
         return 1;

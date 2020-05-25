@@ -41,14 +41,17 @@ public final class ProfileFragment extends BaseFragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = createView(inflater, R.layout.fragment_profile, container);
+        View view = bindView(inflater, R.layout.fragment_profile, container);
+
         setHasOptionsMenu(true);
         loadProfileData();
+
         return view;
     }
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        menu.clear();
         inflater.inflate(R.menu.fragment_profile, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -65,7 +68,7 @@ public final class ProfileFragment extends BaseFragment {
     private void logOutAccount() {
         ConfigManager<ConfigKey> configManager = getModel().getConfigManager();
         configManager.setString(ConfigKey.AUTH_TOKEN, null);
-        switchFragment(R.id.main_frame_container, new LoginFragment(new ProfileFragment()));
+        // switchFragment(R.id.view_main_fragments_container, new LoginFragment(new ProfileFragment()));
     }
 
     private void loadProfileData() {
@@ -104,5 +107,10 @@ public final class ProfileFragment extends BaseFragment {
             ServerError finalServerError = serverError;
             runOnUiThread(() -> Toast.makeText(getContext(), finalServerError.toString(), Toast.LENGTH_SHORT).show());
         });
+    }
+
+    @Override
+    public String getTitle() {
+        return getModel().getString(R.string.main_bottom_nav_profile);
     }
 }

@@ -50,7 +50,7 @@ public final class BookingsFragment extends BaseFragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = createView(inflater, R.layout.fragment_list, container);
+        View view = bindView(inflater, R.layout.fragment_list, container);
         setHasOptionsMenu(true);
 
         emptyText.setText(R.string.fragment_bookings_list_rv_empty);
@@ -63,6 +63,7 @@ public final class BookingsFragment extends BaseFragment {
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        menu.clear();
         inflater.inflate(R.menu.fragment_rv_list, menu);
 
         SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
@@ -147,7 +148,7 @@ public final class BookingsFragment extends BaseFragment {
                         runOnUiThread(() -> {
                             rvBookingAdapter.setDataSet(bookingList);
                             swipeRefreshLayout.setRefreshing(false);
-                            emptyText.setVisibility(View.GONE);
+                            emptyText.setVisibility(bookingList.isEmpty() ? View.VISIBLE : View.GONE);
                         });
                         return;
                     }
@@ -166,10 +167,15 @@ public final class BookingsFragment extends BaseFragment {
             ServerError finalServerError = serverError;
             runOnUiThread(() -> {
                 Toast.makeText(getContext(), finalServerError.toString(), Toast.LENGTH_LONG).show();
-                swipeRefreshLayout.setRefreshing(false);
                 rvBookingAdapter.setDataSet(new ArrayList<>());
+                swipeRefreshLayout.setRefreshing(false);
                 emptyText.setVisibility(View.VISIBLE);
             });
         });
+    }
+
+    @Override
+    public String getTitle() {
+        return getModel().getString(R.string.main_bottom_nav_bookings);
     }
 }

@@ -12,15 +12,15 @@
         android:layout_height="wrap_content"/>
 
     <!-- Main -->
-    <FrameLayout
-        android:id="@+id/main_frame_container"
+        <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/view_main_fragments_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
 
     <!-- Bottom NavBar -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/main_bottom_nav"
+        android:id="@+id/view_main_bottom_nav"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"

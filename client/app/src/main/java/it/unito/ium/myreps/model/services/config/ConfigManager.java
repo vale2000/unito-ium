@@ -14,4 +14,12 @@ public interface ConfigManager<T> {
     int getInteger(T key);
 
     void setInteger(T key, int value);
+
+    interface Key<T> {
+        T get();
+
+        T get(T defValue);
+
+        void set(T value);
+    }
 }

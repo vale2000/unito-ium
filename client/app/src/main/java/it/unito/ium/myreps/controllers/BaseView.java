@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import butterknife.ButterKnife;
 import it.unito.ium.myreps.R;
 import it.unito.ium.myreps.model.Model;
 import it.unito.ium.myreps.model.services.config.ConfigKey;
@@ -22,6 +23,7 @@ abstract class BaseView extends AppCompatActivity {
     @Override
     public void setContentView(int layoutResID) {
         super.setContentView(layoutResID);
+        ButterKnife.bind(this);
         setSupportActionBar(findViewById(R.id.app_toolbar));
         setActionBar(null);
     }

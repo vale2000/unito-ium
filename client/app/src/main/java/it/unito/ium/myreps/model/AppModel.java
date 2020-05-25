@@ -10,6 +10,8 @@ import it.unito.ium.myreps.model.services.config.ConfigManager;
 import it.unito.ium.myreps.model.services.config.ConfigManagerFactory;
 
 public final class AppModel extends Application implements Model {
+    private static Model instance;
+
     private ConfigManager<ConfigKey> configManager;
     private ApiManager apiManager;
 
@@ -18,6 +20,11 @@ public final class AppModel extends Application implements Model {
         super.onCreate();
         configManager = ConfigManagerFactory.newInstance(this);
         apiManager = ApiManagerFactory.newInstance(this);
+        instance = this;
+    }
+
+    public static Model getInstance() {
+        return instance;
     }
 
     @Override

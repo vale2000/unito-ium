@@ -51,7 +51,7 @@ public final class LessonsFragment extends BaseFragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = createView(inflater, R.layout.fragment_list, container);
+        View view = bindView(inflater, R.layout.fragment_list, container);
         setHasOptionsMenu(true);
 
         emptyText.setText(R.string.fragment_lessons_list_rv_empty);
@@ -64,6 +64,7 @@ public final class LessonsFragment extends BaseFragment {
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        menu.clear();
         inflater.inflate(R.menu.fragment_rv_list, menu);
 
         SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
@@ -118,7 +119,7 @@ public final class LessonsFragment extends BaseFragment {
         recyclerView.setAdapter(rvLessonAdapter);
         rvLessonAdapter.setRowClickListener((view, item) -> {
             Intent i = new Intent(getContext(), LessonView.class);
-            i.putExtra("lesson_id", (Lesson) item);
+            i.putExtra("data", item);
             startActivity(i);
         });
 
@@ -155,7 +156,7 @@ public final class LessonsFragment extends BaseFragment {
                         runOnUiThread(() -> {
                             rvLessonAdapter.setDataSet(lessonList);
                             swipeRefreshLayout.setRefreshing(false);
-                            emptyText.setVisibility(View.GONE);
+                            emptyText.setVisibility(lessonList.isEmpty() ? View.VISIBLE : View.GONE);
                         });
                         return;
                     }
@@ -174,10 +175,15 @@ public final class LessonsFragment extends BaseFragment {
             ServerError finalServerError = serverError;
             runOnUiThread(() -> {
                 Toast.makeText(getContext(), finalServerError.toString(), Toast.LENGTH_SHORT).show();
-                swipeRefreshLayout.setRefreshing(false);
                 rvLessonAdapter.setDataSet(new ArrayList<>());
+                swipeRefreshLayout.setRefreshing(false);
                 emptyText.setVisibility(View.VISIBLE);
             });
         });
+    }
+
+    @Override
+    public String getTitle() {
+        return getModel().getString(R.string.main_bottom_nav_lessons);
     }
 }
