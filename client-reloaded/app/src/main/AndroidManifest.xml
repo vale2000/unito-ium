@@ -2,6 +2,7 @@
     package="it.unito.ium.myreps">
 
     <application
+        android:name=".logic.Model"
         android:allowBackup="true"
         android:fullBackupContent="false"
         android:icon="@mipmap/ic_launcher"

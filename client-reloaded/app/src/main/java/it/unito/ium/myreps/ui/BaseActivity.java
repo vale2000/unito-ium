@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import butterknife.ButterKnife;
 import it.unito.ium.myreps.R;
+import it.unito.ium.myreps.logic.Model;
 
 public abstract class BaseActivity extends AppCompatActivity {
     @Override
@@ -34,5 +35,9 @@ public abstract class BaseActivity extends AppCompatActivity {
             }
         }
         return false;
+    }
+
+    public Model getModel() {
+        return (Model) getApplication();
     }
 }
