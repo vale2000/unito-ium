@@ -1,8 +1,9 @@
-package it.unito.ium.myreps.ui.lesson;
+package it.unito.ium.myreps.ui.main;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 import it.unito.ium.myreps.R;
+import it.unito.ium.myreps.logic.api.objects.Lesson;
 import it.unito.ium.myreps.util.RecyclerViewRow;
 
 final class LessonListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -41,7 +43,7 @@ final class LessonListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         int layout = viewType == 0 ? R.layout.rv_row_lesson : R.layout.rv_row_separator;
         View view = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
-        return viewType == 0 ? new LessonListItem.ViewHolder(view) : new LessonListItemBreak.ViewHolder(view);
+        return viewType == 0 ? new LessonListAdapter.ViewHolder(view) : new LessonListItemBreak.ViewHolder(view);
     }
 
     @Override
@@ -50,11 +52,11 @@ final class LessonListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         switch (item.getType()) {
             case 0:
-                LessonListItem.ViewHolder itemVH = (LessonListItem.ViewHolder) holder;
-                LessonListItem itemData = (LessonListItem) item;
-                itemVH.setTitleText(itemData.getTitleText());
-                itemVH.setDescText(itemData.getDescription());
-
+                LessonListAdapter.ViewHolder itemVH = (LessonListAdapter.ViewHolder) holder;
+                Lesson itemData = (Lesson) item;
+                itemVH.setTitleText(itemData.getCourse().getName());
+                itemVH.setDescText(itemVH.itemView.getContext()
+                        .getString(R.string.activity_main_rv_row_desc, itemData.getTeachersNum()));
                 if (itemClickListener != null) {
                     itemVH.itemView.setOnClickListener(v -> itemClickListener.onClick(v, itemData));
                 }
@@ -70,6 +72,25 @@ final class LessonListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     @Override
     public int getItemCount() {
         return dataSet.size();
+    }
+
+    public final static class ViewHolder extends RecyclerView.ViewHolder {
+        private final TextView titleTextView;
+        private final TextView descTextView;
+
+        public ViewHolder(@NonNull View v) {
+            super(v);
+            titleTextView = v.findViewById(R.id.rv_row_lesson_header);
+            descTextView = v.findViewById(R.id.rv_row_lesson_description);
+        }
+
+        public void setTitleText(String s) {
+            titleTextView.setText(s);
+        }
+
+        public void setDescText(String s) {
+            descTextView.setText(s);
+        }
     }
 
     @FunctionalInterface

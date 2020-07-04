@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import it.unito.ium.myreps.logic.Model;
 
 public abstract class BaseFragment extends Fragment {
     private Unbinder unbinder;
@@ -24,5 +25,13 @@ public abstract class BaseFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    public Model getModel() {
+        return (Model) getActivity().getApplication();
+    }
+
+    public void runOnUiThread(Runnable action) {
+        getActivity().runOnUiThread(action);
     }
 }

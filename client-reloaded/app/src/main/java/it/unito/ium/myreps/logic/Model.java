@@ -15,7 +15,7 @@ public final class Model extends Application {
     public void onCreate() {
         super.onCreate();
         kvStorage = KVStorageFactory.newInstance(getApplicationContext());
-        apiManager = ApiManagerFactory.newInstance();
+        apiManager = ApiManagerFactory.newInstance(this);
     }
 
     public KVStorage getKVStorage() {

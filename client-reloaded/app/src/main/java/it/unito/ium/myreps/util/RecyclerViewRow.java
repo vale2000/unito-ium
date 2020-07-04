@@ -1,7 +1,7 @@
 package it.unito.ium.myreps.util;
 
-public interface RecyclerViewRow {
-    String getTitleText();
-
-    int getType();
+public abstract class RecyclerViewRow {
+    public int getType() {
+        return 0;
+    }
 }

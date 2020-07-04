@@ -3,13 +3,13 @@ package it.unito.ium.myreps.logic.storage;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import it.unito.ium.myreps.config.StorageConfiguration;
+import it.unito.ium.myreps.config.KVConfiguration;
 
 final class KVStorageImpl implements KVStorage {
     private final SharedPreferences sharedPreferences;
 
     public KVStorageImpl(Context context) {
-        sharedPreferences = context.getSharedPreferences(StorageConfiguration.STORAGE_KEY, Context.MODE_PRIVATE);
+        sharedPreferences = context.getSharedPreferences(KVConfiguration.STORAGE_KEY, Context.MODE_PRIVATE);
     }
 
     public String getString(String key) {
