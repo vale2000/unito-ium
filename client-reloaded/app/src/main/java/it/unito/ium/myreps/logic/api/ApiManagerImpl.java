@@ -7,6 +7,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import it.unito.ium.myreps.config.ApiConfiguration;
 import it.unito.ium.myreps.config.KVConfiguration;
@@ -18,6 +19,7 @@ import it.unito.ium.myreps.logic.storage.KVStorage;
 import it.unito.ium.myreps.ui.main.LessonListItemBreak;
 import it.unito.ium.myreps.util.RecyclerViewRow;
 import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -178,13 +180,80 @@ final class ApiManagerImpl implements ApiManager {
     }
 
     @Override
-    public void loadLesson(int id, Callback<Lesson> callback) {
+    public void loadLesson(long day, int course, Callback<Lesson> callback) {
+        String payload = String.format(Locale.getDefault(),"/%d/%d", day, course);
+        Request request = new Request.Builder()
+                .url(ApiConfiguration.HOST + ApiConfiguration.LESSONS_ENDPOINT + payload)
+                .build();
 
+        client.newCall(request).enqueue(new okhttp3.Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                callback.execute(SrvStatus.SERVER_OFFLINE, null);
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if (response.body() != null) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(response.body().string());
+                        if (jsonObject.getBoolean("ok")) {
+                            JSONObject data = jsonObject.getJSONObject("data");
+                            callback.execute(SrvStatus.OK, new Lesson(data));
+                        } else {
+                            SrvStatus srvStatus = SrvStatus.fromString(jsonObject.getString("error"));
+                            callback.execute(srvStatus, null);
+                        }
+                        return;
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                callback.execute(SrvStatus.UNKNOWN_ERROR, null);
+            }
+        });
     }
 
     @Override
     public void loadBookingList(Callback<ArrayList<RecyclerViewRow>> callback) {
+        Request request = new Request.Builder()
+                .url(ApiConfiguration.HOST + ApiConfiguration.BOOKINGS_ENDPOINT)
+                .header("Authorization", "Bearer " + token)
+                .build();
 
+        client.newCall(request).enqueue(new okhttp3.Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                callback.execute(SrvStatus.SERVER_OFFLINE, null);
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if (response.body() != null) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(response.body().string());
+                        if (jsonObject.getBoolean("ok")) {
+                            JSONArray data = jsonObject.getJSONArray("data");
+                            ArrayList<RecyclerViewRow> bookingList = new ArrayList<>();
+
+                            for (int i = 0; i < data.length(); i++) {
+                                JSONObject jsonLesson = data.getJSONObject(i);
+                                bookingList.add(new Booking(jsonLesson));
+                            }
+
+                            callback.execute(SrvStatus.OK, bookingList);
+                        } else {
+                            SrvStatus srvStatus = SrvStatus.fromString(jsonObject.getString("error"));
+                            callback.execute(srvStatus, null);
+                        }
+                        return;
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                callback.execute(SrvStatus.UNKNOWN_ERROR, null);
+            }
+        });
     }
 
     @Override

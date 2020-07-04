@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -19,6 +20,7 @@ import it.unito.ium.myreps.R;
 import it.unito.ium.myreps.config.KVConfiguration;
 import it.unito.ium.myreps.logic.api.ApiManager;
 import it.unito.ium.myreps.logic.api.SrvStatus;
+import it.unito.ium.myreps.logic.api.objects.Lesson;
 import it.unito.ium.myreps.logic.storage.KVStorage;
 import it.unito.ium.myreps.ui.BaseActivity;
 import it.unito.ium.myreps.ui.account.AccountActivity;
@@ -72,7 +74,8 @@ public final class MainActivity extends BaseActivity {
         lessonListAdapter = new LessonListAdapter();
         recyclerView.setAdapter(lessonListAdapter);
         lessonListAdapter.setItemClickListener((view, item) -> {
-            // TODO on CLICK
+            Lesson lesson = (Lesson) item;
+            loadLesson(lesson.getDay(), lesson.getCourse().getID());
         });
 
         swipeRefreshLayout.setOnRefreshListener(this::loadLessonList);
@@ -83,11 +86,45 @@ public final class MainActivity extends BaseActivity {
 
         ApiManager apiManager = getModel().getApiManager();
         apiManager.loadLessonList((status, response) -> runOnUiThread(() -> {
-            if (status == SrvStatus.OK) lessonListAdapter.setDataSet(response);
-            else Toast.makeText(this, status.toString(), Toast.LENGTH_LONG).show();
+            if (status == SrvStatus.OK) {
+                lessonListAdapter.setDataSet(response);
+            } else {
+                Toast.makeText(this, status.toString(), Toast.LENGTH_LONG).show();
+                lessonListAdapter.setDataSet(null);
+            }
 
             emptyText.setVisibility((response == null || response.isEmpty()) ? View.VISIBLE : View.GONE);
             swipeRefreshLayout.setRefreshing(false);
         }));
+    }
+
+    private void loadLesson(long day, int course) {
+        ApiManager apiManager = getModel().getApiManager();
+        apiManager.loadLesson(day, course, (status, response) -> {
+            if (status == SrvStatus.OK) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle(R.string.activity_main_select_teacher);
+
+                String[] teachers = new String[response.getTeachersNum()];
+                for (int i = 0; i < teachers.length; i++) {
+                    teachers[i] = response.getTeacher(i).getFullName();
+                }
+
+                builder.setItems(teachers, (dialog, which) -> {
+                    AlertDialog.Builder builder2 = new AlertDialog.Builder(MainActivity.this);
+                    builder2.setTitle(R.string.activity_main_select_hours);
+
+
+
+
+
+                    runOnUiThread(() -> builder2.create().show());
+                });
+
+                runOnUiThread(() -> builder.create().show());
+            } else {
+                Toast.makeText(this, status.toString(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }

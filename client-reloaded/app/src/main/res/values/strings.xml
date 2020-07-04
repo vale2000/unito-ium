@@ -6,6 +6,9 @@
     <string name="activity_main_list_account_goto">Account</string>
     <string name="activity_main_rv_empty">There are no lessons available</string>
     <string name="activity_main_rv_row_desc">%1$d teacher(s) available</string>
+    <string name="activity_main_select_teacher">Select teacher</string>
+    <string name="activity_main_select_hours">Select one or more hours</string>
+
 
     <!-- Login Activity -->
     <string name="activity_login_input_email_hint">Email</string>

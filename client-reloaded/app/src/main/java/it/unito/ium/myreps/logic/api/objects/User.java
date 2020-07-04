@@ -5,11 +5,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.util.Locale;
 
 import it.unito.ium.myreps.util.RecyclerViewRow;
 
 public final class User extends RecyclerViewRow implements Serializable {
-    private static final long serialVersionUID = 3184088961832375562L;
+    private static final long serialVersionUID = -5003270936286810786L;
 
     private final int id;
     private final String email;
@@ -83,6 +84,10 @@ public final class User extends RecyclerViewRow implements Serializable {
 
     public String getSurname() {
         return surname;
+    }
+
+    public String getFullName() {
+        return String.format(Locale.getDefault(), "%s %s", name, surname);
     }
 
     public Gender getGender() {

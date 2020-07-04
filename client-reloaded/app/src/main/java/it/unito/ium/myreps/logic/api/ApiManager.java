@@ -23,7 +23,7 @@ public interface ApiManager {
 
     void loadLessonList(Callback<ArrayList<RecyclerViewRow>> callback);
 
-    void loadLesson(int id, Callback<Lesson> callback);
+    void loadLesson(long day, int course, Callback<Lesson> callback);
 
     void loadBookingList(Callback<ArrayList<RecyclerViewRow>> callback);
 

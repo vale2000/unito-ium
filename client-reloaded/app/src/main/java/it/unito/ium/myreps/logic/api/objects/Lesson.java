@@ -20,6 +20,8 @@ public final class Lesson extends RecyclerViewRow implements Serializable {
     private static final SimpleDateFormat DATE_WEEK_FORMAT = new SimpleDateFormat("EEEE", Locale.UK);
 
     private final Date date;
+    private final long longDay;
+
     private final Course course;
 
     private final int teachersNum;
@@ -29,13 +31,16 @@ public final class Lesson extends RecyclerViewRow implements Serializable {
         try {
             this.course = jsonLesson.has("course") ? new Course(jsonLesson.getJSONObject("course")) : null;
 
+            long longDay = -1;
             Date date = null;
             if (jsonLesson.has("day")) {
                 long day = jsonLesson.getLong("day");
                 int hour = jsonLesson.has("hour") ? jsonLesson.getInt("hour") : 0;
                 Instant instant = Instant.ofEpochSecond(day + hour);
+                longDay = day;
                 date = Date.from(instant);
             }
+            this.longDay = longDay;
             this.date = date;
 
             User[] teachers = null;
@@ -63,6 +68,10 @@ public final class Lesson extends RecyclerViewRow implements Serializable {
 
     public Date getDate() {
         return date;
+    }
+
+    public long getDay() {
+        return longDay;
     }
 
     public String getYearDay() {

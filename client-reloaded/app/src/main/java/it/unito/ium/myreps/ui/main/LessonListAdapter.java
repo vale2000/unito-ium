@@ -24,7 +24,7 @@ final class LessonListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     public void setDataSet(ArrayList<RecyclerViewRow> dataSet) {
-        this.dataSet = dataSet;
+        this.dataSet = dataSet != null? dataSet : new ArrayList<>();
         notifyDataSetChanged();
     }
 
