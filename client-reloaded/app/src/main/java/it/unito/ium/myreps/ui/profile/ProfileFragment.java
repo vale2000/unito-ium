@@ -36,9 +36,10 @@ public final class ProfileFragment extends BaseFragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = bindView(R.layout.fragment_profile, inflater, container);
         setHasOptionsMenu(true);
         loadProfileData();
-        return bindView(R.layout.fragment_profile, inflater, container);
+        return view;
     }
 
     private void logOutAccount() {
