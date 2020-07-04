@@ -20,7 +20,7 @@ public final class LessonListSeparator {
 
         public ViewHolder(@NonNull View v) {
             super(v);
-            separatorHeader = v.findViewById(R.id.rv_row_separator_header);
+            separatorHeader = v.findViewById(R.id.rv_row_separator_text);
         }
 
         public void setHeader(String s) {
