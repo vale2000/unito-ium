@@ -3,7 +3,9 @@ package it.unito.ium.myreps.logic;
 import android.app.Application;
 
 import it.unito.ium.myreps.logic.api.ApiManager;
-import it.unito.ium.myreps.logic.config.KVStorage;
+import it.unito.ium.myreps.logic.api.ApiManagerFactory;
+import it.unito.ium.myreps.logic.storage.KVStorage;
+import it.unito.ium.myreps.logic.storage.KVStorageFactory;
 
 public final class Model extends Application {
     private KVStorage kvStorage;
@@ -12,11 +14,11 @@ public final class Model extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        kvStorage = new KVStorage(getApplicationContext());
-        apiManager = new ApiManager();
+        kvStorage = KVStorageFactory.newInstance(getApplicationContext());
+        apiManager = ApiManagerFactory.newInstance();
     }
 
-    public KVStorage getKvStorage() {
+    public KVStorage getKVStorage() {
         return kvStorage;
     }
 

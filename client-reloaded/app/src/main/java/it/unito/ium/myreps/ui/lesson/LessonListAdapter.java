@@ -1,36 +1,81 @@
 package it.unito.ium.myreps.ui.lesson;
 
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-final class LessonListAdapter extends RecyclerView.Adapter<LessonListAdapter.ViewHolder> {
-    @NonNull
-    @Override
-    public LessonListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+import java.util.ArrayList;
+
+import it.unito.ium.myreps.R;
+import it.unito.ium.myreps.util.RecyclerViewRow;
+
+final class LessonListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private ArrayList<RecyclerViewRow> dataSet;
+    private LessonListAdapter.itemClickListener itemClickListener;
+
+
+    public LessonListAdapter() {
+        this.dataSet = new ArrayList<>();
+        itemClickListener = null;
+    }
+
+    public void setDataSet(ArrayList<RecyclerViewRow> dataSet) {
+        this.dataSet = dataSet;
+        notifyDataSetChanged();
+    }
+
+    public void setItemClickListener(LessonListAdapter.itemClickListener itemClickListener) {
+        this.itemClickListener = itemClickListener;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull LessonListAdapter.ViewHolder holder, int position) {
+    public int getItemViewType(int position) {
+        RecyclerViewRow item = dataSet.get(position);
+        return item.getType();
+    }
 
+    @NonNull
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        int layout = viewType == 0 ? R.layout.rv_row_lesson : R.layout.rv_row_separator;
+        View view = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
+        return viewType == 0 ? new LessonListItem.ViewHolder(view) : new LessonListItemBreak.ViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        RecyclerViewRow item = dataSet.get(position);
+
+        switch (item.getType()) {
+            case 0:
+                LessonListItem.ViewHolder itemVH = (LessonListItem.ViewHolder) holder;
+                LessonListItem itemData = (LessonListItem) item;
+                itemVH.setLessonTitle(itemData.getTitleText());
+                itemVH.setLessonDesc(itemData.getDescText());
+
+                if (itemClickListener != null) {
+                    itemVH.itemView.setOnClickListener(v -> itemClickListener.onClick(v, itemData));
+                }
+
+                break;
+            case 1:
+                LessonListItemBreak.ViewHolder breakVH = (LessonListItemBreak.ViewHolder) holder;
+                LessonListItemBreak breakData = (LessonListItemBreak) item;
+                breakVH.setBreakText(breakData.getText());
+                break;
+        }
     }
 
     @Override
     public int getItemCount() {
-        return 0;
-    }
-
-    class ViewHolder extends RecyclerView.ViewHolder {
-        public ViewHolder(@NonNull View v) {
-            super(v);
-        }
+        return dataSet.size();
     }
 
     @FunctionalInterface
-    public interface onItemClickListener {
-        void onClick(View view, String item);
+    public interface itemClickListener {
+        void onClick(View view, RecyclerViewRow item);
     }
 }

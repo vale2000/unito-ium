@@ -1,4 +1,4 @@
 package it.unito.ium.myreps.logic.api.services;
 
-public final class BookingsListService {
+public final class BookingsListService extends ApiService{
 }
