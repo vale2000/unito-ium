@@ -1,30 +1,37 @@
 package it.unito.ium.myreps.ui.main;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.viewpager2.widget.ViewPager2;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import butterknife.BindView;
 import it.unito.ium.myreps.R;
 import it.unito.ium.myreps.ui.BaseActivity;
+import it.unito.ium.myreps.ui.login.LoginActivity;
 
 public final class MainActivity extends BaseActivity {
-    @BindView(R.id.activity_main_frags_container)
-    ViewPager2 viewPager;
-
-    @BindView(R.id.activity_main_bnav)
-    BottomNavigationView bottomNavView;
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setTheme(R.style.AppTheme); // Restore AppTheme
+        setContentView(R.layout.activity_main);
+    }
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
-        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), getLifecycle(), getSupportActionBar());
-        viewPagerAdapter.bindBottomNavigationView(bottomNavView);
-        viewPagerAdapter.bindViewPager(viewPager);
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.activity_main_account_goto) {
+            startActivity(new Intent(this, LoginActivity.class));
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

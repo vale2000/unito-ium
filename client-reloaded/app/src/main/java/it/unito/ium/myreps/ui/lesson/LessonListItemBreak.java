@@ -10,14 +10,15 @@ import it.unito.ium.myreps.R;
 import it.unito.ium.myreps.util.RecyclerViewRow;
 
 public final class LessonListItemBreak implements RecyclerViewRow {
-    private final String text;
+    private final String title;
 
-    public LessonListItemBreak(String text) {
-        this.text = text;
+    public LessonListItemBreak(String title) {
+        this.title = title;
     }
 
-    public String getText() {
-        return text;
+    @Override
+    public String getTitleText() {
+        return title;
     }
 
     @Override
@@ -26,15 +27,15 @@ public final class LessonListItemBreak implements RecyclerViewRow {
     }
 
     public final static class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView textView;
+        private final TextView titleTextView;
 
         public ViewHolder(@NonNull View v) {
             super(v);
-            textView = v.findViewById(R.id.rv_row_separator_text);
+            titleTextView = v.findViewById(R.id.rv_row_separator_text);
         }
 
-        public void setBreakText(String s) {
-            textView.setText(s);
+        public void setTitleText(String s) {
+            titleTextView.setText(s);
         }
     }
 }

@@ -12,18 +12,19 @@
         android:theme="@style/AppTheme.StartUp">
         <activity
             android:name=".ui.main.MainActivity"
-            android:launchMode="singleTop">
-            <meta-data
-                android:name="android.app.searchable"
-                android:resource="@xml/searchable" />
+            android:launchMode="singleInstance">
             <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.lesson.LessonActivity" />
-        <activity android:name=".ui.booking.BookingActivity" />
+        <activity
+            android:name=".ui.login.LoginActivity"
+            android:launchMode="singleInstance"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".ui.account.AccountActivity"
+            android:launchMode="singleInstance"
+            android:theme="@style/AppTheme" />
     </application>
 </manifest>

@@ -16,9 +16,8 @@ final class LessonListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private ArrayList<RecyclerViewRow> dataSet;
     private LessonListAdapter.itemClickListener itemClickListener;
 
-
     public LessonListAdapter() {
-        this.dataSet = new ArrayList<>();
+        dataSet = new ArrayList<>();
         itemClickListener = null;
     }
 
@@ -53,18 +52,17 @@ final class LessonListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             case 0:
                 LessonListItem.ViewHolder itemVH = (LessonListItem.ViewHolder) holder;
                 LessonListItem itemData = (LessonListItem) item;
-                itemVH.setLessonTitle(itemData.getTitleText());
-                itemVH.setLessonDesc(itemData.getDescText());
+                itemVH.setTitleText(itemData.getTitleText());
+                itemVH.setDescText(itemData.getDescription());
 
                 if (itemClickListener != null) {
                     itemVH.itemView.setOnClickListener(v -> itemClickListener.onClick(v, itemData));
                 }
-
                 break;
             case 1:
                 LessonListItemBreak.ViewHolder breakVH = (LessonListItemBreak.ViewHolder) holder;
                 LessonListItemBreak breakData = (LessonListItemBreak) item;
-                breakVH.setBreakText(breakData.getText());
+                breakVH.setTitleText(breakData.getTitleText());
                 break;
         }
     }

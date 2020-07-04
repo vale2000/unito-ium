@@ -1,4 +1,4 @@
-package it.unito.ium.myreps.ui.main;
+package it.unito.ium.myreps.ui.account;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -16,22 +16,20 @@ import java.util.List;
 import it.unito.ium.myreps.R;
 import it.unito.ium.myreps.ui.BaseFragment;
 import it.unito.ium.myreps.ui.booking.BookingListFragment;
-import it.unito.ium.myreps.ui.lesson.LessonListFragment;
 import it.unito.ium.myreps.ui.profile.ProfileFragment;
 
-final class ViewPagerAdapter extends FragmentStateAdapter {
+public final class AccountPagerAdapter extends FragmentStateAdapter {
     private final List<BaseFragment> fragmentList;
     private ViewPager2 viewPager;
     private BottomNavigationView bottomNavView;
     private ActionBar actionBar;
 
 
-    ViewPagerAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle, ActionBar actionBar) {
+    AccountPagerAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle, ActionBar actionBar) {
         super(fragmentManager, lifecycle);
         this.actionBar = actionBar;
         fragmentList = new ArrayList<>();
 
-        fragmentList.add(new LessonListFragment());
         fragmentList.add(new BookingListFragment());
         fragmentList.add(new ProfileFragment());
     }
@@ -47,17 +45,14 @@ final class ViewPagerAdapter extends FragmentStateAdapter {
         return fragmentList.size();
     }
 
-    void bindBottomNavigationView(BottomNavigationView bottomNavView) {
+    public void bindBottomNavigationView(BottomNavigationView bottomNavView) {
         bottomNavView.setOnNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
-                case R.id.activity_main_bnav_lessons:
+                case R.id.activity_account_bnav_bookings:
                     viewPager.setCurrentItem(0);
                     return true;
-                case R.id.activity_main_bnav_bookings:
+                case R.id.activity_account_bnav_profile:
                     viewPager.setCurrentItem(1);
-                    return true;
-                case R.id.activity_main_bnav_profile:
-                    viewPager.setCurrentItem(2);
                     return true;
             }
             return false;
@@ -66,24 +61,21 @@ final class ViewPagerAdapter extends FragmentStateAdapter {
         this.bottomNavView = bottomNavView;
     }
 
-    void bindViewPager(ViewPager2 viewPager) {
+    public void bindViewPager(ViewPager2 viewPager) {
         viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
                 switch (position) {
                     case 0:
-                        bottomNavView.setSelectedItemId(R.id.activity_main_bnav_lessons);
+                        bottomNavView.setSelectedItemId(R.id.activity_account_bnav_bookings);
+                        actionBar.setTitle(R.string.activity_account_bnav_bookings);
                         break;
                     case 1:
-                        bottomNavView.setSelectedItemId(R.id.activity_main_bnav_bookings);
-                        break;
-                    case 2:
-                        bottomNavView.setSelectedItemId(R.id.activity_main_bnav_profile);
+                        bottomNavView.setSelectedItemId(R.id.activity_account_bnav_profile);
+                        actionBar.setTitle(R.string.activity_account_bnav_profile);
                         break;
                 }
-
-                actionBar.setTitle(fragmentList.get(position).getTitle());
             }
         });
 

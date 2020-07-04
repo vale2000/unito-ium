@@ -9,21 +9,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import it.unito.ium.myreps.R;
 import it.unito.ium.myreps.util.RecyclerViewRow;
 
-public class LessonListItem implements RecyclerViewRow {
-    private final String titleText;
-    private final String descText;
+public final class LessonListItem implements RecyclerViewRow {
+    private final String title;
+    private final String description;
 
-    public LessonListItem(String titleText, String descText) {
-        this.titleText = titleText;
-        this.descText = descText;
+    public LessonListItem(String title, String description) {
+        this.title = title;
+        this.description = description;
     }
 
     public String getTitleText() {
-        return titleText;
+        return title;
     }
 
-    public String getDescText() {
-        return descText;
+    public String getDescription() {
+        return description;
     }
 
     @Override
@@ -32,21 +32,21 @@ public class LessonListItem implements RecyclerViewRow {
     }
 
     public final static class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView lessonTitle;
-        private final TextView lessonDesc;
+        private final TextView titleTextView;
+        private final TextView descTextView;
 
         public ViewHolder(@NonNull View v) {
             super(v);
-            lessonTitle = v.findViewById(R.id.rv_row_lesson_header);
-            lessonDesc = v.findViewById(R.id.rv_row_lesson_description);
+            titleTextView = v.findViewById(R.id.rv_row_lesson_header);
+            descTextView = v.findViewById(R.id.rv_row_lesson_description);
         }
 
-        public void setLessonTitle(String s) {
-            lessonTitle.setText(s);
+        public void setTitleText(String s) {
+            titleTextView.setText(s);
         }
 
-        public void setLessonDesc(String s) {
-            lessonDesc.setText(s);
+        public void setDescText(String s) {
+            descTextView.setText(s);
         }
     }
 }
