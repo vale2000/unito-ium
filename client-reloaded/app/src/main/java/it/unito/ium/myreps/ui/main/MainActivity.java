@@ -9,15 +9,19 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import it.unito.ium.myreps.R;
+import it.unito.ium.myreps.config.StorageConfiguration;
+import it.unito.ium.myreps.logic.storage.KVStorage;
 import it.unito.ium.myreps.ui.BaseActivity;
+import it.unito.ium.myreps.ui.account.AccountActivity;
 import it.unito.ium.myreps.ui.login.LoginActivity;
 
 public final class MainActivity extends BaseActivity {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTheme(R.style.AppTheme); // Restore AppTheme
+        setTheme(R.style.AppTheme); // Restore App Theme
         setContentView(R.layout.activity_main);
+        loadLessonList();
     }
 
     @Override
@@ -28,10 +32,16 @@ public final class MainActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        KVStorage kvStorage = getModel().getKVStorage();
+        boolean loggedIn = kvStorage.getString(StorageConfiguration.ACCOUNT_JWT) != null;
         if (item.getItemId() == R.id.activity_main_account_goto) {
-            startActivity(new Intent(this, LoginActivity.class));
+            startActivity(new Intent(this, loggedIn ? AccountActivity.class : LoginActivity.class));
             return true;
         }
-        return super.onOptionsItemSelected(item);
+        return false;
+    }
+
+    private void loadLessonList() {
+
     }
 }
