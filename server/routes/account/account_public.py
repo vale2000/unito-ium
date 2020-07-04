@@ -25,7 +25,8 @@ def account_login():
             if db_data[1] == 0 or db_data[1] == 2:  # Deleted and Teachers
                 return server_error('LOGIN_DISABLED')
             json_token = {'user': db_data[0], 'role': db_data[1]}
-            return make_response({'ok': True, 'token': simple_jwt.generate(json_token)})
+            return make_response({'ok': True, 'data': {'user_id': db_data[0],
+                                                       'token': simple_jwt.generate(json_token)}})
         return server_error('LOGIN_FAILED')
     return abort(400)
 
