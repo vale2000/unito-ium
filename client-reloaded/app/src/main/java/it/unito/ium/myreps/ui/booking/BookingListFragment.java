@@ -24,16 +24,13 @@ import it.unito.ium.myreps.logic.api.objects.Booking;
 import it.unito.ium.myreps.ui.BaseFragment;
 
 public final class BookingListFragment extends BaseFragment {
-    private BookingListAdapter bookingListAdapter;
-
     @BindView(R.id.fragment_list_swiperefresh)
     SwipeRefreshLayout swipeRefreshLayout;
-
     @BindView(R.id.fragment_list_recyclerview)
     RecyclerView recyclerView;
-
     @BindView(R.id.fragment_list_text_empty)
     TextView emptyText;
+    private BookingListAdapter bookingListAdapter;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

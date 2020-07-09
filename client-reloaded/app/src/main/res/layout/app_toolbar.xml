@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:theme="@style/AppTheme.Toolbar"
-    app:popupTheme="@style/Theme.MaterialComponents.Light">
+    app:popupTheme="@style/Theme.MaterialComponents.Light"
+    app:theme="@style/AppTheme.Toolbar">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/app_toolbar"

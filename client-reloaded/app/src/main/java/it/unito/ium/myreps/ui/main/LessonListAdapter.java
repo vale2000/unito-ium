@@ -75,6 +75,11 @@ final class LessonListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         return dataSet.size();
     }
 
+    @FunctionalInterface
+    public interface itemClickListener {
+        void onClick(View view, int position, RecyclerViewRow item);
+    }
+
     public final static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView titleTextView;
         private final TextView descTextView;
@@ -92,10 +97,5 @@ final class LessonListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         public void setDescText(String s) {
             descTextView.setText(s);
         }
-    }
-
-    @FunctionalInterface
-    public interface itemClickListener {
-        void onClick(View view, int position, RecyclerViewRow item);
     }
 }

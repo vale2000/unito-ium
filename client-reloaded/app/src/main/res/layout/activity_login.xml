@@ -28,8 +28,8 @@
             android:id="@+id/activity_login_input_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textEmailAddress"
             android:hint="@string/activity_login_input_email_hint"
+            android:inputType="textEmailAddress"
             android:singleLine="true" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -49,8 +49,8 @@
             android:id="@+id/activity_login_input_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPassword"
             android:hint="@string/activity_login_input_password_hint"
+            android:inputType="textPassword"
             android:singleLine="true" />
     </com.google.android.material.textfield.TextInputLayout>
 

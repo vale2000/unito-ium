@@ -13,9 +13,8 @@ public final class Booking extends RecyclerViewRow implements Serializable {
     private static final long serialVersionUID = -4401831976372141659L;
 
     private final int id;
-    private Status status;
-
     private final Lesson lesson;
+    private Status status;
 
     public Booking(JSONObject jsonBooking) {
         try {

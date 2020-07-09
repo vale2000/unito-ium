@@ -2,7 +2,7 @@ package it.unito.ium.myreps.constants;
 
 public class ApiConstants {
     // Server host
-    public final static String HOST = "http://192.168.1.10:8080"; //"http://10.0.2.2:8080";
+    public final static String HOST = "http://10.0.2.2:8080";
 
     // Account end-points
     // Login end-point
