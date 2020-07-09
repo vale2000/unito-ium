@@ -2,6 +2,7 @@ package it.unito.ium.myreps.ui.login;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -21,7 +22,7 @@ import it.unito.ium.myreps.ui.account.AccountActivity;
 
 public class LoginActivity extends BaseActivity {
     @BindView(R.id.activity_login_input_email)
-    TextInputEditText loginEditText;
+    TextInputEditText emailEditText;
 
     @BindView(R.id.activity_login_input_password)
     TextInputEditText pwdEditText;
@@ -35,29 +36,49 @@ public class LoginActivity extends BaseActivity {
         setContentView(R.layout.activity_login);
 
         KVStorage kvStorage = getModel().getKVStorage();
-        loginEditText.setText(kvStorage.getString(StorageConstants.ACCOUNT_EMAIL, ""));
+        emailEditText.setText(kvStorage.getString(StorageConstants.ACCOUNT_EMAIL, ""));
     }
 
     @OnClick(R.id.activity_login_button_exec)
     public void onLoginClick() {
         ApiManager apiManager = getModel().getApiManager();
-        disableView(true);
 
-        apiManager.setCredentials(loginEditText.getText().toString(), pwdEditText.getText().toString())
-                .doLogin((status, response) -> {
-                    if (status == SrvStatus.OK) {
-                        startActivity(new Intent(this, AccountActivity.class));
-                        finish();
-                    } else {
-                        runOnUiThread(() -> Toast.makeText(this, status.toString(), Toast.LENGTH_SHORT).show());
-                        disableView(false);
-                    }
-                });
+        String email = emailEditText.getText().toString();
+        String password = pwdEditText.getText().toString();
+
+        if (email.isEmpty()) {
+            emailEditText.setError(getString(R.string.activity_login_input_email_error_empty));
+            emailEditText.requestFocus();
+            return;
+        }
+
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).find()) {
+            emailEditText.setError(getString(R.string.activity_login_input_email_error_invalid));
+            emailEditText.requestFocus();
+            return;
+        }
+
+        if (password.isEmpty()) {
+            pwdEditText.setError(getString(R.string.activity_login_input_email_error_empty));
+            pwdEditText.requestFocus();
+            return;
+        }
+
+        disableView(true);
+        apiManager.setCredentials(email, password).doLogin((status, response) -> {
+            if (status == SrvStatus.OK) {
+                startActivity(new Intent(this, AccountActivity.class));
+                finish();
+            } else {
+                runOnUiThread(() -> Toast.makeText(this, status.toString(), Toast.LENGTH_SHORT).show());
+                disableView(false);
+            }
+        });
     }
 
     private void disableView(boolean bool) {
         runOnUiThread(() -> {
-            loginEditText.setEnabled(!bool);
+            emailEditText.setEnabled(!bool);
             pwdEditText.setEnabled(!bool);
             execButton.setEnabled(!bool);
         });
