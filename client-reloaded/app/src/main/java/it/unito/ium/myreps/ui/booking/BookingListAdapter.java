@@ -82,6 +82,11 @@ final class BookingListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         return dataSet.size();
     }
 
+    @FunctionalInterface
+    public interface itemClickListener {
+        void onClick(View view, int position, RecyclerViewRow item);
+    }
+
     public final static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView titleTextView;
         private final TextView statusTextView;
@@ -111,10 +116,5 @@ final class BookingListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         public void setDateText(String s) {
             dateTextView.setText(s);
         }
-    }
-
-    @FunctionalInterface
-    public interface itemClickListener {
-        void onClick(View view, int position, RecyclerViewRow item);
     }
 }

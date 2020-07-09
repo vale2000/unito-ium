@@ -13,12 +13,10 @@ import java.util.Locale;
 import it.unito.ium.myreps.util.RecyclerViewRow;
 
 public final class Lesson extends RecyclerViewRow implements Serializable {
-    private static final long serialVersionUID = -1609365345742781595L;
-
     public static final SimpleDateFormat DATE_YEAR_FORMAT = new SimpleDateFormat("dd/MM/yyyy", Locale.UK);
     public static final SimpleDateFormat DATE_HOUR_FORMAT = new SimpleDateFormat("HH:mm", Locale.UK);
     public static final SimpleDateFormat DATE_WEEK_FORMAT = new SimpleDateFormat("EEEE", Locale.UK);
-
+    private static final long serialVersionUID = -1609365345742781595L;
     private final Date date;
     private final long longDay;
 
