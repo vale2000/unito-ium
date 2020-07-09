@@ -146,6 +146,11 @@ public class LessonListFragment extends BaseFragment {
                                     return;
                                 }
 
+                                if (selectedHours.isEmpty()) {
+                                    Toast.makeText(getContext(), getString(R.string.activity_main_select_hours_please), Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
+
                                 apiManager.newBooking(teacher.getID(), item.getCourse().getID(), item.getDay(),
                                         selectedHours, (status1, response1) -> runOnUiThread(() -> {
                                             if (status1 == SrvStatus.OK && response1) {
