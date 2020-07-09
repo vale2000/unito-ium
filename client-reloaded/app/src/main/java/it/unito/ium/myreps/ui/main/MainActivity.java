@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import it.unito.ium.myreps.R;
 import it.unito.ium.myreps.constants.StorageConstants;
+import it.unito.ium.myreps.logic.api.ApiManager;
 import it.unito.ium.myreps.logic.storage.KVStorage;
 import it.unito.ium.myreps.ui.BaseActivity;
 import it.unito.ium.myreps.ui.account.AccountActivity;
@@ -36,7 +37,7 @@ public final class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
 
         // TODO
-        ArrayList<ArrayList<RecyclerViewRow>> listOfLists = new ArrayList<>();
+        ArrayList<ArrayList<RecyclerViewRow>> listOfLists = loadLessonLists();
 
         LessonListPageAdapter lessonListPageAdapter = new LessonListPageAdapter(getSupportFragmentManager(), getLifecycle(), listOfLists);
         lessonListPageAdapter.bindViewPager(viewPager);
@@ -66,6 +67,16 @@ public final class MainActivity extends BaseActivity {
             return true;
         }
         return false;
+    }
+
+    // TODO
+    private ArrayList<ArrayList<RecyclerViewRow>> loadLessonLists() {
+        ArrayList<ArrayList<RecyclerViewRow>> listOfLists = new ArrayList<>();
+
+        ApiManager apiManager = getModel().getApiManager();
+        apiManager.loadLessonList((status, response) -> listOfLists.addAll(response));
+
+        return listOfLists;
     }
 
     /*

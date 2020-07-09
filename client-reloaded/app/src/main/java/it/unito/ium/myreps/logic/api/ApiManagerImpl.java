@@ -134,7 +134,7 @@ final class ApiManagerImpl implements ApiManager {
     }
 
     @Override
-    public void loadLessonList(Callback<ArrayList<RecyclerViewRow>> callback) {
+    public void loadLessonList(Callback<ArrayList<ArrayList<RecyclerViewRow>>> callback) {
         Request request = new Request.Builder()
                 .url(ApiConstants.HOST + ApiConstants.LESSONS_ENDPOINT)
                 .build();
@@ -150,7 +150,31 @@ final class ApiManagerImpl implements ApiManager {
                 if (response.body() != null) {
                     try {
                         JSONObject jsonObject = new JSONObject(response.body().string());
+                        ArrayList<ArrayList<RecyclerViewRow>> listOfLists = new ArrayList<>();
                         if (jsonObject.getBoolean("ok")) {
+                            JSONArray data = jsonObject.getJSONArray("data");
+
+                            String lastDay = (new Lesson(data.getJSONObject(0))).getYearDay();
+                            ArrayList<RecyclerViewRow> list = new ArrayList<>();
+
+                            // TODO
+
+                            for (int i = 0; i < data.length(); i++) {
+                                JSONObject jsonLesson = data.getJSONObject(i);
+                                Lesson lesson = new Lesson(jsonLesson);
+
+                                if (!lastDay.equals(lesson.getYearDay())) {
+                                    lastDay = lesson.getYearDay();
+                                    listOfLists.add(new ArrayList<>(list));
+                                    list = new ArrayList<>();
+                                }
+
+                                list.add(lesson);
+                            }
+
+                            callback.execute(SrvStatus.OK, listOfLists);
+
+                            /*
                             String lastDay = "NULL";
                             JSONArray data = jsonObject.getJSONArray("data");
                             ArrayList<RecyclerViewRow> lessonList = new ArrayList<>();
@@ -167,7 +191,7 @@ final class ApiManagerImpl implements ApiManager {
                                 lessonList.add(lesson);
                             }
 
-                            callback.execute(SrvStatus.OK, lessonList);
+                            callback.execute(SrvStatus.OK, lessonList);*/
                         } else {
                             SrvStatus srvStatus = SrvStatus.fromString(jsonObject.getString("error"));
                             checkAuthToken(srvStatus);

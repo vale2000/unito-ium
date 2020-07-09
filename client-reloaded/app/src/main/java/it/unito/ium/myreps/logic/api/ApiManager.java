@@ -21,7 +21,10 @@ public interface ApiManager {
 
     void loadProfile(Callback<User> callback);
 
-    void loadLessonList(Callback<ArrayList<RecyclerViewRow>> callback);
+    // void loadLessonList(Callback<ArrayList<RecyclerViewRow>> callback);
+    void loadLessonList(Callback<ArrayList<ArrayList<RecyclerViewRow>>> callback);
+
+    void loadLessonList(long day, Callback<ArrayList<ArrayList<RecyclerViewRow>>> callback);
 
     void loadLesson(long day, int course, Callback<Lesson> callback);
 
