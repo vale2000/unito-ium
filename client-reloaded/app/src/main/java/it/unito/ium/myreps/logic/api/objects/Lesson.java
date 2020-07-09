@@ -37,8 +37,8 @@ public final class Lesson extends RecyclerViewRow implements Serializable {
                 long day = jsonLesson.getLong("day");
                 int hour = jsonLesson.has("hour") ? jsonLesson.getInt("hour") : 0;
                 Instant instant = Instant.ofEpochSecond(day + hour);
-                longDay = day;
                 date = Date.from(instant);
+                longDay = day;
             }
             this.longDay = longDay;
             this.date = date;

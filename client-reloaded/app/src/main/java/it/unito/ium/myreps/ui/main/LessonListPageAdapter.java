@@ -10,27 +10,37 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
-
-import it.unito.ium.myreps.util.RecyclerViewRow;
 
 public class LessonListPageAdapter extends FragmentStateAdapter {
     private final ArrayList<LessonListFragment> fragments;
     private ViewPager2 viewPager;
 
-    public LessonListPageAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle, ArrayList<ArrayList<RecyclerViewRow>> listOfLists) {
+    public LessonListPageAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
         super(fragmentManager, lifecycle);
         fragments = new ArrayList<>();
 
-        for (ArrayList<RecyclerViewRow> list : listOfLists) {
-            fragments.add(new LessonListFragment(list));
-        }
+        LocalDateTime todayDate = LocalDate.now().atStartOfDay();
+        Instant todayInstant = todayDate.toInstant(ZoneOffset.UTC);
+        long today = todayInstant.getEpochSecond();
+
+        fragments.add(new LessonListFragment(today + 86400));  // Domani
+        fragments.add(new LessonListFragment(today + 172800)); // Dopo domani
+        fragments.add(new LessonListFragment(today + 259200)); // ...
+        fragments.add(new LessonListFragment(today + 345600));
+        fragments.add(new LessonListFragment(today + 432000));
+        fragments.add(new LessonListFragment(today + 518400));
+        fragments.add(new LessonListFragment(today + 604800));
     }
 
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-            return fragments.get(position);
+        return fragments.get(position);
     }
 
     @Override

@@ -10,13 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <!-- Loading -->
-    <include
-        android:id="@+id/activity_main_loading"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        layout="@layout/view_loading" />
-
     <!-- Main -->
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/activity_main_tablt"

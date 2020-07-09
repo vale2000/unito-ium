@@ -142,7 +142,7 @@ final class ApiManagerImpl implements ApiManager {
         client.newCall(request).enqueue(new okhttp3.Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                callback.execute(SrvStatus.SERVER_OFFLINE, null);
+                callback.execute(SrvStatus.SERVER_OFFLINE, new ArrayList<>());
             }
 
             @Override
@@ -173,36 +173,60 @@ final class ApiManagerImpl implements ApiManager {
                             }
 
                             callback.execute(SrvStatus.OK, listOfLists);
-
-                            /*
-                            String lastDay = "NULL";
-                            JSONArray data = jsonObject.getJSONArray("data");
-                            ArrayList<RecyclerViewRow> lessonList = new ArrayList<>();
-
-                            for (int i = 0; i < data.length(); i++) {
-                                JSONObject jsonLesson = data.getJSONObject(i);
-                                Lesson lesson = new Lesson(jsonLesson);
-
-                                if (!lastDay.equals(lesson.getYearDay())) {
-                                    lastDay = lesson.getYearDay();
-                                    lessonList.add(new RecyclerItemBreak(lesson.getWeekDay() + ", " + lesson.getYearDay()));
-                                }
-
-                                lessonList.add(lesson);
-                            }
-
-                            callback.execute(SrvStatus.OK, lessonList);*/
                         } else {
                             SrvStatus srvStatus = SrvStatus.fromString(jsonObject.getString("error"));
                             checkAuthToken(srvStatus);
-                            callback.execute(srvStatus, null);
+                            callback.execute(srvStatus, new ArrayList<>());
                         }
                         return;
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
-                callback.execute(SrvStatus.UNKNOWN_ERROR, null);
+                callback.execute(SrvStatus.UNKNOWN_ERROR, new ArrayList<>());
+            }
+        });
+    }
+
+    @Override
+    public void loadLessonList(long day, Callback<ArrayList<RecyclerViewRow>> callback) {
+        Request request = new Request.Builder()
+                .url(String.format(Locale.getDefault(), "%s%s/%d", ApiConstants.HOST, ApiConstants.LESSONS_ENDPOINT, day))
+                .build();
+
+        client.newCall(request).enqueue(new okhttp3.Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                callback.execute(SrvStatus.SERVER_OFFLINE, new ArrayList<>());
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if (response.body() != null) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(response.body().string());
+                        if (jsonObject.getBoolean("ok")) {
+                            JSONArray data = jsonObject.getJSONArray("data");
+                            ArrayList<RecyclerViewRow> list = new ArrayList<>();
+
+                            for (int i = 0; i < data.length(); i++) {
+                                JSONObject jsonLesson = data.getJSONObject(i);
+                                Lesson lesson = new Lesson(jsonLesson);
+                                list.add(lesson);
+                            }
+
+                            callback.execute(SrvStatus.OK, list);
+                        } else {
+                            SrvStatus srvStatus = SrvStatus.fromString(jsonObject.getString("error"));
+                            checkAuthToken(srvStatus);
+                            callback.execute(srvStatus, new ArrayList<>());
+                        }
+                        return;
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                callback.execute(SrvStatus.UNKNOWN_ERROR, new ArrayList<>());
             }
         });
     }
