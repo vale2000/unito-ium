@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="70e60815-3bfe-45c1-8682-8a87a1026056" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectId" id="1cBFsjnG6uIvuzGjwW7zF1zqnwL" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="DatabaseDriversLRU" value="sqlite" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/routes" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="lessons" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="server" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/routes/lessons" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/routes/lessons.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.lessons" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="70e60815-3bfe-45c1-8682-8a87a1026056" name="Default Changelist" comment="" />
+      <created>1589994288501</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1589994288501</updated>
+      <workItem from="1589994291414" duration="366000" />
+      <workItem from="1589994767559" duration="3790000" />
+      <workItem from="1590019035274" duration="5234000" />
+      <workItem from="1590058461963" duration="6393000" />
+      <workItem from="1590144398235" duration="8457000" />
+      <workItem from="1590181595334" duration="3852000" />
+      <workItem from="1593893921261" duration="669000" />
+      <workItem from="1593947602799" duration="6699000" />
+      <workItem from="1594287668807" duration="3415000" />
+      <workItem from="1594296388945" duration="1196000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="2" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="278" y="368" width="1353" height="292" key="#SQL_Dialects" timestamp="1589994430655">
+      <screen x="0" y="0" width="1920" height="1054" />
+    </state>
+    <state x="278" y="368" width="1353" height="292" key="#SQL_Dialects/0.0.1920.1054@0.0.1920.1054" timestamp="1589994430655" />
+    <state x="418" y="173" width="800" height="675" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1589994805416">
+      <screen x="0" y="0" width="1920" height="1054" />
+    </state>
+    <state x="418" y="173" width="800" height="675" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1054@0.0.1920.1054" timestamp="1589994805416" />
+    <state x="517" y="118" width="361" height="352" key="FileChooserDialogImpl" timestamp="1594306131203">
+      <screen x="0" y="0" width="1366" height="768" />
+    </state>
+    <state x="517" y="118" width="361" height="352" key="FileChooserDialogImpl/0.0.1366.768@0.0.1366.768" timestamp="1594306131203" />
+    <state x="738" y="272" width="424" height="482" key="FileChooserDialogImpl/0.0.1920.1054@0.0.1920.1054" timestamp="1589994804280" />
+    <state width="1874" height="275" key="GridCell.Tab.0.bottom" timestamp="1590065902963">
+      <screen x="0" y="0" width="1920" height="1054" />
+    </state>
+    <state width="1874" height="275" key="GridCell.Tab.0.bottom/0.0.1920.1054@0.0.1920.1054" timestamp="1590065902963" />
+    <state width="1874" height="275" key="GridCell.Tab.0.center" timestamp="1590065902962">
+      <screen x="0" y="0" width="1920" height="1054" />
+    </state>
+    <state width="1874" height="275" key="GridCell.Tab.0.center/0.0.1920.1054@0.0.1920.1054" timestamp="1590065902962" />
+    <state width="1874" height="275" key="GridCell.Tab.0.left" timestamp="1590065902962">
+      <screen x="0" y="0" width="1920" height="1054" />
+    </state>
+    <state width="1874" height="275" key="GridCell.Tab.0.left/0.0.1920.1054@0.0.1920.1054" timestamp="1590065902962" />
+    <state width="1874" height="275" key="GridCell.Tab.0.right" timestamp="1590065902962">
+      <screen x="0" y="0" width="1920" height="1054" />
+    </state>
+    <state width="1874" height="275" key="GridCell.Tab.0.right/0.0.1920.1054@0.0.1920.1054" timestamp="1590065902962" />
+    <state x="333" y="183" key="SettingsEditor" timestamp="1594287712414">
+      <screen x="0" y="0" width="1920" height="1054" />
+    </state>
+    <state x="333" y="183" key="SettingsEditor/0.0.1920.1054@0.0.1920.1054" timestamp="1594287712414" />
+    <state x="654" y="265" width="611" height="610" key="find.popup" timestamp="1590157154480">
+      <screen x="0" y="0" width="1920" height="1054" />
+    </state>
+    <state x="654" y="265" width="611" height="610" key="find.popup/0.0.1920.1054@0.0.1920.1054" timestamp="1590157154480" />
+  </component>
+</project>
