@@ -31,6 +31,29 @@ def lesson_list():
     return make_response({'ok': True, 'data': db_results}, 200)
 
 
+# -----------------------------
+# Return lessons list by <day>
+# -----------------------------
+@route_lessons.route('/lessons/<int:day>', methods=['GET'])
+def lesson_list_day(day: int):
+    with get_db_conn(True) as database:
+        cursor = database.cursor()
+        cursor.execute("""SELECT courses.id, courses.name, COUNT(teachers.user_id) FROM courses
+                            LEFT JOIN teachers ON teachers.course_id = courses.id 
+                            WHERE NOT EXISTS (SELECT * FROM bookings WHERE bookings.status != 'CANCELED' 
+                            AND bookings.teacher_id = teachers.user_id AND bookings.day = ?
+                            GROUP BY bookings.day HAVING COUNT(bookings.hour) >= 5)
+                            GROUP BY courses.name ORDER BY courses.name""", [day])
+        db_data = cursor.fetchall()
+        cursor.close()
+    db_results = []
+    if db_data:
+        for row in db_data:
+            course = {'id': row[0], 'name': row[1]}
+            db_results.append({'day': day, 'free_teachers': row[2], 'course': course})
+    return make_response({'ok': True, 'data': db_results}, 200)
+
+
 # --------------------------
 # Return lesson <id> data
 # --------------------------
