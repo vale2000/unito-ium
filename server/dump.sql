@@ -149,13 +149,16 @@ VALUES
 -- Table structure for `bookings`
 -- ---------------------------------
 CREATE TABLE IF NOT EXISTS bookings (
-  id         INTEGER PRIMARY KEY,
-  user_id    INTEGER NOT NULL,
-  course_id  INTEGER NOT NULL,
-  teacher_id INTEGER NOT NULL,
-  day        INTEGER NOT NULL,
-  hour       INTEGER NOT NULL,
-  status     TEXT    NOT NULL DEFAULT 'RESERVED',
+  id              INTEGER PRIMARY KEY,
+  user_id         INTEGER NOT NULL,
+  course_id       INTEGER NOT NULL,
+  course_name     TEXT NOT NULL,
+  teacher_id      INTEGER NOT NULL,
+  teacher_name    TEXT NOT NULL,
+  teacher_surname TEXT NOT NULL,
+  day             INTEGER NOT NULL,
+  hour            INTEGER NOT NULL,
+  status          TEXT NOT NULL DEFAULT 'RESERVED',
   -- UNIQUE (user_id, day, hour),
   UNIQUE (teacher_id, day, hour),
   FOREIGN KEY (user_id)
@@ -164,11 +167,23 @@ CREATE TABLE IF NOT EXISTS bookings (
       ON UPDATE CASCADE,
   FOREIGN KEY (course_id)
     REFERENCES courses (id)
-      ON DELETE CASCADE
+      ON DELETE NO ACTION
+      ON UPDATE CASCADE,
+  FOREIGN KEY (course_name)
+    REFERENCES courses (name)
+      ON DELETE NO ACTION
       ON UPDATE CASCADE,
   FOREIGN KEY (teacher_id)
     REFERENCES users (id)
-      ON DELETE CASCADE
+      ON DELETE NO ACTION
+      ON UPDATE CASCADE
+  FOREIGN KEY (teacher_name)
+  	REFERENCES users (name)
+      ON DELETE NO ACTION
+      ON UPDATE CASCADE
+  FOREIGN KEY (teacher_name)
+  	REFERENCES users (surname)
+      ON DELETE NO ACTION
       ON UPDATE CASCADE
 );
 
