@@ -9,6 +9,7 @@
     <string name="activity_main_select_teacher">Select teacher</string>
     <string name="activity_main_no_free_teachers">There are no teachers for this subject on this day</string>
     <string name="activity_main_select_hours">Select one or more hours</string>
+    <string name="activity_main_select_hours_please">Select at least one hour</string>
     <string name="activity_main_no_free_hours">This teacher has no free hours on this day</string>
     <string name="activity_main_booking_added">Booking/s added</string>
 
