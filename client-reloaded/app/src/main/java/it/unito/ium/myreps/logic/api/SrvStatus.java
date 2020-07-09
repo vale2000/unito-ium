@@ -3,6 +3,7 @@ package it.unito.ium.myreps.logic.api;
 public enum SrvStatus {
     OK(null),
     LOGIN_DISABLED("Login for this user is disabled"),
+    AUTH_FAILED("Your session is no longer valid"),
     LOGIN_FAILED("Wrong email or password"),
     USER_ALREADY_EXIST("This user is already registered"),
     USER_NOT_FOUND("User not found"),

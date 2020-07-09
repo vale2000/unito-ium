@@ -4,14 +4,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Optional;
 
 import it.unito.ium.myreps.util.RecyclerViewRow;
 
 public final class Booking extends RecyclerViewRow implements Serializable {
-    private static final long serialVersionUID = 6551418350018138913L;
+    private static final long serialVersionUID = -4401831976372141659L;
 
     private final int id;
-    private final Status status;
+    private Status status;
 
     private final Lesson lesson;
 
@@ -45,11 +47,31 @@ public final class Booking extends RecyclerViewRow implements Serializable {
         return status;
     }
 
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
     public Lesson getLesson() {
         return lesson;
     }
 
     // --------------------------------------------------------
     // Private Objects
-    public enum Status {RESERVED, CANCELED, DONE}
+    public enum Status {
+        RESERVED(0),
+        DONE(1),
+        CANCELED(2);
+
+        private final int value;
+
+        Status(int value) {
+            this.value = value;
+        }
+
+        public static Optional<Status> valueOf(int value) {
+            return Arrays.stream(values())
+                    .filter(Status -> Status.value == value)
+                    .findFirst();
+        }
+    }
 }

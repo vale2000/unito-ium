@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 import it.unito.ium.myreps.R;
 import it.unito.ium.myreps.logic.api.objects.Lesson;
+import it.unito.ium.myreps.util.RecyclerItemBreak;
 import it.unito.ium.myreps.util.RecyclerViewRow;
 
 final class LessonListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -24,7 +25,7 @@ final class LessonListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     public void setDataSet(ArrayList<RecyclerViewRow> dataSet) {
-        this.dataSet = dataSet != null? dataSet : new ArrayList<>();
+        this.dataSet = dataSet != null ? dataSet : new ArrayList<>();
         notifyDataSetChanged();
     }
 
@@ -43,7 +44,7 @@ final class LessonListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         int layout = viewType == 0 ? R.layout.rv_row_lesson : R.layout.rv_row_separator;
         View view = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
-        return viewType == 0 ? new LessonListAdapter.ViewHolder(view) : new LessonListItemBreak.ViewHolder(view);
+        return viewType == 0 ? new LessonListAdapter.ViewHolder(view) : new RecyclerItemBreak.ViewHolder(view);
     }
 
     @Override
@@ -58,12 +59,12 @@ final class LessonListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 itemVH.setDescText(itemVH.itemView.getContext()
                         .getString(R.string.activity_main_rv_row_desc, itemData.getTeachersNum()));
                 if (itemClickListener != null) {
-                    itemVH.itemView.setOnClickListener(v -> itemClickListener.onClick(v, itemData));
+                    itemVH.itemView.setOnClickListener(v -> itemClickListener.onClick(v, position, itemData));
                 }
                 break;
             case 1:
-                LessonListItemBreak.ViewHolder breakVH = (LessonListItemBreak.ViewHolder) holder;
-                LessonListItemBreak breakData = (LessonListItemBreak) item;
+                RecyclerItemBreak.ViewHolder breakVH = (RecyclerItemBreak.ViewHolder) holder;
+                RecyclerItemBreak breakData = (RecyclerItemBreak) item;
                 breakVH.setTitleText(breakData.getTitleText());
                 break;
         }
@@ -95,6 +96,6 @@ final class LessonListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @FunctionalInterface
     public interface itemClickListener {
-        void onClick(View view, RecyclerViewRow item);
+        void onClick(View view, int position, RecyclerViewRow item);
     }
 }

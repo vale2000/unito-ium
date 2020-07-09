@@ -1,6 +1,6 @@
-package it.unito.ium.myreps.config;
+package it.unito.ium.myreps.constants;
 
-public class ApiConfiguration {
+public class ApiConstants {
     // Server host
     public final static String HOST = "http://192.168.1.145:8080";
 

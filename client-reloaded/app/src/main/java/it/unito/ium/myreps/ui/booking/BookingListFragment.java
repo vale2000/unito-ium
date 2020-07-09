@@ -9,14 +9,18 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import java.util.Optional;
 
 import butterknife.BindView;
 import it.unito.ium.myreps.R;
 import it.unito.ium.myreps.logic.api.ApiManager;
 import it.unito.ium.myreps.logic.api.SrvStatus;
+import it.unito.ium.myreps.logic.api.objects.Booking;
 import it.unito.ium.myreps.ui.BaseFragment;
 
 public final class BookingListFragment extends BaseFragment {
@@ -49,9 +53,7 @@ public final class BookingListFragment extends BaseFragment {
 
         bookingListAdapter = new BookingListAdapter();
         recyclerView.setAdapter(bookingListAdapter);
-        bookingListAdapter.setItemClickListener((view, item) -> {
-            // TODO on CLICK
-        });
+        bookingListAdapter.setItemClickListener((view, pos, item) -> editBooking(pos, (Booking) item));
 
         swipeRefreshLayout.setOnRefreshListener(this::loadBookingList);
     }
@@ -67,5 +69,31 @@ public final class BookingListFragment extends BaseFragment {
             emptyText.setVisibility((response == null || response.isEmpty()) ? View.VISIBLE : View.GONE);
             swipeRefreshLayout.setRefreshing(false);
         }));
+    }
+
+    private void editBooking(int position, Booking item) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle(R.string.fragment_booking_set_status);
+        builder.setItems(R.array.fragment_booking_status, (dialog, which) -> {
+            Optional<Booking.Status> opStatus = Booking.Status.valueOf(which + 1);
+            if (opStatus.isPresent()) {
+                if (item.getStatus() == opStatus.get()) {
+                    Toast.makeText(getContext(), R.string.fragment_booking_already_set, Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                ApiManager apiManager = getModel().getApiManager();
+                apiManager.updateBooking(item.getID(), opStatus.get().toString(), (status, response) -> {
+                    if (status == SrvStatus.OK && response) {
+                        item.setStatus(opStatus.get());
+                        runOnUiThread(() -> bookingListAdapter.notifyItemChanged(position, item));
+                    } else {
+                        runOnUiThread(() -> Toast.makeText(getContext(), R.string.fragment_booking_update_failed, Toast.LENGTH_LONG).show());
+                    }
+                });
+            }
+        });
+
+        builder.create().show();
     }
 }

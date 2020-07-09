@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
 
 import butterknife.BindView;
 import it.unito.ium.myreps.R;
-import it.unito.ium.myreps.config.KVConfiguration;
+import it.unito.ium.myreps.constants.StorageConstants;
 import it.unito.ium.myreps.logic.api.ApiManager;
 import it.unito.ium.myreps.logic.api.SrvStatus;
 import it.unito.ium.myreps.logic.storage.KVStorage;
@@ -44,8 +44,8 @@ public final class ProfileFragment extends BaseFragment {
 
     private void logOutAccount() {
         KVStorage kvStorage = getModel().getKVStorage();
-        kvStorage.setString(KVConfiguration.ACCOUNT_JWT, null);
-        kvStorage.setString(KVConfiguration.ACCOUNT_ID, null);
+        kvStorage.setString(StorageConstants.ACCOUNT_JWT, null);
+        kvStorage.setString(StorageConstants.ACCOUNT_ID, null);
     }
 
     private void loadProfileData() {

@@ -15,12 +15,17 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Date;
+
 import butterknife.BindView;
 import it.unito.ium.myreps.R;
-import it.unito.ium.myreps.config.KVConfiguration;
+import it.unito.ium.myreps.constants.StorageConstants;
 import it.unito.ium.myreps.logic.api.ApiManager;
 import it.unito.ium.myreps.logic.api.SrvStatus;
 import it.unito.ium.myreps.logic.api.objects.Lesson;
+import it.unito.ium.myreps.logic.api.objects.User;
 import it.unito.ium.myreps.logic.storage.KVStorage;
 import it.unito.ium.myreps.ui.BaseActivity;
 import it.unito.ium.myreps.ui.account.AccountActivity;
@@ -47,6 +52,11 @@ public final class MainActivity extends BaseActivity {
         emptyText.setText(R.string.activity_main_rv_empty);
 
         initLessonList();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         loadLessonList();
     }
 
@@ -59,7 +69,7 @@ public final class MainActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         KVStorage kvStorage = getModel().getKVStorage();
-        boolean loggedIn = kvStorage.getString(KVConfiguration.ACCOUNT_JWT) != null;
+        boolean loggedIn = kvStorage.getString(StorageConstants.ACCOUNT_JWT) != null;
         if (item.getItemId() == R.id.activity_main_account_goto) {
             startActivity(new Intent(this, loggedIn ? AccountActivity.class : LoginActivity.class));
             return true;
@@ -73,9 +83,8 @@ public final class MainActivity extends BaseActivity {
 
         lessonListAdapter = new LessonListAdapter();
         recyclerView.setAdapter(lessonListAdapter);
-        lessonListAdapter.setItemClickListener((view, item) -> {
-            Lesson lesson = (Lesson) item;
-            loadLesson(lesson.getDay(), lesson.getCourse().getID());
+        lessonListAdapter.setItemClickListener((view, pos, item) -> {
+            loadLesson((Lesson) item);
         });
 
         swipeRefreshLayout.setOnRefreshListener(this::loadLessonList);
@@ -98,32 +107,66 @@ public final class MainActivity extends BaseActivity {
         }));
     }
 
-    private void loadLesson(long day, int course) {
+    private void loadLesson(Lesson item) {
         ApiManager apiManager = getModel().getApiManager();
-        apiManager.loadLesson(day, course, (status, response) -> {
+        apiManager.loadLesson(item.getDay(), item.getCourse().getID(), (status, response) -> {
             if (status == SrvStatus.OK) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 builder.setTitle(R.string.activity_main_select_teacher);
 
-                String[] teachers = new String[response.getTeachersNum()];
-                for (int i = 0; i < teachers.length; i++) {
-                    teachers[i] = response.getTeacher(i).getFullName();
+                if (response.getTeachersNum() > 0) {
+                    String[] teachers = new String[response.getTeachersNum()];
+                    for (int i = 0; i < teachers.length; i++) {
+                        teachers[i] = response.getTeacher(i).getFullName();
+                    }
+
+                    builder.setItems(teachers, (dialog, which) -> {
+                        AlertDialog.Builder builder2 = new AlertDialog.Builder(MainActivity.this);
+                        builder2.setTitle(R.string.activity_main_select_hours);
+
+                        User teacher = response.getTeacher(which);
+                        int[] freeHours = teacher.getFreeHours();
+
+                        if (freeHours.length > 0) {
+                            String[] vHours = new String[freeHours.length];
+                            ArrayList<Integer> selectedHours = new ArrayList<>();
+
+                            for (int j = 0; j < freeHours.length; j++) {
+                                Date lessonDate = Date.from(Instant.ofEpochSecond(item.getDay() + freeHours[j]));
+                                vHours[j] = Lesson.DATE_HOUR_FORMAT.format(lessonDate);
+                            }
+
+                            builder2.setNegativeButton("CANCEL", null)
+                                    .setMultiChoiceItems(vHours, null, (dialog1, which1, isChecked) -> {
+                                        if (isChecked) selectedHours.add(freeHours[which1]);
+                                        else if (selectedHours.contains(freeHours[which1]))
+                                            selectedHours.remove(Integer.valueOf(freeHours[which1]));
+                                    });
+
+                            builder2.setPositiveButton("OK", (dialog1, which1) -> apiManager
+                                    .newBooking(teacher.getID(), item.getCourse().getID(), item.getDay(),
+                                            selectedHours, (status1, response1) -> runOnUiThread(() -> {
+                                                if (status1 == SrvStatus.OK && response1) {
+                                                    Toast.makeText(this, R.string.activity_main_booking_added, Toast.LENGTH_SHORT).show();
+                                                } else {
+                                                    Toast.makeText(this, status1.toString(), Toast.LENGTH_LONG).show();
+                                                }
+                                            })));
+                        } else {
+                            builder2.setMessage(R.string.activity_main_no_free_hours);
+                            builder2.setPositiveButton("OK", null);
+                        }
+
+                        runOnUiThread(() -> builder2.create().show());
+                    });
+                } else {
+                    builder.setMessage(R.string.activity_main_no_free_teachers);
+                    builder.setPositiveButton("OK", null);
                 }
-
-                builder.setItems(teachers, (dialog, which) -> {
-                    AlertDialog.Builder builder2 = new AlertDialog.Builder(MainActivity.this);
-                    builder2.setTitle(R.string.activity_main_select_hours);
-
-
-
-
-
-                    runOnUiThread(() -> builder2.create().show());
-                });
 
                 runOnUiThread(() -> builder.create().show());
             } else {
-                Toast.makeText(this, status.toString(), Toast.LENGTH_LONG).show();
+                runOnUiThread(() -> Toast.makeText(this, status.toString(), Toast.LENGTH_LONG).show());
             }
         });
     }

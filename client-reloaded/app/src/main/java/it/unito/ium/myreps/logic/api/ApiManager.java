@@ -3,8 +3,8 @@ package it.unito.ium.myreps.logic.api;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import it.unito.ium.myreps.logic.api.objects.Booking;
 import it.unito.ium.myreps.logic.api.objects.Lesson;
 import it.unito.ium.myreps.logic.api.objects.User;
 import it.unito.ium.myreps.util.RecyclerViewRow;
@@ -25,9 +25,11 @@ public interface ApiManager {
 
     void loadLesson(long day, int course, Callback<Lesson> callback);
 
+    void newBooking(int teacher, int course, long day, List<Integer> hours, Callback<Boolean> callback);
+
     void loadBookingList(Callback<ArrayList<RecyclerViewRow>> callback);
 
-    void loadBooking(int id, Callback<Booking> callback);
+    void updateBooking(int id, String status, Callback<Boolean> callback);
 
     interface Callback<T> {
         void execute(SrvStatus status, T response);

@@ -2,7 +2,6 @@ package it.unito.ium.myreps.ui.login;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -13,7 +12,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import butterknife.BindView;
 import butterknife.OnClick;
 import it.unito.ium.myreps.R;
-import it.unito.ium.myreps.config.KVConfiguration;
+import it.unito.ium.myreps.constants.StorageConstants;
 import it.unito.ium.myreps.logic.api.ApiManager;
 import it.unito.ium.myreps.logic.api.SrvStatus;
 import it.unito.ium.myreps.logic.storage.KVStorage;
@@ -36,7 +35,7 @@ public class LoginActivity extends BaseActivity {
         setContentView(R.layout.activity_login);
 
         KVStorage kvStorage = getModel().getKVStorage();
-        loginEditText.setText(kvStorage.getString(KVConfiguration.ACCOUNT_EMAIL, ""));
+        loginEditText.setText(kvStorage.getString(StorageConstants.ACCOUNT_EMAIL, ""));
     }
 
     @OnClick(R.id.activity_login_button_exec)

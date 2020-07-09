@@ -20,12 +20,12 @@
             android:id="@+id/fragment_profile_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="32dp"
+            android:contentDescription="@string/app_name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/no_profile_image"
-            android:contentDescription="@string/app_name" />
+            app:srcCompat="@drawable/no_profile_image" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -65,5 +65,6 @@
                 android:layout_marginStart="1dp"
                 android:layout_marginTop="2dp" />
         </LinearLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

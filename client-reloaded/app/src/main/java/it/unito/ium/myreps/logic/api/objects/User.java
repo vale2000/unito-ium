@@ -20,7 +20,6 @@ public final class User extends RecyclerViewRow implements Serializable {
 
     private final Role role;
 
-    // As Teacher
     private final Course[] courses;
     private final int[] freeHours;
 

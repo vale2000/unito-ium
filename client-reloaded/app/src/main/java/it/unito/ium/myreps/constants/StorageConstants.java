@@ -1,6 +1,6 @@
-package it.unito.ium.myreps.config;
+package it.unito.ium.myreps.constants;
 
-public class KVConfiguration {
+public class StorageConstants {
     // Application storage key
     public final static String STORAGE_KEY = "myreps_app_configs";
 

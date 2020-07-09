@@ -1,4 +1,4 @@
-package it.unito.ium.myreps.ui.main;
+package it.unito.ium.myreps.util;
 
 import android.view.View;
 import android.widget.TextView;
@@ -7,12 +7,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import it.unito.ium.myreps.R;
-import it.unito.ium.myreps.util.RecyclerViewRow;
 
-public final class LessonListItemBreak extends RecyclerViewRow {
+public final class RecyclerItemBreak extends RecyclerViewRow {
     private final String title;
 
-    public LessonListItemBreak(String title) {
+    public RecyclerItemBreak(String title) {
         this.title = title;
     }
 
