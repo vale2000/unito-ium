@@ -10,9 +10,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <!-- Main -->
+    <!-- Loading -->
     <include
-        layout="@layout/fragment_list"
-        android:layout_width="wrap_content"
+        android:id="@+id/activity_main_loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/view_loading" />
+
+    <!-- Main -->
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/activity_main_tablt"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/activity_main_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 </LinearLayout>

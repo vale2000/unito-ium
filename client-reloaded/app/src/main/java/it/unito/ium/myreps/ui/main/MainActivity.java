@@ -4,44 +4,30 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.viewpager2.widget.ViewPager2;
 
-import java.time.Instant;
+import com.google.android.material.tabs.TabLayout;
+
 import java.util.ArrayList;
-import java.util.Date;
 
 import butterknife.BindView;
 import it.unito.ium.myreps.R;
 import it.unito.ium.myreps.constants.StorageConstants;
-import it.unito.ium.myreps.logic.api.ApiManager;
-import it.unito.ium.myreps.logic.api.SrvStatus;
-import it.unito.ium.myreps.logic.api.objects.Lesson;
-import it.unito.ium.myreps.logic.api.objects.User;
 import it.unito.ium.myreps.logic.storage.KVStorage;
 import it.unito.ium.myreps.ui.BaseActivity;
 import it.unito.ium.myreps.ui.account.AccountActivity;
 import it.unito.ium.myreps.ui.login.LoginActivity;
+import it.unito.ium.myreps.util.RecyclerViewRow;
 
 public final class MainActivity extends BaseActivity {
-    private LessonListAdapter lessonListAdapter;
+    @BindView(R.id.activity_main_viewpager)
+    ViewPager2 viewPager;
 
-    @BindView(R.id.fragment_list_swiperefresh)
-    SwipeRefreshLayout swipeRefreshLayout;
-
-    @BindView(R.id.fragment_list_recyclerview)
-    RecyclerView recyclerView;
-
-    @BindView(R.id.fragment_list_text_empty)
-    TextView emptyText;
+    @BindView(R.id.activity_main_tablt)
+    TabLayout tabLayout;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,15 +35,20 @@ public final class MainActivity extends BaseActivity {
         setTheme(R.style.AppTheme); // Restore App Theme
         setContentView(R.layout.activity_main);
 
-        emptyText.setText(R.string.activity_main_rv_empty);
+        // TODO
+        ArrayList<ArrayList<RecyclerViewRow>> listOfLists = new ArrayList<>();
 
-        initLessonList();
+        LessonListPageAdapter lessonListPageAdapter = new LessonListPageAdapter(getSupportFragmentManager(), getLifecycle(), listOfLists);
+        lessonListPageAdapter.bindViewPager(viewPager);
+        lessonListPageAdapter.bindTabLayout(tabLayout);
+
+        // initLessonList();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        loadLessonList();
+        // loadLessonList();
     }
 
     @Override
@@ -77,6 +68,7 @@ public final class MainActivity extends BaseActivity {
         return false;
     }
 
+    /*
     private void initLessonList() {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -106,6 +98,8 @@ public final class MainActivity extends BaseActivity {
             swipeRefreshLayout.setRefreshing(false);
         }));
     }
+
+
 
     private void loadLesson(Lesson item) {
         ApiManager apiManager = getModel().getApiManager();
@@ -143,15 +137,22 @@ public final class MainActivity extends BaseActivity {
                                             selectedHours.remove(Integer.valueOf(freeHours[which1]));
                                     });
 
-                            builder2.setPositiveButton("OK", (dialog1, which1) -> apiManager
-                                    .newBooking(teacher.getID(), item.getCourse().getID(), item.getDay(),
+                            builder2.setPositiveButton("OK", (dialog1, which1) -> {
+                                KVStorage kvStorage = getModel().getKVStorage();
+                                if (kvStorage.getString(StorageConstants.ACCOUNT_JWT) == null) {
+                                    Toast.makeText(this, SrvStatus.UNAUTHORIZED.toString(), Toast.LENGTH_LONG).show();
+                                    return;
+                                }
+
+                                apiManager.newBooking(teacher.getID(), item.getCourse().getID(), item.getDay(),
                                             selectedHours, (status1, response1) -> runOnUiThread(() -> {
                                                 if (status1 == SrvStatus.OK && response1) {
                                                     Toast.makeText(this, R.string.activity_main_booking_added, Toast.LENGTH_SHORT).show();
                                                 } else {
                                                     Toast.makeText(this, status1.toString(), Toast.LENGTH_LONG).show();
                                                 }
-                                            })));
+                                            }));
+                            });
                         } else {
                             builder2.setMessage(R.string.activity_main_no_free_hours);
                             builder2.setPositiveButton("OK", null);
@@ -170,4 +171,6 @@ public final class MainActivity extends BaseActivity {
             }
         });
     }
+
+     */
 }
