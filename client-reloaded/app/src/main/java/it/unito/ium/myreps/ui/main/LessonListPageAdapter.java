@@ -20,21 +20,9 @@ public class LessonListPageAdapter extends FragmentStateAdapter {
     private final ArrayList<LessonListFragment> fragments;
     private ViewPager2 viewPager;
 
-    public LessonListPageAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
+    public LessonListPageAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle, ArrayList<LessonListFragment> fragments) {
         super(fragmentManager, lifecycle);
-        fragments = new ArrayList<>();
-
-        LocalDateTime todayDate = LocalDate.now().atStartOfDay();
-        Instant todayInstant = todayDate.toInstant(ZoneOffset.UTC);
-        long today = todayInstant.getEpochSecond();
-
-        fragments.add(new LessonListFragment(today + 86400));  // Domani
-        fragments.add(new LessonListFragment(today + 172800)); // Dopo domani
-        fragments.add(new LessonListFragment(today + 259200)); // ...
-        fragments.add(new LessonListFragment(today + 345600));
-        fragments.add(new LessonListFragment(today + 432000));
-        fragments.add(new LessonListFragment(today + 518400));
-        fragments.add(new LessonListFragment(today + 604800));
+        this.fragments = fragments;
     }
 
     @NonNull

@@ -11,6 +11,13 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
 
+import java.time.DayOfWeek;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import it.unito.ium.myreps.R;
 import it.unito.ium.myreps.constants.StorageConstants;
@@ -32,9 +39,7 @@ public final class MainActivity extends BaseActivity {
         setTheme(R.style.AppTheme); // Restore App Theme
         setContentView(R.layout.activity_main);
 
-        LessonListPageAdapter lessonListPageAdapter = new LessonListPageAdapter(getSupportFragmentManager(), getLifecycle());
-        lessonListPageAdapter.bindViewPager(viewPager);
-        lessonListPageAdapter.bindTabLayout(tabLayout);
+        initPageViewer();
     }
 
     @Override
@@ -52,5 +57,35 @@ public final class MainActivity extends BaseActivity {
             return true;
         }
         return false;
+    }
+
+    private void initPageViewer() {
+        LessonListPageAdapter lessonListPageAdapter = new LessonListPageAdapter(getSupportFragmentManager(),
+                getLifecycle(), generateFragments());
+
+        lessonListPageAdapter.bindViewPager(viewPager);
+        lessonListPageAdapter.bindTabLayout(tabLayout);
+    }
+
+    private ArrayList<LessonListFragment> generateFragments() {
+        ArrayList<LessonListFragment> fragments = new ArrayList<>();
+
+        LocalDateTime todayDate = LocalDate.now().atStartOfDay();
+        for (int i = 0; i < 5; i++) {
+            DayOfWeek todayOfWeek = todayDate.getDayOfWeek();
+
+            if (todayOfWeek == DayOfWeek.FRIDAY) {
+                todayDate = todayDate.plusDays(3);
+            } else {
+                todayDate = todayDate.plusDays(1);
+            }
+
+            Instant todayInstant = todayDate.toInstant(ZoneOffset.UTC);
+            long today = todayInstant.getEpochSecond();
+
+            fragments.add(new LessonListFragment(today));
+        }
+
+        return fragments;
     }
 }
