@@ -91,14 +91,16 @@ public class LessonListFragment extends BaseFragment {
         listCache = new ArrayList<>();
         apiManager.loadLessonList(day, (status, response) -> runOnUiThread(() -> {
             if (status == SrvStatus.OK) {
-                listCache = response;
-                lessonListAdapter.setDataSet(response);
+                if (!(response == null || response.isEmpty())) {
+                    lessonListAdapter.setDataSet(response);
+                    emptyText.setVisibility(View.GONE);
+                }
             } else {
                 Toast.makeText(getContext(), status.toString(), Toast.LENGTH_SHORT).show();
-                lessonListAdapter.setDataSet(null);
+                if (lessonListAdapter.getItemCount() == 0) {
+                    emptyText.setVisibility(View.VISIBLE);
+                }
             }
-
-            emptyText.setVisibility((response == null || response.isEmpty()) ? View.VISIBLE : View.GONE);
             swipeRefreshLayout.setRefreshing(false);
         }));
     }
