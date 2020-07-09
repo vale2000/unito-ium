@@ -25,11 +25,9 @@ def booking_list():
                 user_id = req_data.get('user_id', token_data.get('user'))
         with get_db_conn(True) as database:
             cursor = database.cursor()
-            cursor.execute("""SELECT bookings.id, bookings.status, bookings.day, bookings.hour, courses.id, 
-                                courses.name, bookings.teacher_id, users.name, users.surname FROM bookings
-                                JOIN courses ON courses.id = bookings.course_id
-                                LEFT JOIN users ON users.id = bookings.teacher_id
-                                WHERE bookings.user_id = ?
+            cursor.execute("""SELECT bookings.id, bookings.status, bookings.day, bookings.hour, bookings.course_id, 
+                            bookings.course_name, bookings.teacher_id, bookings.teacher_name, bookings.teacher_surname
+                                FROM bookings WHERE bookings.user_id = ?
                                 ORDER BY bookings.day DESC, bookings.hour DESC""", [user_id])
             db_data = cursor.fetchall()
             cursor.close()
@@ -61,10 +59,12 @@ def booking_add():
                 try:
                     cursor = database.cursor()
                     for hour in req_data.get('hours'):
-                        cursor.execute("""INSERT INTO bookings (user_id, teacher_id, course_id, day, hour) 
-                                                        VALUES (?, ?, ?, ?, ?)""",
-                                       [user_id, req_data.get('teacher_id'),
-                                        req_data.get('course_id'), req_data.get('day'), hour])
+                        cursor.execute("""INSERT INTO bookings (user_id, course_id, course_name, teacher_id, 
+                                                                teacher_name, teacher_surname, day, hour) 
+                                        SELECT ?, c.id, c.name, t.id, t.name, t.surname, ?, ? FROM users AS t 
+                                        JOIN courses AS c ON c.id = ? WHERE t.id = ?""",
+                                       [user_id, req_data.get('day'), hour, req_data.get('course_id'),
+                                        req_data.get('teacher_id')])
                     last_id_inserted = cursor.lastrowid
                     database.commit()
                     result = make_response({'ok': True, 'data': last_id_inserted}, 200)
@@ -94,10 +94,9 @@ def booking_get(booking_id: int):
                 user_id = req_data.get('user_id', token_data.get('user'))
         with get_db_conn(True) as database:
             cursor = database.cursor()
-            cursor.execute("""SELECT bookings.id, bookings.status, bookings.day, bookings.hour, courses.id, 
-                                courses.name, bookings.teacher_id, users.name, users.surname FROM bookings
-                                JOIN courses ON courses.id = bookings.course_id
-                                LEFT JOIN users ON users.id = bookings.teacher_id
+            cursor.execute("""SELECT bookings.id, bookings.status, bookings.day, bookings.hour, bookings.course_id, 
+                                bookings.course_name, bookings.teacher_id, bookings.teacher_name, 
+                                bookings.teacher_surname FROM bookings
                                 WHERE bookings.id = ? AND bookings.user_id = ?""", [booking_id, user_id])
             db_data = cursor.fetchone()
             cursor.close()

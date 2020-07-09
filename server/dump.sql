@@ -51,6 +51,7 @@ CREATE TABLE IF NOT EXISTS users (
   name     TEXT,
   surname  TEXT,
   gender   INTEGER NOT NULL DEFAULT 0,
+  UNIQUE (id, name, surname),
   FOREIGN KEY (role_id)
   	REFERENCES roles (id)
   		ON DELETE SET DEFAULT
@@ -80,7 +81,8 @@ VALUES
 -- ---------------------------------
 CREATE TABLE IF NOT EXISTS courses (
   id   INTEGER PRIMARY KEY,
-  name TEXT NOT NULL UNIQUE
+  name TEXT NOT NULL UNIQUE,
+  UNIQUE (id, name)
 );
 
 -- ---------------------------------
@@ -160,29 +162,17 @@ CREATE TABLE IF NOT EXISTS bookings (
   hour            INTEGER NOT NULL,
   status          TEXT NOT NULL DEFAULT 'RESERVED',
   -- UNIQUE (user_id, day, hour),
-  UNIQUE (teacher_id, day, hour),
   FOREIGN KEY (user_id)
     REFERENCES users (id)
       ON DELETE CASCADE
       ON UPDATE CASCADE,
-  FOREIGN KEY (course_id)
-    REFERENCES courses (id)
+  FOREIGN KEY (course_id, course_name)
+    REFERENCES courses (id, name)
       ON DELETE NO ACTION
       ON UPDATE CASCADE,
-  FOREIGN KEY (course_name)
-    REFERENCES courses (name)
-      ON DELETE NO ACTION
-      ON UPDATE CASCADE,
-  FOREIGN KEY (teacher_id)
-    REFERENCES users (id)
-      ON DELETE NO ACTION
-      ON UPDATE CASCADE
-  FOREIGN KEY (teacher_name)
-  	REFERENCES users (name)
-      ON DELETE NO ACTION
-      ON UPDATE CASCADE
-  FOREIGN KEY (teacher_name)
-  	REFERENCES users (surname)
+  UNIQUE (teacher_id, day, hour),
+  FOREIGN KEY (teacher_id, teacher_name, teacher_surname)
+    REFERENCES users (id, name, surname)
       ON DELETE NO ACTION
       ON UPDATE CASCADE
 );
