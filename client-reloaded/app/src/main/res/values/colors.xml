@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- AppTheme -->
+    <color name="colorPrimary">#546E7A</color>
+    <color name="colorAccent">#FBC02D</color>
+
+    <!-- ToolBar -->
+    <color name="toolbarBackground">@color/colorPrimary</color>
+    <color name="toolbarTextColor">@android:color/white</color>
+</resources>
