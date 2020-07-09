@@ -11,13 +11,16 @@ from server_error import server_error
 
 
 def logged_before_request():
-    auth = request.headers.get('Authorization')
-    if auth is not None:
-        token = auth.split(' ')
-        if token[0].lower() == 'bearer':
-            token_check = simple_jwt.check(token[1])
-            if token_check:
-                return
+    try:
+        auth = request.headers.get('Authorization')
+        if auth is not None:
+            token = auth.split(' ')
+            if token[0].lower() == 'bearer':
+                token_check = simple_jwt.check(token[1])
+                if token_check:
+                    return
+    except UnicodeDecodeError:
+        pass
     return server_error('AUTH_FAILED')
 
 
