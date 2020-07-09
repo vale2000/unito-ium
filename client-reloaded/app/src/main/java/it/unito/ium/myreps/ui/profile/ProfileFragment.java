@@ -63,7 +63,7 @@ public final class ProfileFragment extends BaseFragment {
                     profileLayout.setVisibility(View.VISIBLE);
                 });
             } else {
-                runOnUiThread(() -> Toast.makeText(getContext(), status.toString(), Toast.LENGTH_LONG).show());
+                runOnUiThread(() -> Toast.makeText(getContext(), status.toString(), Toast.LENGTH_SHORT).show());
             }
         });
     }

@@ -49,7 +49,7 @@ public class LoginActivity extends BaseActivity {
                         startActivity(new Intent(this, AccountActivity.class));
                         finish();
                     } else {
-                        runOnUiThread(() -> Toast.makeText(this, status.toString(), Toast.LENGTH_LONG).show());
+                        runOnUiThread(() -> Toast.makeText(this, status.toString(), Toast.LENGTH_SHORT).show());
                         disableView(false);
                     }
                 });

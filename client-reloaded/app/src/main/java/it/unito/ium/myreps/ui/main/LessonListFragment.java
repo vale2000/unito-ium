@@ -94,7 +94,7 @@ public class LessonListFragment extends BaseFragment {
                 listCache = response;
                 lessonListAdapter.setDataSet(response);
             } else {
-                Toast.makeText(getContext(), status.toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), status.toString(), Toast.LENGTH_SHORT).show();
                 lessonListAdapter.setDataSet(null);
             }
 
@@ -142,7 +142,7 @@ public class LessonListFragment extends BaseFragment {
                             builder2.setPositiveButton("OK", (dialog1, which1) -> {
                                 KVStorage kvStorage = getModel().getKVStorage();
                                 if (kvStorage.getString(StorageConstants.ACCOUNT_JWT) == null) {
-                                    Toast.makeText(getContext(), SrvStatus.UNAUTHORIZED.toString(), Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getContext(), SrvStatus.UNAUTHORIZED.toString(), Toast.LENGTH_SHORT).show();
                                     return;
                                 }
 
@@ -150,8 +150,9 @@ public class LessonListFragment extends BaseFragment {
                                         selectedHours, (status1, response1) -> runOnUiThread(() -> {
                                             if (status1 == SrvStatus.OK && response1) {
                                                 Toast.makeText(getContext(), R.string.activity_main_booking_added, Toast.LENGTH_SHORT).show();
+                                                loadListData(true);
                                             } else {
-                                                Toast.makeText(getContext(), status1.toString(), Toast.LENGTH_LONG).show();
+                                                Toast.makeText(getContext(), status1.toString(), Toast.LENGTH_SHORT).show();
                                             }
                                         }));
                             });
@@ -169,7 +170,7 @@ public class LessonListFragment extends BaseFragment {
 
                 runOnUiThread(() -> builder.create().show());
             } else {
-                runOnUiThread(() -> Toast.makeText(getContext(), status.toString(), Toast.LENGTH_LONG).show());
+                runOnUiThread(() -> Toast.makeText(getContext(), status.toString(), Toast.LENGTH_SHORT).show());
             }
         });
     }

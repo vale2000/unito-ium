@@ -63,10 +63,17 @@ public final class BookingListFragment extends BaseFragment {
 
         ApiManager apiManager = getModel().getApiManager();
         apiManager.loadBookingList((status, response) -> runOnUiThread(() -> {
-            if (status == SrvStatus.OK) bookingListAdapter.setDataSet(response);
-            else Toast.makeText(getContext(), status.toString(), Toast.LENGTH_LONG).show();
-
-            emptyText.setVisibility((response == null || response.isEmpty()) ? View.VISIBLE : View.GONE);
+            if (status == SrvStatus.OK) {
+                if (!(response == null || response.isEmpty())) {
+                    bookingListAdapter.setDataSet(response);
+                    emptyText.setVisibility(View.GONE);
+                }
+            } else {
+                Toast.makeText(getContext(), status.toString(), Toast.LENGTH_SHORT).show();
+                if (bookingListAdapter.getItemCount() == 0) {
+                    emptyText.setVisibility(View.VISIBLE);
+                }
+            }
             swipeRefreshLayout.setRefreshing(false);
         }));
     }
@@ -78,7 +85,7 @@ public final class BookingListFragment extends BaseFragment {
             Optional<Booking.Status> opStatus = Booking.Status.valueOf(which + 1);
             if (opStatus.isPresent()) {
                 if (item.getStatus() == opStatus.get()) {
-                    Toast.makeText(getContext(), R.string.fragment_booking_already_set, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), R.string.fragment_booking_already_set, Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -88,7 +95,7 @@ public final class BookingListFragment extends BaseFragment {
                         item.setStatus(opStatus.get());
                         runOnUiThread(() -> bookingListAdapter.notifyItemChanged(position, item));
                     } else {
-                        runOnUiThread(() -> Toast.makeText(getContext(), R.string.fragment_booking_update_failed, Toast.LENGTH_LONG).show());
+                        runOnUiThread(() -> Toast.makeText(getContext(), R.string.fragment_booking_update_failed, Toast.LENGTH_SHORT).show());
                     }
                 });
             }
