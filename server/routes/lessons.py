@@ -52,7 +52,7 @@ def lesson_get(day: int, course: int):
         teachers = []
         for key, rows in itertools.groupby(db_data, key=lambda x: x[2]):
             t = None
-            available_on = [15, 16, 17, 18, 19]
+            available_on = [46800, 50400, 54000, 57600, 61200]
             for r in rows:
                 if t is None:
                     t = r

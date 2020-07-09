@@ -60,15 +60,18 @@ def booking_add():
             with get_db_conn() as database:
                 try:
                     cursor = database.cursor()
-                    cursor.execute('INSERT INTO bookings (user_id, teacher_id, lesson_id) VALUES (?, ?, ?)',
-                                   [user_id, req_data.get('teacher_id'), req_data.get('lesson_id')])
+                    for hour in req_data.get('hours'):
+                        cursor.execute("""INSERT INTO bookings (user_id, teacher_id, course_id, day, hour) 
+                                                        VALUES (?, ?, ?, ?, ?)""",
+                                       [user_id, req_data.get('teacher_id'),
+                                        req_data.get('course_id'), req_data.get('day'), hour])
                     last_id_inserted = cursor.lastrowid
                     database.commit()
                     result = make_response({'ok': True, 'data': last_id_inserted}, 200)
                 except sqlite3.Error as e:
+                    print(e)
                     database.rollback()
                     result = abort(500)
-                    print(e)
                 finally:
                     cursor.close()
             return result

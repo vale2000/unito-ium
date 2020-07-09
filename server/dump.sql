@@ -156,7 +156,7 @@ CREATE TABLE IF NOT EXISTS bookings (
   day        INTEGER NOT NULL,
   hour       INTEGER NOT NULL,
   status     TEXT    NOT NULL DEFAULT 'RESERVED',
-  UNIQUE (user_id, day, hour),
+  -- UNIQUE (user_id, day, hour),
   UNIQUE (teacher_id, day, hour),
   FOREIGN KEY (user_id)
     REFERENCES users (id)

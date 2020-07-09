@@ -7,6 +7,9 @@ from modules.database import get_db_conn
 # ----------------------------------------
 # Check Auth Token before execute request
 # ----------------------------------------
+from server_error import server_error
+
+
 def logged_before_request():
     auth = request.headers.get('Authorization')
     if auth is not None:
@@ -15,7 +18,7 @@ def logged_before_request():
             token_check = simple_jwt.check(token[1])
             if token_check:
                 return
-    return abort(401)
+    return server_error('AUTH_FAILED')
 
 
 # ------------------------
