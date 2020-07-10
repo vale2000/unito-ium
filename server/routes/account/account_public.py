@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 import sqlite3
+
 from flask import Blueprint, request, abort, make_response
+
 from modules import simple_jwt
 from modules.database import get_db_conn
 from server_error import server_error

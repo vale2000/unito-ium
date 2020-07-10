@@ -1,7 +1,9 @@
 #!/usr/bin/python3
 import itertools
 import sqlite3
+
 from flask import Blueprint, request, abort, make_response
+
 from modules import simple_jwt
 from modules.database import get_db_conn
 from modules.utils import logged_before_request, get_role_perms
