@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 from flask import Blueprint, make_response
+
 from server_error import server_error
 
 route_customs = Blueprint('route_customs', __name__)

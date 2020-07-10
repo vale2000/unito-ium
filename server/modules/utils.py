@@ -1,9 +1,8 @@
 #!/usr/bin/python3
-from flask import request, abort
+from flask import request
+
 from modules import simple_jwt
 from modules.database import get_db_conn
-
-
 # ----------------------------------------
 # Check Auth Token before execute request
 # ----------------------------------------

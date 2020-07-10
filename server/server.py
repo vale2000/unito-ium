@@ -1,13 +1,12 @@
 #!/usr/bin/python3
-import sys
 
 from flask import Flask
+
+from modules import config
+from modules.database import init_db
 from routes import route_users, route_customs, route_bookings, route_lessons
 from routes.account import route_account_public, route_account_auth
 from routes.courses import route_courses_auth, route_courses_public
-from modules import config
-from modules.database import init_db
-
 
 # ---------------------
 # Flask initialization

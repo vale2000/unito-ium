@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 import sqlite3
+
 from flask import Blueprint, request, abort, make_response
+
 from modules import simple_jwt
 from modules.database import get_db_conn
 from modules.utils import logged_before_request, get_role_perms
@@ -66,8 +68,8 @@ def booking_add():
                                             NOT EXISTS(SELECT b2.id FROM bookings as b2 WHERE b2.teacher_id = t.id 
                                             AND b2.day = ? AND b2.hour = ? 
                                             AND (b2.status = 'DONE' OR b2.status = 'RESERVED'))""",
-                                            [user_id, req_data.get('day'), hour, req_data.get('course_id'),
-                                             req_data.get('teacher_id'), req_data.get('day'), hour])
+                                       [user_id, req_data.get('day'), hour, req_data.get('course_id'),
+                                        req_data.get('teacher_id'), req_data.get('day'), hour])
                     last_id_inserted = cursor.lastrowid
                     database.commit()
 
