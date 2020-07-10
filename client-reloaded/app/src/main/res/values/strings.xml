@@ -29,6 +29,7 @@
     <string name="fragment_booking_list_rv_empty">You have no saved bookings</string>
     <string name="fragment_booking_set_status">Set booking status</string>
     <string name="fragment_booking_already_set">This booking already has this status</string>
+    <string name="fragment_booking_update_locked">The status of this booking cannot be changed</string>
     <string name="fragment_booking_update_failed">Status update failed</string>
     <array name="fragment_booking_status">
         <item>DONE</item>
@@ -36,7 +37,7 @@
     </array>
 
     <!-- Profile Fragment -->
-    <string name="fragment_profile_menu_disconnect">Log Out</string>
+    <string name="fragment_profile_menu_logout">Log Out</string>
 
     <!-- Others -->
     <string name="menu_item_search_string">Search</string>
