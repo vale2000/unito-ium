@@ -10,9 +10,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import butterknife.BindView;
 import it.unito.ium.myreps.R;
 import it.unito.ium.myreps.component.account.AccountPagerAdapter;
+import it.unito.ium.myreps.component.main.LessonListPageAdapter;
 import it.unito.ium.myreps.controller.BaseActivity;
 
-public class AccountActivity extends BaseActivity {
+public final class AccountActivity extends BaseActivity {
     @BindView(R.id.activity_main_frags_container)
     ViewPager2 viewPager;
 
@@ -24,7 +25,12 @@ public class AccountActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
 
-        AccountPagerAdapter accountPagerAdapter = new AccountPagerAdapter(getSupportFragmentManager(), getLifecycle(), getSupportActionBar());
+        initPageViewer();
+    }
+
+    private void initPageViewer() {
+        AccountPagerAdapter accountPagerAdapter = new AccountPagerAdapter(getSupportFragmentManager(),
+                getLifecycle(), getSupportActionBar());
         accountPagerAdapter.bindBottomNavigationView(bottomNavView);
         accountPagerAdapter.bindViewPager(viewPager);
     }

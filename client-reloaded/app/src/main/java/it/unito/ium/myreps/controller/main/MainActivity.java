@@ -53,11 +53,13 @@ public final class MainActivity extends BaseActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         KVStorage kvStorage = getModel().getKVStorage();
         boolean loggedIn = kvStorage.getString(StorageConf.ACCOUNT_JWT) != null;
+
         if (item.getItemId() == R.id.activity_main_account_goto) {
             startActivity(new Intent(this, loggedIn ? AccountActivity.class : LoginActivity.class));
             return true;
         }
-        return false;
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void initPageViewer() {

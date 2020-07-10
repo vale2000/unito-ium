@@ -32,17 +32,21 @@ import it.unito.ium.myreps.model.storage.KVStorage;
 import it.unito.ium.myreps.controller.BaseFragment;
 import it.unito.ium.myreps.util.RecyclerViewRow;
 
-public class LessonListFragment extends BaseFragment {
-    private final static SimpleDateFormat TITLE_FORMAT = new SimpleDateFormat("dd/MM", Locale.UK);
-    private final LessonListAdapter lessonListAdapter;
-    private final long day;
-    private final String title;
+public final class LessonListFragment extends BaseFragment {
     @BindView(R.id.fragment_list_swiperefresh)
     SwipeRefreshLayout swipeRefreshLayout;
+
     @BindView(R.id.fragment_list_recyclerview)
     RecyclerView recyclerView;
+
     @BindView(R.id.fragment_list_text_empty)
     TextView emptyText;
+
+    private final static SimpleDateFormat TITLE_FORMAT = new SimpleDateFormat("dd/MM", Locale.UK);
+    private final LessonListAdapter lessonListAdapter;
+    private final String title;
+    private final long day;
+
     private ArrayList<RecyclerViewRow> listCache;
 
     public LessonListFragment(long day) {

@@ -1,4 +1,4 @@
-package it.unito.ium.myreps.controller.booking;
+package it.unito.ium.myreps.component.booking;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +16,7 @@ import it.unito.ium.myreps.model.api.objects.Booking;
 import it.unito.ium.myreps.util.RecyclerItemBreak;
 import it.unito.ium.myreps.util.RecyclerViewRow;
 
-final class BookingListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public final class BookingListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private ArrayList<RecyclerViewRow> dataSet;
     private itemClickListener itemClickListener;
 

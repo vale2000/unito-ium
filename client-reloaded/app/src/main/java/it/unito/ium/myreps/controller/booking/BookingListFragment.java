@@ -19,6 +19,7 @@ import java.util.Optional;
 
 import butterknife.BindView;
 import it.unito.ium.myreps.R;
+import it.unito.ium.myreps.component.booking.BookingListAdapter;
 import it.unito.ium.myreps.model.api.ApiManager;
 import it.unito.ium.myreps.model.api.SrvStatus;
 import it.unito.ium.myreps.model.api.objects.Booking;
