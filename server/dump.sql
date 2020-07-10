@@ -52,8 +52,8 @@ CREATE TABLE IF NOT EXISTS users
     email    TEXT    NOT NULL UNIQUE,
     password TEXT    NOT NULL,
     role_id  INTEGER NOT NULL DEFAULT 1,
-    name     TEXT,
-    surname  TEXT,
+    name     TEXT    NOT NULL,
+    surname  TEXT    NOT NULL,
     gender   INTEGER NOT NULL DEFAULT 0,
     UNIQUE (id, name, surname),
     FOREIGN KEY (role_id)
