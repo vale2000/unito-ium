@@ -1,4 +1,4 @@
-package it.unito.ium.myreps.controller.main;
+package it.unito.ium.myreps.component.main;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +15,7 @@ import it.unito.ium.myreps.model.api.objects.Lesson;
 import it.unito.ium.myreps.util.RecyclerItemBreak;
 import it.unito.ium.myreps.util.RecyclerViewRow;
 
-final class LessonListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public final class LessonListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private ArrayList<RecyclerViewRow> dataSet;
     private LessonListAdapter.itemClickListener itemClickListener;
 
@@ -42,7 +42,7 @@ final class LessonListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        int layout = viewType == 0 ? R.layout.rv_row_lesson : R.layout.rv_row_separator;
+        int layout = viewType == 0 ? R.layout.rv_row_lesson : R.layout.rv_row_break;
         View view = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
         return viewType == 0 ? new LessonListAdapter.ViewHolder(view) : new RecyclerItemBreak.ViewHolder(view);
     }

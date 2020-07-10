@@ -20,7 +20,7 @@ import it.unito.ium.myreps.model.storage.KVStorage;
 import it.unito.ium.myreps.controller.BaseActivity;
 import it.unito.ium.myreps.controller.account.AccountActivity;
 
-public class LoginActivity extends BaseActivity {
+public final class LoginActivity extends BaseActivity {
     @BindView(R.id.activity_login_input_email)
     TextInputEditText emailEditText;
 

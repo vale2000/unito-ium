@@ -1,4 +1,4 @@
-package it.unito.ium.myreps.controller.account;
+package it.unito.ium.myreps.component.account;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -25,7 +25,7 @@ public final class AccountPagerAdapter extends FragmentStateAdapter {
     private ActionBar actionBar;
 
 
-    AccountPagerAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle, ActionBar actionBar) {
+    public AccountPagerAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle, ActionBar actionBar) {
         super(fragmentManager, lifecycle);
         this.actionBar = actionBar;
         fragmentList = new ArrayList<>();

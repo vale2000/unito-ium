@@ -17,9 +17,7 @@ public final class User extends RecyclerViewRow implements Serializable {
     private final String name;
     private final String surname;
     private final Gender gender;
-
     private final Role role;
-
     private final Course[] courses;
     private final int[] freeHours;
 

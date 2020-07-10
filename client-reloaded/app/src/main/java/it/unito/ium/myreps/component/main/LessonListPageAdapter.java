@@ -1,4 +1,4 @@
-package it.unito.ium.myreps.controller.main;
+package it.unito.ium.myreps.component.main;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -12,7 +12,9 @@ import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.ArrayList;
 
-public class LessonListPageAdapter extends FragmentStateAdapter {
+import it.unito.ium.myreps.controller.main.LessonListFragment;
+
+public final class LessonListPageAdapter extends FragmentStateAdapter {
     private final ArrayList<LessonListFragment> fragments;
     private ViewPager2 viewPager;
 

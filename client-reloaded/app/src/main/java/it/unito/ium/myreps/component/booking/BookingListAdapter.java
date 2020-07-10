@@ -1,4 +1,4 @@
-package it.unito.ium.myreps.controller.booking;
+package it.unito.ium.myreps.component.booking;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +16,7 @@ import it.unito.ium.myreps.model.api.objects.Booking;
 import it.unito.ium.myreps.util.RecyclerItemBreak;
 import it.unito.ium.myreps.util.RecyclerViewRow;
 
-final class BookingListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public final class BookingListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private ArrayList<RecyclerViewRow> dataSet;
     private itemClickListener itemClickListener;
 
@@ -43,7 +43,7 @@ final class BookingListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        int layout = viewType == 0 ? R.layout.rv_row_booking : R.layout.rv_row_separator;
+        int layout = viewType == 0 ? R.layout.rv_row_booking : R.layout.rv_row_break;
         View view = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
         return viewType == 0 ? new BookingListAdapter.ViewHolder(view) : new RecyclerItemBreak.ViewHolder(view);
     }

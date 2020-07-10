@@ -16,12 +16,12 @@ public final class Lesson extends RecyclerViewRow implements Serializable {
     public static final SimpleDateFormat DATE_YEAR_FORMAT = new SimpleDateFormat("dd/MM/yyyy", Locale.UK);
     public static final SimpleDateFormat DATE_HOUR_FORMAT = new SimpleDateFormat("HH:mm", Locale.UK);
     public static final SimpleDateFormat DATE_WEEK_FORMAT = new SimpleDateFormat("EEEE", Locale.UK);
+
     private static final long serialVersionUID = -1609365345742781595L;
+
     private final Date date;
     private final long longDay;
-
     private final Course course;
-
     private final int teachersNum;
     private final User[] teachers;
 
