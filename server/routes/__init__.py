@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 from routes import customs, users, bookings, lessons
 
-
 # -----------------------------------------
 # Shortcut for Flask BluePrints inside .py
 # -----------------------------------------
