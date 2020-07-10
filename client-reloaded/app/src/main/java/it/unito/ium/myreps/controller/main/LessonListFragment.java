@@ -22,6 +22,7 @@ import java.util.Locale;
 
 import butterknife.BindView;
 import it.unito.ium.myreps.R;
+import it.unito.ium.myreps.component.main.LessonListAdapter;
 import it.unito.ium.myreps.configuration.StorageConf;
 import it.unito.ium.myreps.model.api.ApiManager;
 import it.unito.ium.myreps.model.api.SrvStatus;

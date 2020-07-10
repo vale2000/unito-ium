@@ -20,6 +20,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import it.unito.ium.myreps.R;
+import it.unito.ium.myreps.component.main.LessonListPageAdapter;
 import it.unito.ium.myreps.configuration.StorageConf;
 import it.unito.ium.myreps.model.storage.KVStorage;
 import it.unito.ium.myreps.controller.BaseActivity;

@@ -43,7 +43,7 @@ final class BookingListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        int layout = viewType == 0 ? R.layout.rv_row_booking : R.layout.rv_row_separator;
+        int layout = viewType == 0 ? R.layout.rv_row_booking : R.layout.rv_row_break;
         View view = LayoutInflater.from(parent.getContext()).inflate(layout, parent, false);
         return viewType == 0 ? new BookingListAdapter.ViewHolder(view) : new RecyclerItemBreak.ViewHolder(view);
     }

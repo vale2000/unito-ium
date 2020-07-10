@@ -9,6 +9,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import butterknife.BindView;
 import it.unito.ium.myreps.R;
+import it.unito.ium.myreps.component.account.AccountPagerAdapter;
 import it.unito.ium.myreps.controller.BaseActivity;
 
 public class AccountActivity extends BaseActivity {
