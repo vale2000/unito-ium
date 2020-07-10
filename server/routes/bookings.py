@@ -61,13 +61,20 @@ def booking_add():
                     for hour in req_data.get('hours'):
                         cursor.execute("""INSERT INTO bookings (user_id, course_id, course_name, teacher_id, 
                                                                 teacher_name, teacher_surname, day, hour) 
-                                        SELECT ?, c.id, c.name, t.id, t.name, t.surname, ?, ? FROM users AS t 
-                                        JOIN courses AS c ON c.id = ? WHERE t.id = ?""",
-                                       [user_id, req_data.get('day'), hour, req_data.get('course_id'),
-                                        req_data.get('teacher_id')])
+                                            SELECT ?, c.id, c.name, t.id, t.name, t.surname, ?, ? FROM users AS t 
+                                            JOIN courses AS c ON c.id = ? WHERE t.id = ? AND
+                                            NOT EXISTS(SELECT b2.id FROM bookings as b2 WHERE b2.teacher_id = t.id 
+                                            AND b2.day = ? AND b2.hour = ? 
+                                            AND (b2.status = 'DONE' OR b2.status = 'RESERVED'))""",
+                                            [user_id, req_data.get('day'), hour, req_data.get('course_id'),
+                                             req_data.get('teacher_id'), req_data.get('day'), hour])
                     last_id_inserted = cursor.lastrowid
                     database.commit()
-                    result = make_response({'ok': True, 'data': last_id_inserted}, 200)
+
+                    if last_id_inserted > 0:
+                        result = make_response({'ok': True}, 200)
+                    else:
+                        result = abort(400)
                 except sqlite3.Error as e:
                     print(e)
                     database.rollback()
@@ -119,6 +126,9 @@ def booking_update(booking_id: int):
     req_data = request.get_json()
     if req_data:
         if user_perms.get('booking_update', 0) or user_perms.get('booking_update_others', 0):
+            if user_perms.get('booking_update', 0) and not user_perms.get('booking_update_others', 0):
+                if req_data.get('status') not in ["DONE", "CANCELED"]:
+                    return server_error('UNAUTHORIZED')
             req_data.pop('id', None)
             user_id = req_data.get('user_id', token_data.get('user'))
             if not user_perms.get('booking_update_others', 0):

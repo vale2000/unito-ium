@@ -170,7 +170,7 @@ CREATE TABLE IF NOT EXISTS bookings (
     REFERENCES courses (id, name)
       ON DELETE NO ACTION
       ON UPDATE CASCADE,
-  UNIQUE (teacher_id, day, hour),
+  -- UNIQUE (teacher_id, day, hour),
   FOREIGN KEY (teacher_id, teacher_name, teacher_surname)
     REFERENCES users (id, name, surname)
       ON DELETE NO ACTION
